@@ -52,9 +52,7 @@ const Home = () => {
           </div>
 
           {/* Footer */}
-          <p className="text-sm text-muted-foreground pt-8">
-            Version 1.0 • Nur für Erwachsene
-          </p>
+          
         </div>
       </div>
 
