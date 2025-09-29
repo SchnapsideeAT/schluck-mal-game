@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Play, BookOpen, Settings, AlertTriangle } from "lucide-react";
+import logo from "@/assets/logo.svg";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -34,10 +35,14 @@ const Home = () => {
         
         <div className="slide-up max-w-lg w-full space-y-8 text-center">
           {/* Logo/Title */}
-          <div className="space-y-4">
-            <h1 className="text-6xl md:text-7xl font-bold bg-gradient-to-r from-primary via-secondary to-primary bg-clip-text text-transparent pulse-glow">
-              Schluck mal!
-            </h1>
+          <div className="space-y-6">
+            <div className="flex justify-center">
+              <img 
+                src={logo} 
+                alt="Schluck mal!" 
+                className="w-full max-w-md h-auto pulse-glow"
+              />
+            </div>
             <p className="text-xl text-muted-foreground">
               Das ultimative Karten-Trinkspiel
             </p>
