@@ -221,25 +221,13 @@ const Game = () => {
             </div>
           </div>
         ) : showCard && currentCard ? (
-          <div className="w-full max-w-md">
+          <div className="w-full max-w-[85vw] sm:max-w-md">
             <GameCard 
               card={currentCard}
               swipeDistance={swipeState.swipeDistance}
               swipeDirection={swipeState.swipeDirection}
               {...swipeHandlers}
             />
-            
-            {/* Swipe Instructions */}
-            <div className="mt-6 flex justify-between items-center px-4 text-sm text-muted-foreground">
-              <div className="flex items-center gap-2">
-                <span className="text-2xl">←</span>
-                <span>Swipe: Trinken</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <span>Erledigt</span>
-                <span className="text-2xl">→</span>
-              </div>
-            </div>
           </div>
         ) : null}
       </div>

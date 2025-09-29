@@ -35,7 +35,7 @@ export const GameCard = ({
 
   return (
     <div 
-      className="card-flip w-full max-w-md mx-auto relative touch-none"
+      className="card-flip w-full mx-auto relative touch-none max-h-[70vh]"
       style={{
         transform: `translateX(${swipeDistance}px) rotate(${rotation}deg)`,
         opacity,
@@ -81,7 +81,7 @@ export const GameCard = ({
         <img 
           src={cardImageSrc} 
           alt={`${card.category} Card`}
-          className="w-full h-auto relative z-10"
+          className="w-full h-auto max-h-[70vh] object-contain relative z-10"
           draggable={false}
         />
       </div>
