@@ -113,7 +113,7 @@ const Settings = () => {
               <p><strong className="text-foreground">Version:</strong> 1.0.0</p>
               <p><strong className="text-foreground">Entwickelt für:</strong> Android & iOS</p>
               <p className="pt-2 text-xs">
-                © 2025 Schluck mal! • Alle Rechte vorbehalten
+                © 2025 Schnapsidee • Schluck mal! • Alle Rechte vorbehalten
               </p>
             </div>
           </section>
