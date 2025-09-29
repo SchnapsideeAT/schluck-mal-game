@@ -74,9 +74,6 @@ const Game = () => {
     if ('vibrate' in navigator) {
       navigator.vibrate(20);
     }
-    toast.success("Aufgabe angenommen!", {
-      description: "Viel Erfolg!",
-    });
   };
 
   const handleComplete = () => {
