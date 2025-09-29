@@ -31,7 +31,7 @@ const Home = () => {
     <>
       <div className="min-h-screen flex flex-col items-center justify-center p-6 relative overflow-hidden">
         {/* Background glow effect */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-primary/20 rounded-full blur-[120px] -z-10" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-primary/20 rounded-full blur-[120px] -z-10 animate-pulse" />
         
         <div className="slide-up max-w-lg w-full space-y-8 text-center">
           {/* Logo/Title */}
