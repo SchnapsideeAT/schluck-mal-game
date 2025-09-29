@@ -174,10 +174,19 @@ const Game = () => {
           <Home className="w-5 h-5" />
         </Button>
         
-        <div className="text-center">
-          <p className="text-sm text-muted-foreground">Verbleibende Karten</p>
-          <p className="text-2xl font-bold text-primary">{cardsRemaining}</p>
-        </div>
+        {/* Current Player Display */}
+        {players.length > 0 && currentIndex >= 0 ? (
+          <div className="inline-flex items-center gap-2 bg-primary/10 border border-primary/30 rounded-full px-4 py-2">
+            <span className="text-2xl">{players[currentPlayerIndex].avatar}</span>
+            <span className="font-semibold text-primary">{players[currentPlayerIndex].name}</span>
+            <span className="text-sm text-muted-foreground">ist dran</span>
+          </div>
+        ) : (
+          <div className="text-center">
+            <p className="text-sm text-muted-foreground">Verbleibende Karten</p>
+            <p className="text-2xl font-bold text-primary">{cardsRemaining}</p>
+          </div>
+        )}
 
         <div className="flex gap-2">
           <Button
@@ -198,17 +207,6 @@ const Game = () => {
           </Button>
         </div>
       </div>
-      
-      {/* Current Player Display */}
-      {players.length > 0 && currentIndex >= 0 && (
-        <div className="mb-4 text-center">
-          <div className="inline-flex items-center gap-2 bg-primary/10 border border-primary/30 rounded-full px-4 py-2">
-            <span className="text-2xl">{players[currentPlayerIndex].avatar}</span>
-            <span className="font-semibold text-primary">{players[currentPlayerIndex].name}</span>
-            <span className="text-sm text-muted-foreground">ist dran</span>
-          </div>
-        </div>
-      )}
 
       {/* Card display area */}
       <div className="flex-1 flex items-center justify-center">
