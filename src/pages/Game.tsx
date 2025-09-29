@@ -130,7 +130,7 @@ const Game = () => {
             <Button
               onClick={drawCard}
               size="lg"
-              className="w-full h-16 text-lg bg-gradient-to-r from-primary to-secondary hover:shadow-[var(--shadow-button)] transition-all duration-300 animate-fade-in"
+              className="w-full h-16 text-lg bg-primary hover:shadow-[var(--shadow-button)] transition-all duration-300 animate-fade-in"
             >
               Karte ziehen
               <ArrowRight className="w-6 h-6 ml-3" />

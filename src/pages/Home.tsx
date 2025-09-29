@@ -53,7 +53,7 @@ const Home = () => {
             <Button
               onClick={handleStartGame}
               size="lg"
-              className="w-full h-16 text-lg bg-gradient-to-r from-primary to-secondary hover:shadow-[var(--shadow-button)] transition-all duration-300 hover:scale-105"
+              className="w-full h-16 text-lg bg-primary hover:shadow-[var(--shadow-button)] transition-all duration-300 hover:scale-105"
             >
               <Play className="w-6 h-6 mr-3" />
               Spiel starten
@@ -111,7 +111,7 @@ const Home = () => {
             </AlertDialogCancel>
             <AlertDialogAction 
               onClick={confirmStart}
-              className="bg-gradient-to-r from-primary to-secondary hover:shadow-[var(--shadow-button)]"
+              className="bg-primary hover:shadow-[var(--shadow-button)]"
             >
               Ich bin 18+ und bestätige
             </AlertDialogAction>
