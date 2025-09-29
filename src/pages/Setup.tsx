@@ -1,10 +1,15 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Users } from "lucide-react";
 import { CategoryIcon } from "@/components/CategoryIcon";
+import { PlayerSetup } from "@/components/PlayerSetup";
+import { Player } from "@/types/card";
+import { toast } from "sonner";
 
 const Setup = () => {
   const navigate = useNavigate();
+  const [players, setPlayers] = useState<Player[]>([]);
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-6">
@@ -73,15 +78,18 @@ const Setup = () => {
           </div>
         </div>
 
-        {/* Player info - informational only */}
-        <div className="bg-muted/50 border border-border/30 rounded-xl p-6">
-          <p className="text-sm text-muted-foreground mb-2">Empfohlene Spieleranzahl</p>
-          <p className="text-3xl font-bold text-primary">3 - 10 Spieler</p>
-        </div>
+        {/* Player Setup Component */}
+        <PlayerSetup players={players} onPlayersChange={setPlayers} />
 
         {/* Start button */}
         <Button
-          onClick={() => navigate("/game")}
+          onClick={() => {
+            if (players.length === 0) {
+              toast.error("Füge mindestens einen Spieler hinzu!");
+              return;
+            }
+            navigate("/game", { state: { players } });
+          }}
           size="lg"
           className="w-full h-16 text-lg bg-primary hover:shadow-[var(--shadow-button)] transition-all duration-300 hover:scale-105"
         >

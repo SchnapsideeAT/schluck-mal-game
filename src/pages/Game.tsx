@@ -1,23 +1,34 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { GameCard } from "@/components/GameCard";
 import { shuffleDeck } from "@/utils/cardUtils";
-import { Card } from "@/types/card";
-import { ArrowRight, Beer, Check, Home, RotateCcw } from "lucide-react";
+import { Card, Player } from "@/types/card";
+import { ArrowRight, Beer, Check, Home, RotateCcw, Trophy } from "lucide-react";
 import { toast } from "sonner";
 
 const Game = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const initialPlayers = (location.state as { players?: Player[] })?.players || [];
+  
   const [deck, setDeck] = useState<Card[]>([]);
   const [currentIndex, setCurrentIndex] = useState(-1);
   const [showCard, setShowCard] = useState(false);
   const [cardAccepted, setCardAccepted] = useState(false);
+  const [players, setPlayers] = useState<Player[]>(initialPlayers);
+  const [currentPlayerIndex, setCurrentPlayerIndex] = useState(0);
 
   useEffect(() => {
     // Initialize shuffled deck
     const shuffled = shuffleDeck();
     setDeck(shuffled);
+    
+    // Redirect if no players
+    if (players.length === 0) {
+      toast.error("Keine Spieler gefunden! Zurück zum Setup.");
+      navigate("/setup");
+    }
   }, []);
 
   const drawCard = () => {
@@ -55,7 +66,11 @@ const Game = () => {
   };
 
   const handleComplete = () => {
-    toast.success("Aufgabe erledigt!");
+    const currentPlayer = players[currentPlayerIndex];
+    toast.success(`${currentPlayer.avatar} ${currentPlayer.name}: Aufgabe erledigt!`);
+    
+    // Move to next player
+    setCurrentPlayerIndex((currentPlayerIndex + 1) % players.length);
     setTimeout(drawCard, 500);
   };
 
@@ -72,7 +87,25 @@ const Game = () => {
     setDeck(shuffled);
     setCurrentIndex(-1);
     setShowCard(false);
+    setCurrentPlayerIndex(0);
+    
+    // Reset drink counts
+    const resetPlayers = players.map(p => ({ ...p, totalDrinks: 0 }));
+    setPlayers(resetPlayers);
+    
     toast.success("Spiel wurde neu gestartet!");
+  };
+  
+  const showStatistics = () => {
+    const sortedPlayers = [...players].sort((a, b) => b.totalDrinks - a.totalDrinks);
+    const statsMessage = sortedPlayers.map((p, i) => 
+      `${i + 1}. ${p.avatar} ${p.name}: ${p.totalDrinks} Schlücke`
+    ).join('\n');
+    
+    toast.success("Spielstatistiken", {
+      description: statsMessage,
+      duration: 8000,
+    });
   };
 
   const currentCard = deck[currentIndex];
@@ -81,7 +114,7 @@ const Game = () => {
   return (
     <div className="min-h-screen flex flex-col p-6 pb-32 relative">
       {/* Header */}
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex items-center justify-between mb-4">
         <Button
           onClick={() => navigate("/")}
           variant="ghost"
@@ -96,15 +129,36 @@ const Game = () => {
           <p className="text-2xl font-bold text-primary">{cardsRemaining}</p>
         </div>
 
-        <Button
-          onClick={handleRestart}
-          variant="ghost"
-          size="icon"
-          className="hover:bg-muted/50"
-        >
-          <RotateCcw className="w-5 h-5" />
-        </Button>
+        <div className="flex gap-2">
+          <Button
+            onClick={showStatistics}
+            variant="ghost"
+            size="icon"
+            className="hover:bg-muted/50"
+          >
+            <Trophy className="w-5 h-5" />
+          </Button>
+          <Button
+            onClick={handleRestart}
+            variant="ghost"
+            size="icon"
+            className="hover:bg-muted/50"
+          >
+            <RotateCcw className="w-5 h-5" />
+          </Button>
+        </div>
       </div>
+      
+      {/* Current Player Display */}
+      {players.length > 0 && currentIndex >= 0 && (
+        <div className="mb-4 text-center">
+          <div className="inline-flex items-center gap-2 bg-primary/10 border border-primary/30 rounded-full px-4 py-2">
+            <span className="text-2xl">{players[currentPlayerIndex].avatar}</span>
+            <span className="font-semibold text-primary">{players[currentPlayerIndex].name}</span>
+            <span className="text-sm text-muted-foreground">ist dran</span>
+          </div>
+        </div>
+      )}
 
       {/* Card display area */}
       <div className="flex-1 flex items-center justify-center">

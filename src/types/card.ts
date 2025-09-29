@@ -7,9 +7,16 @@ export interface Card {
   drinks: number;
 }
 
+export interface Player {
+  id: string;
+  name: string;
+  avatar: string;
+  totalDrinks: number;
+}
+
 export interface GameState {
   isPlaying: boolean;
   currentCardIndex: number;
   deck: Card[];
-  playersCount: number;
+  players: Player[];
 }
