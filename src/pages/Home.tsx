@@ -58,7 +58,7 @@ const Home = () => {
 
       {/* Age warning dialog */}
       <AlertDialog open={showWarning} onOpenChange={setShowWarning}>
-        <AlertDialogContent className="bg-card border-primary/30">
+        <AlertDialogContent className="bg-card border-primary/30 mx-6">
           <AlertDialogHeader>
             <AlertDialogTitle className="flex items-center gap-3 text-2xl">
               <AlertTriangle className="w-8 h-8 text-primary" />
