@@ -74,24 +74,26 @@ All colors MUST be HSL.
     height: 100%;
     overflow: hidden;
     background: hsl(0 0% 10%);
+    overscroll-behavior: none;
   }
 
   body {
     @apply bg-background text-foreground antialiased;
     font-family: 'Quicksand', system-ui, sans-serif;
     font-weight: 700;
-    background: linear-gradient(180deg, hsl(0 0% 10%), hsl(0 0% 8%));
+    background: hsl(0 0% 10%);
     min-height: 100vh;
     min-height: -webkit-fill-available;
     padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
     margin: 0;
     overflow-x: hidden;
+    overscroll-behavior-y: none;
   }
 
   #root {
     min-height: 100vh;
     min-height: -webkit-fill-available;
-    background: linear-gradient(180deg, hsl(0 0% 10%), hsl(0 0% 8%));
+    background: hsl(0 0% 10%);
   }
 }
 
