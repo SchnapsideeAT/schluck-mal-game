@@ -11,9 +11,9 @@ interface PlayerSetupProps {
 }
 
 const AVATAR_OPTIONS = [
-  "😎", "🤠", "🥳", "😈", "🤡", "👻", "👽", "🤖", 
-  "🐶", "🐱", "🦊", "🐼", "🐨", "🦁", "🐯", "🐸",
-  "🍺", "🍻", "🍷", "🥂", "🍾", "🍹", "🍸", "🥃"
+  "😎", "🤠", "🥳", "😈", "🤡", "👻",
+  "🐶", "🐱", "🦊", "🐼", "🐨", "🦁",
+  "🍺", "🍻", "🍷", "🥂", "🍾", "🍹"
 ];
 
 export const PlayerSetup = ({ players, onPlayersChange }: PlayerSetupProps) => {
@@ -60,12 +60,12 @@ export const PlayerSetup = ({ players, onPlayersChange }: PlayerSetupProps) => {
         {/* Avatar Selection */}
         <div>
           <label className="text-sm text-muted-foreground mb-2 block">Avatar wählen</label>
-          <div className="grid grid-cols-8 gap-2">
+          <div className="grid grid-cols-6 gap-2">
             {AVATAR_OPTIONS.map((avatar) => (
               <button
                 key={avatar}
                 onClick={() => setSelectedAvatar(avatar)}
-                className={`text-2xl p-2 rounded-lg transition-all ${
+                className={`text-2xl p-3 rounded-lg transition-all flex items-center justify-center ${
                   selectedAvatar === avatar
                     ? "bg-primary/20 border-2 border-primary scale-110"
                     : "bg-muted/50 border border-border/30 hover:bg-muted hover:scale-105"
