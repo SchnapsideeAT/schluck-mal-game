@@ -69,8 +69,6 @@ const Home = () => {
               <br /><br />
               Dieses Spiel ist ausschließlich für Personen ab 18 Jahren konzipiert und enthält Inhalte, die den Konsum von Alkohol zum Thema haben.
               <br /><br />
-              Bitte spielt verantwortungsvoll und achtet auf euch und eure Mitspieler. Trinkt niemals über eure Grenzen hinaus und fahrt nicht unter Alkoholeinfluss.
-              <br /><br />
               Bestätige, dass du mindestens 18 Jahre alt bist und das Spiel verantwortungsvoll spielen wirst.
             </AlertDialogDescription>
           </AlertDialogHeader>
