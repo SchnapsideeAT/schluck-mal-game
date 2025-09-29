@@ -21,7 +21,7 @@ export const GameCard = ({ card }: GameCardProps) => {
     <div className="card-flip w-full max-w-md mx-auto relative">
       {/* Subtle category-colored glow effect */}
       <div 
-        className="absolute inset-0 blur-3xl opacity-30"
+        className="absolute inset-0 blur-3xl opacity-30 animate-pulse"
         style={{
           background: `radial-gradient(circle at 50% 50%, hsl(${categoryColor} / 0.4), transparent 70%)`,
           transform: 'scale(1.15)',
