@@ -65,6 +65,10 @@ export const GameCard = ({
       
       <div 
         className="relative rounded-2xl overflow-hidden"
+        style={{
+          boxShadow: `0 0 30px hsl(${categoryColor} / 0.5), 0 0 60px hsl(${categoryColor} / 0.3)`,
+          animation: 'pulseGlow 2.5s ease-in-out infinite'
+        }}
       >
         {/* SVG Card Image */}
         <img 

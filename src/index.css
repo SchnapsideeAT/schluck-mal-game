@@ -131,6 +131,17 @@ All colors MUST be HSL.
   }
 }
 
+@keyframes pulseGlowBg {
+  0%, 100% {
+    opacity: 0.15;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.35;
+    transform: scale(1.1);
+  }
+}
+
 @keyframes slideUp {
   from {
     transform: translateY(20px);
