@@ -22,12 +22,10 @@ export const PlayerSetup = ({ players, onPlayersChange }: PlayerSetupProps) => {
 
   const addPlayer = () => {
     if (!newPlayerName.trim()) {
-      toast.error("Bitte gib einen Namen ein!");
       return;
     }
 
     if (players.length >= 10) {
-      toast.error("Maximal 10 Spieler möglich!");
       return;
     }
 
@@ -41,7 +39,6 @@ export const PlayerSetup = ({ players, onPlayersChange }: PlayerSetupProps) => {
     onPlayersChange([...players, newPlayer]);
     setNewPlayerName("");
     setSelectedAvatar(AVATAR_OPTIONS[Math.floor(Math.random() * AVATAR_OPTIONS.length)]);
-    toast.success(`${newPlayerName} wurde hinzugefügt!`);
   };
 
   const removePlayer = (playerId: string) => {

@@ -36,16 +36,12 @@ const Game = () => {
     
     // Redirect if no players
     if (!state?.players || state.players.length === 0) {
-      toast.error("Keine Spieler gefunden! Zurück zum Setup.");
       navigate("/setup");
     }
   }, []);
 
   const drawCard = () => {
     if (currentIndex >= deck.length - 1) {
-      toast.success("Alle Karten wurden gespielt! Das Spiel ist zu Ende.", {
-        duration: 5000,
-      });
       return;
     }
     
@@ -77,9 +73,6 @@ const Game = () => {
   };
 
   const handleComplete = () => {
-    const currentPlayer = players[currentPlayerIndex];
-    toast.success(`${currentPlayer.avatar} ${currentPlayer.name}: Aufgabe erledigt!`);
-    
     // Move to next player
     setCurrentPlayerIndex((currentPlayerIndex + 1) % players.length);
     setTimeout(drawCard, 500);
@@ -93,10 +86,6 @@ const Game = () => {
     const updatedPlayers = [...players];
     updatedPlayers[currentPlayerIndex].totalDrinks += drinks;
     setPlayers(updatedPlayers);
-    
-    toast.info(`${currentPlayer.avatar} ${currentPlayer.name}: ${drinks} Schlück${drinks !== 1 ? "e" : ""}!`, {
-      icon: <Beer className="w-5 h-5" />,
-    });
     
     // Move to next player
     setCurrentPlayerIndex((currentPlayerIndex + 1) % players.length);
@@ -113,8 +102,6 @@ const Game = () => {
     // Reset drink counts
     const resetPlayers = players.map(p => ({ ...p, totalDrinks: 0 }));
     setPlayers(resetPlayers);
-    
-    toast.success("Spiel wurde neu gestartet!");
   };
   
   const showStatistics = () => {
