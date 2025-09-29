@@ -47,10 +47,10 @@ export const GameCard = ({
     >
       {/* Subtle category-colored glow effect */}
       <div 
-        className="absolute inset-0 blur-3xl opacity-30 animate-pulse"
+        className="absolute inset-0 blur-2xl opacity-25 animate-pulse"
         style={{
-          background: `radial-gradient(circle at 50% 50%, hsl(${categoryColor} / 0.4), transparent 70%)`,
-          transform: 'scale(1.15)',
+          background: `radial-gradient(circle at 50% 50%, hsl(${categoryColor} / 0.5), transparent 60%)`,
+          transform: 'scale(1.1)',
         }}
       />
       
