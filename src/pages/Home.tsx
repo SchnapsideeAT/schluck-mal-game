@@ -44,7 +44,7 @@ const Home = () => {
               />
             </div>
             <p className="text-xl text-muted-foreground">
-              Das ultimative Karten-Trinkspiel
+              Das einzige Trinkspiel das du brauchen wirst.
             </p>
           </div>
 
