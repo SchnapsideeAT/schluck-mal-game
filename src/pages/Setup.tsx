@@ -22,10 +22,6 @@ const Setup = () => {
           <h1 className="text-4xl md:text-5xl font-bold text-foreground">
             Spielvorbereitung
           </h1>
-          
-          <p className="text-lg text-muted-foreground">
-            Versammelt eure Gruppe und macht euch bereit für eine unvergessliche Party!
-          </p>
         </div>
 
         {/* Info card */}
