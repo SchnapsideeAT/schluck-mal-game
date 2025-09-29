@@ -1,0 +1,74 @@
+[
+  {
+    "id": 1,
+    "category": "Wahrheit",
+    "text": "Wen aus der Gruppe würdest du nicht deinen Eltern vorstellen?",
+    "drinks": 3
+  },
+  {
+    "id": 2,
+    "category": "Wahrheit",
+    "text": "Was ist die peinlichste Sache, die du jemals betrunken gemacht hast?",
+    "drinks": 2
+  },
+  {
+    "id": 3,
+    "category": "Aufgabe",
+    "text": "Mache einen Handstand oder trinke 4 Schlücke.",
+    "drinks": 4
+  },
+  {
+    "id": 4,
+    "category": "Aufgabe",
+    "text": "Ruf deine letzte Kontaktperson an und sag 'Ich liebe dich'.",
+    "drinks": 5
+  },
+  {
+    "id": 5,
+    "category": "Gruppe",
+    "text": "Alle Linkshänder trinken 2 Schlücke!",
+    "drinks": 0
+  },
+  {
+    "id": 6,
+    "category": "Gruppe",
+    "text": "Alle, die heute schon Sport gemacht haben, trinken!",
+    "drinks": 0
+  },
+  {
+    "id": 7,
+    "category": "Duell",
+    "text": "Wähle einen Gegner für ein Armdrücken-Duell! Verlierer trinkt 3 Schlücke.",
+    "drinks": 3
+  },
+  {
+    "id": 8,
+    "category": "Duell",
+    "text": "Starr-Wettbewerb mit einem Mitspieler deiner Wahl. Wer zuerst blinzelt, trinkt 2 Schlücke.",
+    "drinks": 2
+  },
+  {
+    "id": 9,
+    "category": "Wildcard",
+    "text": "Verteile 5 Schlücke an beliebige Mitspieler!",
+    "drinks": 0
+  },
+  {
+    "id": 10,
+    "category": "Wildcard",
+    "text": "Erfinde eine neue Regel, die ab sofort gilt. Bei Regelbruch trinkt der Spieler 2 Schlücke!",
+    "drinks": 0
+  },
+  {
+    "id": 11,
+    "category": "Wahrheit",
+    "text": "Was ist deine größte Angst?",
+    "drinks": 2
+  },
+  {
+    "id": 12,
+    "category": "Aufgabe",
+    "text": "Tanze 30 Sekunden wie niemand zuschaut!",
+    "drinks": 3
+  }
+]

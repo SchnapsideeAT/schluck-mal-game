@@ -1,0 +1,150 @@
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { GameCard } from "@/components/GameCard";
+import { shuffleDeck } from "@/utils/cardUtils";
+import { Card } from "@/types/card";
+import { ArrowRight, Beer, Check, Home, RotateCcw } from "lucide-react";
+import { toast } from "sonner";
+
+const Game = () => {
+  const navigate = useNavigate();
+  const [deck, setDeck] = useState<Card[]>([]);
+  const [currentIndex, setCurrentIndex] = useState(-1);
+  const [showCard, setShowCard] = useState(false);
+
+  useEffect(() => {
+    // Initialize shuffled deck
+    const shuffled = shuffleDeck();
+    setDeck(shuffled);
+  }, []);
+
+  const drawCard = () => {
+    if (currentIndex >= deck.length - 1) {
+      toast.success("Alle Karten wurden gespielt! Das Spiel ist zu Ende.", {
+        duration: 5000,
+      });
+      return;
+    }
+    
+    setShowCard(false);
+    setTimeout(() => {
+      setCurrentIndex(currentIndex + 1);
+      setShowCard(true);
+    }, 100);
+  };
+
+  const handleAccept = () => {
+    toast.success("Aufgabe angenommen!", {
+      description: "Weiter geht's mit der nächsten Karte!",
+    });
+    setTimeout(drawCard, 1000);
+  };
+
+  const handleDrink = () => {
+    const drinks = deck[currentIndex]?.drinks || 0;
+    toast.info(`${drinks} Schluck${drinks !== 1 ? "e" : ""} getrunken!`, {
+      icon: <Beer className="w-5 h-5" />,
+    });
+    setTimeout(drawCard, 1000);
+  };
+
+  const handleRestart = () => {
+    const shuffled = shuffleDeck();
+    setDeck(shuffled);
+    setCurrentIndex(-1);
+    setShowCard(false);
+    toast.success("Spiel wurde neu gestartet!");
+  };
+
+  const currentCard = deck[currentIndex];
+  const cardsRemaining = deck.length - currentIndex - 1;
+
+  return (
+    <div className="min-h-screen flex flex-col p-6 pb-32 relative">
+      {/* Header */}
+      <div className="flex items-center justify-between mb-6">
+        <Button
+          onClick={() => navigate("/")}
+          variant="ghost"
+          size="icon"
+          className="hover:bg-muted/50"
+        >
+          <Home className="w-5 h-5" />
+        </Button>
+        
+        <div className="text-center">
+          <p className="text-sm text-muted-foreground">Verbleibende Karten</p>
+          <p className="text-2xl font-bold text-primary">{cardsRemaining}</p>
+        </div>
+
+        <Button
+          onClick={handleRestart}
+          variant="ghost"
+          size="icon"
+          className="hover:bg-muted/50"
+        >
+          <RotateCcw className="w-5 h-5" />
+        </Button>
+      </div>
+
+      {/* Card display area */}
+      <div className="flex-1 flex items-center justify-center">
+        {currentIndex === -1 ? (
+          <div className="text-center space-y-6 slide-up">
+            <div className="inline-flex items-center justify-center w-24 h-24 rounded-full bg-primary/20 border border-primary/50 pulse-glow">
+              <Beer className="w-12 h-12 text-primary" />
+            </div>
+            <div>
+              <h2 className="text-3xl font-bold mb-2">Bereit?</h2>
+              <p className="text-muted-foreground">Ziehe die erste Karte!</p>
+            </div>
+          </div>
+        ) : showCard && currentCard ? (
+          <GameCard card={currentCard} />
+        ) : null}
+      </div>
+
+      {/* Action buttons */}
+      <div className="fixed bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-background via-background to-transparent">
+        <div className="max-w-lg mx-auto space-y-3">
+          {currentIndex === -1 ? (
+            <Button
+              onClick={drawCard}
+              size="lg"
+              className="w-full h-16 text-lg bg-gradient-to-r from-primary to-secondary hover:shadow-[var(--shadow-button)] transition-all duration-300"
+            >
+              Karte ziehen
+              <ArrowRight className="w-6 h-6 ml-3" />
+            </Button>
+          ) : (
+            <>
+              <Button
+                onClick={handleAccept}
+                size="lg"
+                className="w-full h-14 text-lg bg-gradient-to-r from-category-group to-category-truth hover:shadow-[var(--shadow-button)] transition-all duration-300"
+              >
+                <Check className="w-5 h-5 mr-3" />
+                Annehmen
+              </Button>
+              
+              {currentCard?.drinks > 0 && (
+                <Button
+                  onClick={handleDrink}
+                  variant="outline"
+                  size="lg"
+                  className="w-full h-14 text-lg border-primary/50 hover:bg-primary/10 hover:border-primary transition-all duration-300"
+                >
+                  <Beer className="w-5 h-5 mr-3" />
+                  Schluck mal! ({currentCard.drinks} Schluck{currentCard.drinks !== 1 ? "e" : ""})
+                </Button>
+              )}
+            </>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Game;
