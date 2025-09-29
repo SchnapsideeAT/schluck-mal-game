@@ -69,7 +69,8 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground font-sans antialiased;
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Poppins', system-ui, sans-serif;
     background: linear-gradient(180deg, hsl(var(--background)), hsl(260 60% 5%));
     min-height: 100vh;
   }
