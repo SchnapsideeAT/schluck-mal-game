@@ -205,7 +205,7 @@ const Game = () => {
             </div>
           </div>
         ) : showCard && currentCard ? (
-          <div className="w-full max-w-[85vw] sm:max-w-md">
+          <div className="w-full max-w-[95vw] sm:max-w-lg md:max-w-xl lg:max-w-2xl mx-auto">
             <GameCard 
               card={currentCard}
               swipeDistance={swipeState.swipeDistance}
