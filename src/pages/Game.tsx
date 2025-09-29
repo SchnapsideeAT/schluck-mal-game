@@ -147,6 +147,18 @@ const Game = () => {
               <Check className="w-5 h-5 mr-3" />
               Erledigt
             </Button>
+          ) : currentCard?.category === "Wildcard" || currentCard?.drinks === 0 ? (
+            <Button
+              onClick={handleComplete}
+              size="lg"
+              className="w-full h-14 text-lg hover:shadow-[var(--shadow-button)] transition-all duration-300 animate-fade-in"
+              style={{
+                backgroundColor: `hsl(var(--${getCategoryColor(currentCard?.category || "")}))`,
+              }}
+            >
+              <Check className="w-5 h-5 mr-3" />
+              Annehmen
+            </Button>
           ) : (
             <div className="grid grid-cols-2 gap-3 animate-fade-in">
               <Button
