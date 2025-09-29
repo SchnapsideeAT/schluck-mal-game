@@ -35,7 +35,7 @@ export const GameCard = ({
 
   return (
     <div 
-      className="card-flip w-full mx-auto relative touch-none max-h-[70vh]"
+      className="card-flip w-full relative touch-none max-h-[70vh] flex items-center justify-center"
       style={{
         transform: `translateX(${swipeDistance}px) rotate(${rotation}deg)`,
         opacity,
@@ -63,15 +63,13 @@ export const GameCard = ({
         </div>
       )}
       
-      <div className="relative inline-block">
-        {/* SVG Card Image */}
-        <img 
-          src={cardImageSrc} 
-          alt={`${card.category} Card`}
-          className="w-full h-auto max-h-[70vh] object-contain relative z-10 rounded-2xl"
-          draggable={false}
-        />
-      </div>
+      {/* SVG Card Image */}
+      <img 
+        src={cardImageSrc} 
+        alt={`${card.category} Card`}
+        className="w-full h-auto max-h-[70vh] object-contain relative z-10 rounded-2xl"
+        draggable={false}
+      />
     </div>
   );
 };
