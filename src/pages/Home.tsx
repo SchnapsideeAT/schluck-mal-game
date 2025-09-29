@@ -40,7 +40,7 @@ const Home = () => {
               <img 
                 src={logo} 
                 alt="Schluck mal!" 
-                className="w-full max-w-md h-auto pulse-glow"
+                className="w-full max-w-md h-auto"
               />
             </div>
             <p className="text-xl text-primary">
