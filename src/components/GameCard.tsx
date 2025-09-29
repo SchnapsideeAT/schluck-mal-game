@@ -63,15 +63,20 @@ export const GameCard = ({
         </div>
       )}
       
+      {/* Glow Effect Background */}
+      <div 
+        className="absolute inset-0 rounded-2xl -z-10"
+        style={{
+          boxShadow: `0 0 30px 5px hsl(${categoryColor} / 0.6), 0 0 60px 15px hsl(${categoryColor} / 0.3)`,
+          animation: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite'
+        }}
+      />
+      
       {/* SVG Card Image */}
       <img 
         src={cardImageSrc} 
         alt={`${card.category} Card`}
         className="w-full h-auto max-h-[70vh] object-contain relative z-10 rounded-2xl"
-        style={{
-          boxShadow: `0 0 30px 5px hsl(${categoryColor} / 0.6), 0 0 60px 15px hsl(${categoryColor} / 0.3)`,
-          animation: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite'
-        }}
         draggable={false}
       />
     </div>
