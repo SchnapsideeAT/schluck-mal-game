@@ -46,6 +46,30 @@ export const GameCard = ({
       onTouchEnd={onTouchEnd}
     >
       
+      {/* Left Side Glow (Red - Drink) */}
+      {swipeDirection === 'left' && (
+        <div 
+          className="fixed left-0 top-0 bottom-0 w-8 pointer-events-none z-50"
+          style={{
+            background: 'linear-gradient(to right, rgba(239, 68, 68, 0.8), transparent)',
+            boxShadow: '0 0 40px 20px rgba(239, 68, 68, 0.6)',
+            animation: 'pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite'
+          }}
+        />
+      )}
+      
+      {/* Right Side Glow (Green - Complete) */}
+      {swipeDirection === 'right' && (
+        <div 
+          className="fixed right-0 top-0 bottom-0 w-8 pointer-events-none z-50"
+          style={{
+            background: 'linear-gradient(to left, rgba(34, 197, 94, 0.8), transparent)',
+            boxShadow: '0 0 40px 20px rgba(34, 197, 94, 0.6)',
+            animation: 'pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite'
+          }}
+        />
+      )}
+      
       {/* Swipe Direction Indicators */}
       {swipeDirection === 'left' && (
         <div className="absolute top-1/2 right-4 transform -translate-y-1/2 z-20 animate-pulse">
