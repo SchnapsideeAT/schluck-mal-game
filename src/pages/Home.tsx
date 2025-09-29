@@ -30,25 +30,18 @@ const Home = () => {
   return (
     <>
       <div className="min-h-screen flex flex-col items-center justify-center p-6 relative overflow-hidden">
-        {/* Background glow effect - multiple layers for stronger effect */}
-        <div 
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1000px] rounded-full -z-10" 
-          style={{
-            background: `radial-gradient(circle, hsl(48 91% 60% / 0.4) 0%, hsl(48 91% 60% / 0.2) 40%, transparent 70%)`,
-            filter: 'blur(80px)',
-            animation: 'pulseGlowBg 3s ease-in-out infinite'
-          }}
-        />
-        <div 
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full -z-10" 
-          style={{
-            background: `radial-gradient(circle, hsl(48 91% 60% / 0.6) 0%, hsl(48 91% 60% / 0.3) 50%, transparent 70%)`,
-            filter: 'blur(60px)',
-            animation: 'pulseGlowBg 3.5s ease-in-out infinite'
-          }}
-        />
         
-        <div className="slide-up max-w-lg w-full space-y-8 text-center">
+        <div className="slide-up max-w-lg w-full space-y-8 text-center relative z-10">
+          {/* Background glow effect behind UI */}
+          <div 
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full -z-10 pointer-events-none" 
+            style={{
+              background: `radial-gradient(circle, hsl(48 91% 60% / 0.25) 0%, hsl(48 91% 60% / 0.12) 50%, transparent 70%)`,
+              filter: 'blur(60px)',
+              animation: 'pulseGlowBg 3s ease-in-out infinite'
+            }}
+          />
+          
           {/* Logo/Title */}
           <div className="space-y-6">
             <div className="flex justify-center">

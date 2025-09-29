@@ -70,8 +70,8 @@ export const GameCard = ({
           alt={`${card.category} Card`}
           className="w-full h-auto max-h-[70vh] object-contain relative z-10 rounded-2xl"
           style={{
-            filter: `drop-shadow(0 0 25px hsl(${categoryColor} / 0.6)) drop-shadow(0 0 50px hsl(${categoryColor} / 0.4))`,
-            animation: 'pulseGlow 2.5s ease-in-out infinite'
+            filter: `drop-shadow(0 0 15px hsl(${categoryColor} / 0.5)) drop-shadow(0 0 30px hsl(${categoryColor} / 0.3))`,
+            animation: 'pulseGlowCard 2.5s ease-in-out infinite'
           }}
           draggable={false}
         />
