@@ -65,8 +65,6 @@ const Home = () => {
               Altersverifizierung
             </AlertDialogTitle>
             <AlertDialogDescription className="text-base text-foreground/80 pt-4">
-              <strong>Wichtiger Hinweis:</strong>
-              <br /><br />
               Dieses Spiel ist ausschließlich für Personen ab 18 Jahren konzipiert und enthält Inhalte, die den Konsum von Alkohol zum Thema haben.
               <br /><br />
               Bestätige, dass du mindestens 18 Jahre alt bist und das Spiel verantwortungsvoll spielen wirst.
