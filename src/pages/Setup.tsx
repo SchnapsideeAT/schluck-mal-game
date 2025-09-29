@@ -1,6 +1,11 @@
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Users } from "lucide-react";
+import WahrheitIcon from "@/assets/icons/Wahrheit.svg";
+import AufgabeIcon from "@/assets/icons/Aufgabe.svg";
+import GruppeIcon from "@/assets/icons/Gruppe.svg";
+import DuellIcon from "@/assets/icons/Duell.svg";
+import WildcardIcon from "@/assets/icons/Wildcard.svg";
 
 const Setup = () => {
   const navigate = useNavigate();
@@ -43,6 +48,33 @@ const Setup = () => {
               <span>Legt fest, wer anfängt (z.B. jüngster Spieler)</span>
             </li>
           </ul>
+        </div>
+
+        {/* Categories preview */}
+        <div className="bg-card border border-border/50 rounded-2xl p-6">
+          <h3 className="text-lg font-semibold text-foreground mb-4">Kartenkategorien im Spiel:</h3>
+          <div className="flex flex-wrap items-center justify-center gap-3">
+            <div className="flex items-center gap-2 bg-muted/50 rounded-lg px-3 py-2">
+              <img src={WahrheitIcon} alt="Wahrheit" className="w-5 h-5" />
+              <span className="text-sm font-medium">Wahrheit</span>
+            </div>
+            <div className="flex items-center gap-2 bg-muted/50 rounded-lg px-3 py-2">
+              <img src={AufgabeIcon} alt="Aufgabe" className="w-5 h-5" />
+              <span className="text-sm font-medium">Aufgabe</span>
+            </div>
+            <div className="flex items-center gap-2 bg-muted/50 rounded-lg px-3 py-2">
+              <img src={GruppeIcon} alt="Gruppe" className="w-5 h-5" />
+              <span className="text-sm font-medium">Gruppe</span>
+            </div>
+            <div className="flex items-center gap-2 bg-muted/50 rounded-lg px-3 py-2">
+              <img src={DuellIcon} alt="Duell" className="w-5 h-5" />
+              <span className="text-sm font-medium">Duell</span>
+            </div>
+            <div className="flex items-center gap-2 bg-muted/50 rounded-lg px-3 py-2">
+              <img src={WildcardIcon} alt="Wildcard" className="w-5 h-5" />
+              <span className="text-sm font-medium">Wildcard</span>
+            </div>
+          </div>
         </div>
 
         {/* Player info - informational only */}
