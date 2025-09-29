@@ -7,11 +7,11 @@ interface CategoryIconProps {
 }
 
 const categoryColorMap: Record<CardCategory, string> = {
-  Wahrheit: "#8B5CF6",
-  Aufgabe: "#F59E0B", 
-  Gruppe: "#10B981",
-  Duell: "#EF4444",
-  Wildcard: "#EC4899",
+  Wahrheit: "hsl(199, 91%, 42%)",
+  Aufgabe: "hsl(265, 27%, 57%)", 
+  Gruppe: "hsl(101, 55%, 44%)",
+  Duell: "hsl(38, 91%, 59%)",
+  Wildcard: "hsl(352, 78%, 58%)",
 };
 
 export const CategoryIcon = ({ category, className = "w-5 h-5" }: CategoryIconProps) => {
@@ -25,7 +25,7 @@ export const CategoryIcon = ({ category, className = "w-5 h-5" }: CategoryIconPr
         WebkitMask: `url(${iconSrc}) no-repeat center / contain`,
         mask: `url(${iconSrc}) no-repeat center / contain`,
         backgroundColor: color,
-        filter: `drop-shadow(0 0 4px ${color}80)`
+        filter: `drop-shadow(0 0 6px ${color})`
       }}
     />
   );
