@@ -43,7 +43,7 @@ const Home = () => {
                 className="w-full max-w-md h-auto pulse-glow"
               />
             </div>
-            <p className="text-xl text-muted-foreground">
+            <p className="text-xl text-primary">
               Das einzige Trinkspiel das du brauchen wirst.
             </p>
           </div>
