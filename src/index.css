@@ -70,7 +70,8 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground antialiased;
-    font-family: 'Poppins', system-ui, sans-serif;
+    font-family: 'Quicksand', system-ui, sans-serif;
+    font-weight: 700;
     background: linear-gradient(180deg, hsl(var(--background)), hsl(260 60% 5%));
     min-height: 100vh;
   }
