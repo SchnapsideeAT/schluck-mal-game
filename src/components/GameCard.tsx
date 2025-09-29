@@ -3,6 +3,11 @@ import { getCardImage } from "@/utils/cardImageMapper";
 
 interface GameCardProps {
   card: Card;
+  swipeDistance?: number;
+  swipeDirection?: 'left' | 'right' | null;
+  onTouchStart?: (e: React.TouchEvent) => void;
+  onTouchMove?: (e: React.TouchEvent) => void;
+  onTouchEnd?: () => void;
 }
 
 const categoryColorMap: Record<CardCategory, string> = {
@@ -13,12 +18,33 @@ const categoryColorMap: Record<CardCategory, string> = {
   Wildcard: "352 78% 58%",
 };
 
-export const GameCard = ({ card }: GameCardProps) => {
+export const GameCard = ({ 
+  card, 
+  swipeDistance = 0, 
+  swipeDirection,
+  onTouchStart,
+  onTouchMove,
+  onTouchEnd 
+}: GameCardProps) => {
   const cardImageSrc = getCardImage(card.category, card.id);
   const categoryColor = categoryColorMap[card.category];
 
+  // Calculate rotation and opacity based on swipe
+  const rotation = swipeDistance * 0.1; // Rotate based on swipe distance
+  const opacity = Math.max(0.5, 1 - Math.abs(swipeDistance) / 300);
+
   return (
-    <div className="card-flip w-full max-w-md mx-auto relative">
+    <div 
+      className="card-flip w-full max-w-md mx-auto relative touch-none"
+      style={{
+        transform: `translateX(${swipeDistance}px) rotate(${rotation}deg)`,
+        opacity,
+        transition: swipeDistance === 0 ? 'transform 0.3s ease, opacity 0.3s ease' : 'none',
+      }}
+      onTouchStart={onTouchStart}
+      onTouchMove={onTouchMove}
+      onTouchEnd={onTouchEnd}
+    >
       {/* Subtle category-colored glow effect */}
       <div 
         className="absolute inset-0 blur-3xl opacity-30 animate-pulse"
@@ -27,6 +53,23 @@ export const GameCard = ({ card }: GameCardProps) => {
           transform: 'scale(1.15)',
         }}
       />
+      
+      {/* Swipe Direction Indicators */}
+      {swipeDirection === 'left' && (
+        <div className="absolute top-1/2 right-4 transform -translate-y-1/2 z-20 animate-pulse">
+          <div className="bg-red-500 text-white px-6 py-3 rounded-full font-bold text-xl shadow-lg">
+            ← TRINKEN
+          </div>
+        </div>
+      )}
+      
+      {swipeDirection === 'right' && (
+        <div className="absolute top-1/2 left-4 transform -translate-y-1/2 z-20 animate-pulse">
+          <div className="bg-green-500 text-white px-6 py-3 rounded-full font-bold text-xl shadow-lg">
+            ERLEDIGT →
+          </div>
+        </div>
+      )}
       
       <div 
         className="relative rounded-2xl overflow-hidden"
@@ -39,6 +82,7 @@ export const GameCard = ({ card }: GameCardProps) => {
           src={cardImageSrc} 
           alt={`${card.category} Card`}
           className="w-full h-auto relative z-10"
+          draggable={false}
         />
       </div>
     </div>

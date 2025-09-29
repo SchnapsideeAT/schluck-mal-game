@@ -6,6 +6,7 @@ import { shuffleDeck } from "@/utils/cardUtils";
 import { Card, Player } from "@/types/card";
 import { ArrowRight, Beer, Check, Home, RotateCcw, Trophy } from "lucide-react";
 import { toast } from "sonner";
+import { useSwipe } from "@/hooks/useSwipe";
 
 const Game = () => {
   const navigate = useNavigate();
@@ -69,6 +70,10 @@ const Game = () => {
 
   const handleAccept = () => {
     setCardAccepted(true);
+    // Haptic feedback
+    if ('vibrate' in navigator) {
+      navigator.vibrate(20);
+    }
     toast.success("Aufgabe angenommen!", {
       description: "Viel Erfolg!",
     });
@@ -127,6 +132,31 @@ const Game = () => {
       } 
     });
   };
+
+  // Swipe gesture handlers
+  const { swipeState, swipeHandlers, triggerHaptic } = useSwipe({
+    onSwipeLeft: () => {
+      // Swipe left = drink (skip task)
+      if (currentIndex >= 0 && !cardAccepted) {
+        handleDrink();
+      }
+    },
+    onSwipeRight: () => {
+      // Swipe right = complete task
+      if (currentIndex >= 0) {
+        if (cardAccepted) {
+          handleComplete();
+        } else {
+          // Auto-accept and complete for wildcards or when task can be instantly completed
+          if (currentCard?.category === "Wildcard" || currentCard?.drinks === 0) {
+            handleComplete();
+          } else {
+            handleAccept();
+          }
+        }
+      }
+    },
+  });
 
   const currentCard = deck[currentIndex];
   const cardsRemaining = deck.length - currentIndex - 1;
@@ -193,7 +223,26 @@ const Game = () => {
             </div>
           </div>
         ) : showCard && currentCard ? (
-          <GameCard card={currentCard} />
+          <div className="w-full max-w-md">
+            <GameCard 
+              card={currentCard}
+              swipeDistance={swipeState.swipeDistance}
+              swipeDirection={swipeState.swipeDirection}
+              {...swipeHandlers}
+            />
+            
+            {/* Swipe Instructions */}
+            <div className="mt-6 flex justify-between items-center px-4 text-sm text-muted-foreground">
+              <div className="flex items-center gap-2">
+                <span className="text-2xl">←</span>
+                <span>Swipe: Trinken</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span>Erledigt</span>
+                <span className="text-2xl">→</span>
+              </div>
+            </div>
+          </div>
         ) : null}
       </div>
 
