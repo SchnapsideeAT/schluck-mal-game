@@ -35,7 +35,7 @@ export const GameCard = ({
 
   return (
     <div 
-      className="card-flip w-full relative touch-none max-h-[75vh] sm:max-h-[70vh] md:max-h-[75vh] flex items-center justify-center"
+      className="card-flip w-full relative touch-none max-h-[85vh] sm:max-h-[75vh] md:max-h-[80vh] flex items-center justify-center"
       style={{
         transform: `translateX(${swipeDistance}px) rotate(${rotation}deg)`,
         opacity,
@@ -79,7 +79,7 @@ export const GameCard = ({
         <img 
           src={cardImageSrc} 
           alt={`${card.category} Card`}
-          className="w-full h-auto max-h-[75vh] sm:max-h-[70vh] md:max-h-[75vh] object-contain rounded-2xl block"
+          className="w-full h-auto max-h-[85vh] sm:max-h-[75vh] md:max-h-[80vh] object-contain rounded-2xl block"
           draggable={false}
         />
       </div>
