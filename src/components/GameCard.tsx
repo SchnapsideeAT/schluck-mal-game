@@ -19,26 +19,19 @@ export const GameCard = ({ card }: GameCardProps) => {
 
   return (
     <div className="card-flip w-full max-w-md mx-auto relative">
-      {/* Category-colored glow effect - multiple layers for stronger effect */}
+      {/* Subtle category-colored glow effect */}
       <div 
-        className="absolute inset-0 blur-3xl opacity-80"
+        className="absolute inset-0 blur-3xl opacity-30"
         style={{
-          background: `radial-gradient(circle at 50% 50%, hsl(${categoryColor} / 0.8), hsl(${categoryColor} / 0.4) 50%, transparent 70%)`,
-          transform: 'scale(1.2)',
-        }}
-      />
-      <div 
-        className="absolute inset-0 blur-2xl opacity-60"
-        style={{
-          background: `radial-gradient(circle at 50% 50%, hsl(${categoryColor} / 0.6), transparent 60%)`,
-          transform: 'scale(1.1)',
+          background: `radial-gradient(circle at 50% 50%, hsl(${categoryColor} / 0.4), transparent 70%)`,
+          transform: 'scale(1.15)',
         }}
       />
       
       <div 
         className="relative rounded-2xl overflow-hidden"
         style={{
-          boxShadow: `0 0 80px hsl(${categoryColor} / 0.6), 0 0 120px hsl(${categoryColor} / 0.4), 0 0 160px hsl(${categoryColor} / 0.2)`
+          boxShadow: `0 0 40px hsl(${categoryColor} / 0.25), 0 0 60px hsl(${categoryColor} / 0.15)`
         }}
       >
         {/* SVG Card Image */}
