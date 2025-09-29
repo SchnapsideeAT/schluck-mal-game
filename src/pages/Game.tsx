@@ -97,15 +97,7 @@ const Game = () => {
   };
   
   const showStatistics = () => {
-    const sortedPlayers = [...players].sort((a, b) => b.totalDrinks - a.totalDrinks);
-    const statsMessage = sortedPlayers.map((p, i) => 
-      `${i + 1}. ${p.avatar} ${p.name}: ${p.totalDrinks} Schlücke`
-    ).join('\n');
-    
-    toast.success("Spielstatistiken", {
-      description: statsMessage,
-      duration: 8000,
-    });
+    navigate("/statistics", { state: { players } });
   };
 
   const currentCard = deck[currentIndex];
