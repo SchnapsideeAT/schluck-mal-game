@@ -17,10 +17,10 @@ All colors MUST be HSL.
     --popover: 0 0% 12%;
     --popover-foreground: 0 0% 95%;
 
-    --primary: 45 100% 60%;
+    --primary: 48 91% 60%;
     --primary-foreground: 0 0% 10%;
     
-    --primary-glow: 45 100% 70%;
+    --primary-glow: 48 91% 70%;
 
     --secondary: 0 0% 22%;
     --secondary-foreground: 0 0% 95%;
@@ -28,7 +28,7 @@ All colors MUST be HSL.
     --muted: 0 0% 18%;
     --muted-foreground: 0 0% 55%;
 
-    --accent: 45 100% 60%;
+    --accent: 48 91% 60%;
     --accent-foreground: 0 0% 10%;
 
     --destructive: 0 85% 60%;
@@ -36,7 +36,7 @@ All colors MUST be HSL.
 
     --border: 0 0% 25%;
     --input: 0 0% 25%;
-    --ring: 45 100% 60%;
+    --ring: 48 91% 60%;
 
     --radius: 0.75rem;
 
@@ -48,14 +48,14 @@ All colors MUST be HSL.
     --category-wildcard: 352 78% 58%;
 
     /* Gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(45 100% 60%), hsl(45 100% 50%));
+    --gradient-primary: linear-gradient(135deg, hsl(48 91% 60%), hsl(48 91% 50%));
     --gradient-card: linear-gradient(180deg, hsl(0 0% 16%), hsl(0 0% 14%));
-    --gradient-glow: radial-gradient(circle at 50% 0%, hsl(45 100% 60% / 0.1), transparent 70%);
+    --gradient-glow: radial-gradient(circle at 50% 0%, hsl(48 91% 60% / 0.1), transparent 70%);
 
     /* Shadows */
     --shadow-card: 0 8px 32px hsl(0 0% 0% / 0.4);
-    --shadow-glow: 0 0 40px hsl(45 100% 60% / 0.2);
-    --shadow-button: 0 4px 20px hsl(45 100% 60% / 0.3);
+    --shadow-glow: 0 0 40px hsl(48 91% 60% / 0.2);
+    --shadow-button: 0 4px 20px hsl(48 91% 60% / 0.3);
 
     /* Animations */
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
