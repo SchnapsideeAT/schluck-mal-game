@@ -12,6 +12,7 @@ const Game = () => {
   const [deck, setDeck] = useState<Card[]>([]);
   const [currentIndex, setCurrentIndex] = useState(-1);
   const [showCard, setShowCard] = useState(false);
+  const [cardAccepted, setCardAccepted] = useState(false);
 
   useEffect(() => {
     // Initialize shuffled deck
@@ -28,17 +29,34 @@ const Game = () => {
     }
     
     setShowCard(false);
+    setCardAccepted(false);
     setTimeout(() => {
       setCurrentIndex(currentIndex + 1);
       setShowCard(true);
     }, 100);
   };
 
+  const getCategoryColor = (category: string) => {
+    const colors: Record<string, string> = {
+      Wahrheit: "category-truth",
+      Aufgabe: "category-task",
+      Gruppe: "category-group",
+      Duell: "category-duel",
+      Wildcard: "category-wildcard",
+    };
+    return colors[category] || "primary";
+  };
+
   const handleAccept = () => {
+    setCardAccepted(true);
     toast.success("Aufgabe angenommen!", {
-      description: "Weiter geht's mit der nächsten Karte!",
+      description: "Viel Erfolg!",
     });
-    setTimeout(drawCard, 1000);
+  };
+
+  const handleComplete = () => {
+    toast.success("Aufgabe erledigt!");
+    setTimeout(drawCard, 500);
   };
 
   const handleDrink = () => {
@@ -107,7 +125,7 @@ const Game = () => {
 
       {/* Action buttons */}
       <div className="fixed bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-background via-background to-transparent">
-        <div className="max-w-lg mx-auto space-y-3">
+        <div className="max-w-lg mx-auto">
           {currentIndex === -1 ? (
             <Button
               onClick={drawCard}
@@ -117,29 +135,42 @@ const Game = () => {
               Karte ziehen
               <ArrowRight className="w-6 h-6 ml-3" />
             </Button>
+          ) : cardAccepted ? (
+            <Button
+              onClick={handleComplete}
+              size="lg"
+              className={`w-full h-14 text-lg bg-${getCategoryColor(currentCard?.category || "")} hover:shadow-[var(--shadow-button)] transition-all duration-300`}
+              style={{
+                backgroundColor: `hsl(var(--${getCategoryColor(currentCard?.category || "")}))`,
+              }}
+            >
+              <Check className="w-5 h-5 mr-3" />
+              Erledigt
+            </Button>
           ) : (
-            <>
+            <div className="grid grid-cols-2 gap-3">
               <Button
                 onClick={handleAccept}
                 size="lg"
-                className="w-full h-14 text-lg bg-gradient-to-r from-category-group to-category-truth hover:shadow-[var(--shadow-button)] transition-all duration-300"
+                className={`h-14 text-lg bg-${getCategoryColor(currentCard?.category || "")} hover:shadow-[var(--shadow-button)] transition-all duration-300`}
+                style={{
+                  backgroundColor: `hsl(var(--${getCategoryColor(currentCard?.category || "")}))`,
+                }}
               >
-                <Check className="w-5 h-5 mr-3" />
+                <Check className="w-5 h-5 mr-2" />
                 Annehmen
               </Button>
               
-              {currentCard?.drinks > 0 && (
-                <Button
-                  onClick={handleDrink}
-                  variant="outline"
-                  size="lg"
-                  className="w-full h-14 text-lg border-primary/50 hover:bg-primary/10 hover:border-primary transition-all duration-300"
-                >
-                  <Beer className="w-5 h-5 mr-3" />
-                  Schluck mal! ({currentCard.drinks} Schluck{currentCard.drinks !== 1 ? "e" : ""})
-                </Button>
-              )}
-            </>
+              <Button
+                onClick={handleDrink}
+                variant="outline"
+                size="lg"
+                className="h-14 text-lg border-primary/50 hover:bg-primary/10 hover:border-primary transition-all duration-300"
+              >
+                <Beer className="w-5 h-5 mr-2" />
+                {currentCard?.drinks || 0} Schluck{currentCard?.drinks !== 1 ? "e" : ""}
+              </Button>
+            </div>
           )}
         </div>
       </div>
