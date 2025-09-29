@@ -45,14 +45,6 @@ export const GameCard = ({
       onTouchMove={onTouchMove}
       onTouchEnd={onTouchEnd}
     >
-      {/* Subtle category-colored glow effect */}
-      <div 
-        className="absolute inset-0 blur-2xl opacity-25 animate-pulse"
-        style={{
-          background: `radial-gradient(circle at 50% 50%, hsl(${categoryColor} / 0.5), transparent 60%)`,
-          transform: 'scale(1.1)',
-        }}
-      />
       
       {/* Swipe Direction Indicators */}
       {swipeDirection === 'left' && (
