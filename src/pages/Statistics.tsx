@@ -1,12 +1,21 @@
 import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Player } from "@/types/card";
+import { Player, Card } from "@/types/card";
 import { ArrowLeft, Trophy, Beer, Crown, Medal } from "lucide-react";
 
 const Statistics = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const players = (location.state as { players?: Player[] })?.players || [];
+  const state = location.state as { 
+    players?: Player[];
+    deck?: Card[];
+    currentIndex?: number;
+    currentPlayerIndex?: number;
+    showCard?: boolean;
+    cardAccepted?: boolean;
+  } | null;
+  
+  const players = state?.players || [];
 
   // Sort players by total drinks (descending)
   const sortedPlayers = [...players].sort((a, b) => b.totalDrinks - a.totalDrinks);
@@ -45,7 +54,7 @@ const Statistics = () => {
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <Button
-          onClick={() => navigate("/game", { state: { players } })}
+          onClick={() => navigate("/game", { state })}
           variant="ghost"
           size="icon"
           className="hover:bg-muted/50"
@@ -147,7 +156,7 @@ const Statistics = () => {
 
         {/* Back Button */}
         <Button
-          onClick={() => navigate("/game", { state: { players } })}
+          onClick={() => navigate("/game", { state })}
           size="lg"
           className="w-full h-14 text-lg bg-primary hover:shadow-[var(--shadow-button)] transition-all duration-300"
         >

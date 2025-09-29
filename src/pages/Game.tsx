@@ -10,22 +10,31 @@ import { toast } from "sonner";
 const Game = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const initialPlayers = (location.state as { players?: Player[] })?.players || [];
+  const state = location.state as { 
+    players?: Player[];
+    deck?: Card[];
+    currentIndex?: number;
+    currentPlayerIndex?: number;
+    showCard?: boolean;
+    cardAccepted?: boolean;
+  } | null;
   
-  const [deck, setDeck] = useState<Card[]>([]);
-  const [currentIndex, setCurrentIndex] = useState(-1);
-  const [showCard, setShowCard] = useState(false);
-  const [cardAccepted, setCardAccepted] = useState(false);
-  const [players, setPlayers] = useState<Player[]>(initialPlayers);
-  const [currentPlayerIndex, setCurrentPlayerIndex] = useState(0);
+  const [deck, setDeck] = useState<Card[]>(state?.deck || []);
+  const [currentIndex, setCurrentIndex] = useState(state?.currentIndex ?? -1);
+  const [showCard, setShowCard] = useState(state?.showCard ?? false);
+  const [cardAccepted, setCardAccepted] = useState(state?.cardAccepted ?? false);
+  const [players, setPlayers] = useState<Player[]>(state?.players || []);
+  const [currentPlayerIndex, setCurrentPlayerIndex] = useState(state?.currentPlayerIndex ?? 0);
 
   useEffect(() => {
-    // Initialize shuffled deck
-    const shuffled = shuffleDeck();
-    setDeck(shuffled);
+    // Only initialize if no existing state
+    if (!state?.deck || state.deck.length === 0) {
+      const shuffled = shuffleDeck();
+      setDeck(shuffled);
+    }
     
     // Redirect if no players
-    if (players.length === 0) {
+    if (!state?.players || state.players.length === 0) {
       toast.error("Keine Spieler gefunden! Zurück zum Setup.");
       navigate("/setup");
     }
@@ -76,9 +85,19 @@ const Game = () => {
 
   const handleDrink = () => {
     const drinks = deck[currentIndex]?.drinks || 0;
-    toast.info(`${drinks} Schluck${drinks !== 1 ? "e" : ""} getrunken!`, {
+    const currentPlayer = players[currentPlayerIndex];
+    
+    // Update player's drink count
+    const updatedPlayers = [...players];
+    updatedPlayers[currentPlayerIndex].totalDrinks += drinks;
+    setPlayers(updatedPlayers);
+    
+    toast.info(`${currentPlayer.avatar} ${currentPlayer.name}: ${drinks} Schlück${drinks !== 1 ? "e" : ""}!`, {
       icon: <Beer className="w-5 h-5" />,
     });
+    
+    // Move to next player
+    setCurrentPlayerIndex((currentPlayerIndex + 1) % players.length);
     setTimeout(drawCard, 1000);
   };
 
@@ -97,7 +116,16 @@ const Game = () => {
   };
   
   const showStatistics = () => {
-    navigate("/statistics", { state: { players } });
+    navigate("/statistics", { 
+      state: { 
+        players,
+        deck,
+        currentIndex,
+        currentPlayerIndex,
+        showCard,
+        cardAccepted
+      } 
+    });
   };
 
   const currentCard = deck[currentIndex];
