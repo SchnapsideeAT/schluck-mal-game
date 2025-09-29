@@ -1,11 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
-import WahrheitIcon from "@/assets/icons/Wahrheit.svg";
-import AufgabeIcon from "@/assets/icons/Aufgabe.svg";
-import GruppeIcon from "@/assets/icons/Gruppe.svg";
-import DuellIcon from "@/assets/icons/Duell.svg";
-import WildcardIcon from "@/assets/icons/Wildcard.svg";
+import { CategoryIcon } from "@/components/CategoryIcon";
 
 const Rules = () => {
   const navigate = useNavigate();
@@ -53,7 +49,7 @@ const Rules = () => {
             <div className="grid gap-4 md:grid-cols-2">
               <div className="bg-card border border-category-truth/50 rounded-xl p-5 space-y-2">
                 <div className="flex items-center gap-3 mb-2">
-                  <img src={WahrheitIcon} alt="Wahrheit" className="w-6 h-6" />
+                  <CategoryIcon category="Wahrheit" className="w-6 h-6" />
                   <h3 className="text-xl font-semibold text-category-truth">Wahrheit</h3>
                 </div>
                 <p className="text-sm text-muted-foreground">
@@ -63,7 +59,7 @@ const Rules = () => {
 
               <div className="bg-card border border-category-task/50 rounded-xl p-5 space-y-2">
                 <div className="flex items-center gap-3 mb-2">
-                  <img src={AufgabeIcon} alt="Aufgabe" className="w-6 h-6" />
+                  <CategoryIcon category="Aufgabe" className="w-6 h-6" />
                   <h3 className="text-xl font-semibold text-category-task">Aufgabe</h3>
                 </div>
                 <p className="text-sm text-muted-foreground">
@@ -73,7 +69,7 @@ const Rules = () => {
 
               <div className="bg-card border border-category-group/50 rounded-xl p-5 space-y-2">
                 <div className="flex items-center gap-3 mb-2">
-                  <img src={GruppeIcon} alt="Gruppe" className="w-6 h-6" />
+                  <CategoryIcon category="Gruppe" className="w-6 h-6" />
                   <h3 className="text-xl font-semibold text-category-group">Gruppe</h3>
                 </div>
                 <p className="text-sm text-muted-foreground">
@@ -83,7 +79,7 @@ const Rules = () => {
 
               <div className="bg-card border border-category-duel/50 rounded-xl p-5 space-y-2">
                 <div className="flex items-center gap-3 mb-2">
-                  <img src={DuellIcon} alt="Duell" className="w-6 h-6" />
+                  <CategoryIcon category="Duell" className="w-6 h-6" />
                   <h3 className="text-xl font-semibold text-category-duel">Duell</h3>
                 </div>
                 <p className="text-sm text-muted-foreground">
@@ -93,7 +89,7 @@ const Rules = () => {
 
               <div className="bg-card border border-category-wildcard/50 rounded-xl p-5 space-y-2 md:col-span-2">
                 <div className="flex items-center gap-3 mb-2">
-                  <img src={WildcardIcon} alt="Wildcard" className="w-6 h-6" />
+                  <CategoryIcon category="Wildcard" className="w-6 h-6" />
                   <h3 className="text-xl font-semibold text-category-wildcard">Wildcard</h3>
                 </div>
                 <p className="text-sm text-muted-foreground">

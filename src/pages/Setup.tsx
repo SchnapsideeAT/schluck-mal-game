@@ -1,11 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Users } from "lucide-react";
-import WahrheitIcon from "@/assets/icons/Wahrheit.svg";
-import AufgabeIcon from "@/assets/icons/Aufgabe.svg";
-import GruppeIcon from "@/assets/icons/Gruppe.svg";
-import DuellIcon from "@/assets/icons/Duell.svg";
-import WildcardIcon from "@/assets/icons/Wildcard.svg";
+import { CategoryIcon } from "@/components/CategoryIcon";
 
 const Setup = () => {
   const navigate = useNavigate();
@@ -55,24 +51,24 @@ const Setup = () => {
           <h3 className="text-lg font-semibold text-foreground mb-4">Kartenkategorien im Spiel:</h3>
           <div className="flex flex-wrap items-center justify-center gap-3">
             <div className="flex items-center gap-2 bg-muted/50 rounded-lg px-3 py-2">
-              <img src={WahrheitIcon} alt="Wahrheit" className="w-5 h-5" />
-              <span className="text-sm font-medium">Wahrheit</span>
+              <CategoryIcon category="Wahrheit" />
+              <span className="text-sm font-medium text-category-truth">Wahrheit</span>
             </div>
             <div className="flex items-center gap-2 bg-muted/50 rounded-lg px-3 py-2">
-              <img src={AufgabeIcon} alt="Aufgabe" className="w-5 h-5" />
-              <span className="text-sm font-medium">Aufgabe</span>
+              <CategoryIcon category="Aufgabe" />
+              <span className="text-sm font-medium text-category-task">Aufgabe</span>
             </div>
             <div className="flex items-center gap-2 bg-muted/50 rounded-lg px-3 py-2">
-              <img src={GruppeIcon} alt="Gruppe" className="w-5 h-5" />
-              <span className="text-sm font-medium">Gruppe</span>
+              <CategoryIcon category="Gruppe" />
+              <span className="text-sm font-medium text-category-group">Gruppe</span>
             </div>
             <div className="flex items-center gap-2 bg-muted/50 rounded-lg px-3 py-2">
-              <img src={DuellIcon} alt="Duell" className="w-5 h-5" />
-              <span className="text-sm font-medium">Duell</span>
+              <CategoryIcon category="Duell" />
+              <span className="text-sm font-medium text-category-duel">Duell</span>
             </div>
             <div className="flex items-center gap-2 bg-muted/50 rounded-lg px-3 py-2">
-              <img src={WildcardIcon} alt="Wildcard" className="w-5 h-5" />
-              <span className="text-sm font-medium">Wildcard</span>
+              <CategoryIcon category="Wildcard" />
+              <span className="text-sm font-medium text-category-wildcard">Wildcard</span>
             </div>
           </div>
         </div>
