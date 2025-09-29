@@ -63,18 +63,16 @@ export const GameCard = ({
         </div>
       )}
       
-      <div 
-        className="relative rounded-2xl overflow-hidden"
-        style={{
-          boxShadow: `0 0 30px hsl(${categoryColor} / 0.5), 0 0 60px hsl(${categoryColor} / 0.3)`,
-          animation: 'pulseGlow 2.5s ease-in-out infinite'
-        }}
-      >
+      <div className="relative inline-block">
         {/* SVG Card Image */}
         <img 
           src={cardImageSrc} 
           alt={`${card.category} Card`}
-          className="w-full h-auto max-h-[70vh] object-contain relative z-10"
+          className="w-full h-auto max-h-[70vh] object-contain relative z-10 rounded-2xl"
+          style={{
+            filter: `drop-shadow(0 0 25px hsl(${categoryColor} / 0.6)) drop-shadow(0 0 50px hsl(${categoryColor} / 0.4))`,
+            animation: 'pulseGlow 2.5s ease-in-out infinite'
+          }}
           draggable={false}
         />
       </div>
