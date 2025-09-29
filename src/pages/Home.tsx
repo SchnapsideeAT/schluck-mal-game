@@ -3,86 +3,49 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Play, BookOpen, Settings, AlertTriangle } from "lucide-react";
 import logo from "@/assets/logo.svg";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
-
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 const Home = () => {
   const navigate = useNavigate();
   const [showWarning, setShowWarning] = useState(false);
-
   const handleStartGame = () => {
     setShowWarning(true);
   };
-
   const confirmStart = () => {
     setShowWarning(false);
     navigate("/setup");
   };
-
-  return (
-    <>
+  return <>
       <div className="min-h-screen flex flex-col items-center justify-center p-6 relative overflow-hidden">
         
         <div className="slide-up max-w-lg w-full space-y-8 text-center relative z-10">
           {/* Background glow effect behind UI */}
-          <div 
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full -z-10 pointer-events-none" 
-            style={{
-              background: `radial-gradient(circle, hsl(48 91% 60% / 0.25) 0%, hsl(48 91% 60% / 0.12) 50%, transparent 70%)`,
-              filter: 'blur(60px)',
-              animation: 'pulseGlowBg 3s ease-in-out infinite'
-            }}
-          />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full -z-10 pointer-events-none" style={{
+          background: `radial-gradient(circle, hsl(48 91% 60% / 0.25) 0%, hsl(48 91% 60% / 0.12) 50%, transparent 70%)`,
+          filter: 'blur(60px)',
+          animation: 'pulseGlowBg 3s ease-in-out infinite'
+        }} />
           
           {/* Logo/Title */}
           <div className="space-y-6">
             <div className="flex justify-center">
-              <img 
-                src={logo} 
-                alt="Schluck mal!" 
-                className="w-full max-w-md h-auto"
-              />
+              <img src={logo} alt="Schluck mal!" className="w-full max-w-md h-auto" />
             </div>
-            <p className="text-xl text-primary">
-              Das einzige Trinkspiel das du brauchen wirst.
-            </p>
+            
           </div>
 
           {/* Menu buttons */}
           <div className="space-y-4">
-            <Button
-              onClick={handleStartGame}
-              size="lg"
-              className="w-full h-16 text-lg bg-primary hover:shadow-[var(--shadow-button)] transition-all duration-300 hover:scale-105"
-            >
+            <Button onClick={handleStartGame} size="lg" className="w-full h-16 text-lg bg-primary hover:shadow-[var(--shadow-button)] transition-all duration-300 hover:scale-105">
               <Play className="w-6 h-6 mr-3" />
               Spiel starten
             </Button>
 
-            <Button
-              onClick={() => navigate("/rules")}
-              variant="outline"
-              size="lg"
-              className="w-full h-14 text-lg border-primary/50 hover:bg-primary/10 hover:border-primary transition-all duration-300"
-            >
+            <Button onClick={() => navigate("/rules")} variant="outline" size="lg" className="w-full h-14 text-lg border-primary/50 hover:bg-primary/10 hover:border-primary transition-all duration-300">
               <BookOpen className="w-5 h-5 mr-3" />
               Regeln
             </Button>
 
-            <Button
-              onClick={() => navigate("/settings")}
-              variant="outline"
-              size="lg"
-              className="w-full h-14 text-lg border-secondary/50 hover:bg-secondary/10 hover:border-secondary transition-all duration-300"
-            >
+            <Button onClick={() => navigate("/settings")} variant="outline" size="lg" className="w-full h-14 text-lg border-secondary/50 hover:bg-secondary/10 hover:border-secondary transition-all duration-300">
               <Settings className="w-5 h-5 mr-3" />
               Einstellungen
             </Button>
@@ -117,17 +80,12 @@ const Home = () => {
             <AlertDialogCancel className="border-destructive/50 hover:bg-destructive/10">
               Abbrechen
             </AlertDialogCancel>
-            <AlertDialogAction 
-              onClick={confirmStart}
-              className="bg-primary hover:shadow-[var(--shadow-button)]"
-            >
+            <AlertDialogAction onClick={confirmStart} className="bg-primary hover:shadow-[var(--shadow-button)]">
               Ich bin 18+ und bestätige
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-    </>
-  );
+    </>;
 };
-
 export default Home;
