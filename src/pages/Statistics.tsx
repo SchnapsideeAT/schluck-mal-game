@@ -126,9 +126,6 @@ const Statistics = () => {
                         <Beer className="w-6 h-6" />
                         {player.totalDrinks}
                       </div>
-                      <p className="text-xs text-muted-foreground">
-                        {percentage.toFixed(0)}%
-                      </p>
                     </div>
                   </div>
                 </div>
