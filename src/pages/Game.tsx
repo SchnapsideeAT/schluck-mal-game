@@ -130,7 +130,7 @@ const Game = () => {
             <Button
               onClick={drawCard}
               size="lg"
-              className="w-full h-16 text-lg bg-gradient-to-r from-primary to-secondary hover:shadow-[var(--shadow-button)] transition-all duration-300"
+              className="w-full h-16 text-lg bg-gradient-to-r from-primary to-secondary hover:shadow-[var(--shadow-button)] transition-all duration-300 animate-fade-in"
             >
               Karte ziehen
               <ArrowRight className="w-6 h-6 ml-3" />
@@ -139,7 +139,7 @@ const Game = () => {
             <Button
               onClick={handleComplete}
               size="lg"
-              className={`w-full h-14 text-lg bg-${getCategoryColor(currentCard?.category || "")} hover:shadow-[var(--shadow-button)] transition-all duration-300`}
+              className="w-full h-14 text-lg hover:shadow-[var(--shadow-button)] transition-all duration-300 animate-fade-in animate-scale-in"
               style={{
                 backgroundColor: `hsl(var(--${getCategoryColor(currentCard?.category || "")}))`,
               }}
@@ -148,11 +148,11 @@ const Game = () => {
               Erledigt
             </Button>
           ) : (
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-2 gap-3 animate-fade-in">
               <Button
                 onClick={handleAccept}
                 size="lg"
-                className={`h-14 text-lg bg-${getCategoryColor(currentCard?.category || "")} hover:shadow-[var(--shadow-button)] transition-all duration-300`}
+                className="h-14 text-lg hover:shadow-[var(--shadow-button)] transition-all duration-300"
                 style={{
                   backgroundColor: `hsl(var(--${getCategoryColor(currentCard?.category || "")}))`,
                 }}
@@ -168,7 +168,7 @@ const Game = () => {
                 className="h-14 text-lg border-primary/50 hover:bg-primary/10 hover:border-primary transition-all duration-300"
               >
                 <Beer className="w-5 h-5 mr-2" />
-                {currentCard?.drinks || 0} Schluck{currentCard?.drinks !== 1 ? "e" : ""}
+                {currentCard?.drinks || 0} Schlück{currentCard?.drinks !== 1 ? "e" : ""}
               </Button>
             </div>
           )}
