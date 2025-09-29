@@ -29,17 +29,26 @@ export const GameCard = ({
   const cardImageSrc = getCardImage(card.category, card.id);
   const categoryColor = categoryColorMap[card.category];
 
+  // Check if card is exiting
+  const isExiting = (card as any).exiting;
+  const exitDirection = isExiting;
+
   // Calculate rotation and opacity based on swipe
-  const rotation = swipeDistance * 0.1; // Rotate based on swipe distance
+  const rotation = swipeDistance * 0.1;
   const opacity = Math.max(0.5, 1 - Math.abs(swipeDistance) / 300);
+
+  // Exit animation transform
+  const exitTransform = isExiting 
+    ? `translateX(${exitDirection === 'left' ? '-150vw' : '150vw'}) rotate(${exitDirection === 'left' ? '-30deg' : '30deg'})`
+    : `translateX(${swipeDistance}px) rotate(${rotation}deg)`;
 
   return (
     <div 
-      className="card-flip w-full relative touch-none max-h-[85vh] sm:max-h-[75vh] md:max-h-[80vh] flex items-center justify-center"
+      className={`card-flip w-full relative touch-none max-h-[85vh] sm:max-h-[75vh] md:max-h-[80vh] flex items-center justify-center ${!isExiting ? 'animate-enter' : ''}`}
       style={{
-        transform: `translateX(${swipeDistance}px) rotate(${rotation}deg)`,
-        opacity,
-        transition: swipeDistance === 0 ? 'transform 0.3s ease, opacity 0.3s ease' : 'none',
+        transform: exitTransform,
+        opacity: isExiting ? 0 : opacity,
+        transition: isExiting ? 'transform 0.5s ease-in, opacity 0.5s ease-in' : (swipeDistance === 0 ? 'transform 0.3s ease, opacity 0.3s ease' : 'none'),
       }}
       onTouchStart={onTouchStart}
       onTouchMove={onTouchMove}
@@ -47,7 +56,7 @@ export const GameCard = ({
     >
       
       {/* Left Side Glow (Red - Drink) */}
-      {swipeDirection === 'left' && (
+      {swipeDirection === 'left' && !isExiting && (
         <div 
           className="fixed left-0 top-0 bottom-0 w-8 pointer-events-none z-50"
           style={{
@@ -59,7 +68,7 @@ export const GameCard = ({
       )}
       
       {/* Right Side Glow (Green - Complete) */}
-      {swipeDirection === 'right' && (
+      {swipeDirection === 'right' && !isExiting && (
         <div 
           className="fixed right-0 top-0 bottom-0 w-8 pointer-events-none z-50"
           style={{
@@ -68,23 +77,6 @@ export const GameCard = ({
             animation: 'pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite'
           }}
         />
-      )}
-      
-      {/* Swipe Direction Indicators */}
-      {swipeDirection === 'left' && (
-        <div className="absolute top-1/2 right-4 transform -translate-y-1/2 z-20 animate-pulse">
-          <div className="bg-red-500 text-white px-6 py-3 rounded-full font-bold text-xl shadow-lg">
-            ← TRINKEN
-          </div>
-        </div>
-      )}
-      
-      {swipeDirection === 'right' && (
-        <div className="absolute top-1/2 left-4 transform -translate-y-1/2 z-20 animate-pulse">
-          <div className="bg-green-500 text-white px-6 py-3 rounded-full font-bold text-xl shadow-lg">
-            ERLEDIGT →
-          </div>
-        </div>
       )}
       
       {/* Card Container with Glow */}

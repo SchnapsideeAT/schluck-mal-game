@@ -40,17 +40,27 @@ const Game = () => {
     }
   }, []);
 
-  const drawCard = () => {
+  const drawCard = (exitDirection?: 'left' | 'right') => {
     if (currentIndex >= deck.length - 1) {
       return;
     }
     
-    setShowCard(false);
+    // Mark current card as exiting if direction provided
+    if (exitDirection && currentCard) {
+      setDeck(prev => {
+        const updated = [...prev];
+        updated[currentIndex] = { ...updated[currentIndex], exiting: exitDirection } as any;
+        return updated;
+      });
+    }
+    
     setCardAccepted(false);
+    
+    // Load new card while old one is animating out
     setTimeout(() => {
       setCurrentIndex(currentIndex + 1);
       setShowCard(true);
-    }, 100);
+    }, 200);
   };
 
   const getCategoryColor = (category: string) => {
@@ -73,9 +83,16 @@ const Game = () => {
   };
 
   const handleComplete = () => {
+    const currentPlayer = players[currentPlayerIndex];
+    
+    // Update player stats
+    const updatedPlayers = [...players];
+    updatedPlayers[currentPlayerIndex].totalDrinks = (updatedPlayers[currentPlayerIndex].totalDrinks || 0);
+    setPlayers(updatedPlayers);
+    
     // Move to next player
     setCurrentPlayerIndex((currentPlayerIndex + 1) % players.length);
-    setTimeout(drawCard, 500);
+    drawCard('right');
   };
 
   const handleDrink = () => {
@@ -89,7 +106,7 @@ const Game = () => {
     
     // Move to next player
     setCurrentPlayerIndex((currentPlayerIndex + 1) % players.length);
-    setTimeout(drawCard, 1000);
+    drawCard('left');
   };
 
   const handleRestart = () => {
@@ -121,23 +138,14 @@ const Game = () => {
   const { swipeState, swipeHandlers, triggerHaptic } = useSwipe({
     onSwipeLeft: () => {
       // Swipe left = drink (skip task)
-      if (currentIndex >= 0 && !cardAccepted) {
+      if (currentIndex >= 0) {
         handleDrink();
       }
     },
     onSwipeRight: () => {
-      // Swipe right = complete task
+      // Swipe right = complete task (simplified - one swipe)
       if (currentIndex >= 0) {
-        if (cardAccepted) {
-          handleComplete();
-        } else {
-          // Auto-accept and complete for wildcards or when task can be instantly completed
-          if (currentCard?.category === "Wildcard" || currentCard?.drinks === 0) {
-            handleComplete();
-          } else {
-            handleAccept();
-          }
-        }
+        handleComplete();
       }
     },
   });
@@ -221,7 +229,7 @@ const Game = () => {
         <div className="max-w-lg mx-auto">
           {currentIndex === -1 ? (
             <Button
-              onClick={drawCard}
+              onClick={() => drawCard()}
               size="lg"
               className="w-full h-16 text-lg bg-primary hover:shadow-[var(--shadow-button)] transition-all duration-300 animate-fade-in"
             >
