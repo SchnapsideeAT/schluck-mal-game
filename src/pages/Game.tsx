@@ -66,10 +66,8 @@ const Game = () => {
   // Redirect if no players
   useEffect(() => {
     if (!state?.players || state.players.length === 0) {
-      const savedState = loadGameState();
-      if (!savedState || savedState.players.length === 0) {
-        navigate("/setup");
-      }
+      navigate("/setup");
+      return;
     }
     
     // Initialize deck if not provided

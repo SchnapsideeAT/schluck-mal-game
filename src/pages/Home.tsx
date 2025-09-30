@@ -1,14 +1,40 @@
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Play, BookOpen, Settings } from "lucide-react";
+import { Play, BookOpen, Settings, RotateCcw } from "lucide-react";
 import logo from "@/assets/logo.svg";
 import { playSound } from "@/utils/sounds";
+import { loadGameState } from "@/utils/localStorage";
+import { useState, useEffect } from "react";
+
 const Home = () => {
   const navigate = useNavigate();
+  const [hasSavedGame, setHasSavedGame] = useState(false);
   
+  useEffect(() => {
+    const savedState = loadGameState();
+    setHasSavedGame(savedState !== null);
+  }, []);
+
   const handleStartGame = () => {
     playSound('success', true);
     navigate("/setup");
+  };
+
+  const handleLoadGame = () => {
+    const savedState = loadGameState();
+    if (savedState) {
+      playSound('success', true);
+      navigate("/game", { 
+        state: {
+          players: savedState.players,
+          deck: savedState.deck,
+          currentIndex: savedState.currentIndex,
+          currentPlayerIndex: savedState.currentPlayerIndex,
+          showCard: savedState.showCard,
+          cardAccepted: savedState.cardAccepted
+        }
+      });
+    }
   };
   
   return (
@@ -26,6 +52,13 @@ const Home = () => {
 
           {/* Menu buttons */}
           <div className="space-y-4">
+            {hasSavedGame && (
+              <Button onClick={handleLoadGame} size="lg" className="w-full h-16 text-lg bg-accent hover:shadow-[var(--shadow-button)] transition-all duration-300 hover:scale-105">
+                <RotateCcw className="w-6 h-6 mr-3" />
+                Spiel laden
+              </Button>
+            )}
+            
             <Button onClick={handleStartGame} size="lg" className="w-full h-16 text-lg bg-primary hover:shadow-[var(--shadow-button)] transition-all duration-300 hover:scale-105">
               <Play className="w-6 h-6 mr-3" />
               Spiel starten
