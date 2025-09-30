@@ -7,7 +7,6 @@ import { PlayerSetup } from "@/components/PlayerSetup";
 import { Tutorial } from "@/components/Tutorial";
 import { Player } from "@/types/card";
 import { toast } from "sonner";
-import { saveLastPlayers } from "@/utils/localStorage";
 import { playSound } from "@/utils/sounds";
 
 const Setup = () => {
@@ -70,7 +69,6 @@ const Setup = () => {
               return;
             }
             playSound('success', true);
-            saveLastPlayers(players);
             navigate("/game", { state: { players } });
           }}
           size="lg"

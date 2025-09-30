@@ -1,10 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Player } from "@/types/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Plus } from "lucide-react";
 import { toast } from "sonner";
-import { loadLastPlayers, saveLastPlayers } from "@/utils/localStorage";
 import { playSound } from "@/utils/sounds";
 
 interface PlayerSetupProps {
@@ -20,36 +19,6 @@ export const PlayerSetup = ({
 }: PlayerSetupProps) => {
   const [newPlayerName, setNewPlayerName] = useState("");
   const [selectedAvatar, setSelectedAvatar] = useState(AVATAR_OPTIONS[0]);
-  const [showLastPlayers, setShowLastPlayers] = useState(false);
-
-  // Load last players on mount
-  useEffect(() => {
-    if (players.length === 0) {
-      const lastPlayers = loadLastPlayers();
-      if (lastPlayers && lastPlayers.length > 0) {
-        setShowLastPlayers(true);
-        toast("Letzte Spieler gefunden", {
-          description: "Tippe auf 'Laden' um sie zu verwenden.",
-          duration: 5000,
-          action: {
-            label: "Laden",
-            onClick: () => {
-              onPlayersChange(lastPlayers.map(p => ({
-                ...p,
-                id: Date.now().toString() + Math.random(),
-                totalDrinks: 0
-              })));
-              toast.success("Spieler geladen!");
-            }
-          },
-          cancel: {
-            label: "Ignorieren",
-            onClick: () => {}
-          }
-        });
-      }
-    }
-  }, []);
 
   const addPlayer = () => {
     if (!newPlayerName.trim()) {
@@ -70,8 +39,6 @@ export const PlayerSetup = ({
     setNewPlayerName("");
     setSelectedAvatar(AVATAR_OPTIONS[Math.floor(Math.random() * AVATAR_OPTIONS.length)]);
     
-    // Save to localStorage
-    saveLastPlayers([...players, newPlayer]);
     toast.success(`${newPlayerName} hinzugefügt!`);
     playSound('success', true);
   };
@@ -79,7 +46,6 @@ export const PlayerSetup = ({
   const removePlayer = (playerId: string) => {
     const updatedPlayers = players.filter(p => p.id !== playerId);
     onPlayersChange(updatedPlayers);
-    saveLastPlayers(updatedPlayers);
     toast.info("Spieler entfernt");
   };
 

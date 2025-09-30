@@ -64,49 +64,19 @@ const Game = () => {
     return () => clearInterval(interval);
   }, [players, deck, currentIndex, currentPlayerIndex, showCard, cardAccepted]);
 
-  // Load saved game state on mount
+  // Redirect if no players
   useEffect(() => {
-    // Try to load saved state if no state was passed
-    if (!state?.deck || state.deck.length === 0) {
-      const savedState = loadGameState();
-      
-      if (savedState && savedState.players.length > 0) {
-        // Ask user if they want to continue
-        toast("Gespeichertes Spiel gefunden", {
-          description: "Möchtest du das letzte Spiel fortsetzen?",
-          action: {
-            label: "Fortsetzen",
-            onClick: () => {
-              setPlayers(savedState.players);
-              setDeck(savedState.deck);
-              setCurrentIndex(savedState.currentIndex);
-              setCurrentPlayerIndex(savedState.currentPlayerIndex);
-              setShowCard(savedState.showCard);
-              setCardAccepted(savedState.cardAccepted);
-              toast.success("Spiel wiederhergestellt!");
-            }
-          },
-          cancel: {
-            label: "Neu starten",
-            onClick: () => {
-              clearGameState();
-              const shuffled = shuffleDeck();
-              setDeck(shuffled);
-            }
-          }
-        });
-      } else {
-        const shuffled = shuffleDeck();
-        setDeck(shuffled);
-      }
-    }
-    
-    // Redirect if no players
     if (!state?.players || state.players.length === 0) {
       const savedState = loadGameState();
       if (!savedState || savedState.players.length === 0) {
         navigate("/setup");
       }
+    }
+    
+    // Initialize deck if not provided
+    if (!state?.deck || state.deck.length === 0) {
+      const shuffled = shuffleDeck();
+      setDeck(shuffled);
     }
   }, []);
 
