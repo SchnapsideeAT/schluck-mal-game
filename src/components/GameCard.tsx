@@ -52,7 +52,7 @@ export const GameCard = ({
 
   return (
     <div 
-      className={`card-flip w-full max-w-md mx-auto relative touch-none flex items-center justify-center ${!isExiting ? 'animate-enter' : ''}`}
+      className={`card-flip w-full relative touch-none flex items-center justify-center ${!isExiting ? 'animate-enter' : ''}`}
       style={{
         transform: exitTransform,
         opacity: isExiting ? 0 : opacity,
