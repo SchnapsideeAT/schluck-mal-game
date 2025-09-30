@@ -239,69 +239,6 @@ const Game = () => {
         ) : null}
       </div>
 
-      {/* Action buttons */}
-      <div className="fixed bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-background via-background to-transparent">
-        <div className="max-w-lg mx-auto">
-          {currentIndex === -1 ? (
-            <Button
-              onClick={() => drawCard()}
-              size="lg"
-              className="w-full h-16 text-lg bg-primary hover:shadow-[var(--shadow-button)] transition-all duration-300 animate-fade-in"
-            >
-              Karte ziehen
-              <ArrowRight className="w-6 h-6 ml-3" />
-            </Button>
-          ) : cardAccepted ? (
-            <Button
-              onClick={handleComplete}
-              size="lg"
-              className="w-full h-14 text-lg hover:shadow-[var(--shadow-button)] transition-all duration-300 animate-fade-in animate-scale-in"
-              style={{
-                backgroundColor: `hsl(var(--${getCategoryColor(currentCard?.category || "")}))`,
-              }}
-            >
-              <Check className="w-5 h-5 mr-3" />
-              Erledigt
-            </Button>
-          ) : currentCard?.category === "Wildcard" || currentCard?.drinks === 0 ? (
-            <Button
-              onClick={handleComplete}
-              size="lg"
-              className="w-full h-14 text-lg hover:shadow-[var(--shadow-button)] transition-all duration-300 animate-fade-in"
-              style={{
-                backgroundColor: `hsl(var(--${getCategoryColor(currentCard?.category || "")}))`,
-              }}
-            >
-              <Check className="w-5 h-5 mr-3" />
-              Annehmen
-            </Button>
-          ) : (
-            <div className="grid grid-cols-2 gap-3 animate-fade-in">
-              <Button
-                onClick={handleAccept}
-                size="lg"
-                className="h-14 text-lg hover:shadow-[var(--shadow-button)] transition-all duration-300"
-                style={{
-                  backgroundColor: `hsl(var(--${getCategoryColor(currentCard?.category || "")}))`,
-                }}
-              >
-                <Check className="w-5 h-5 mr-2" />
-                Annehmen
-              </Button>
-              
-              <Button
-                onClick={handleDrink}
-                variant="outline"
-                size="lg"
-                className="h-14 text-lg border-primary/50 hover:bg-primary/10 hover:border-primary transition-all duration-300"
-              >
-                <Beer className="w-5 h-5 mr-2" />
-                {currentCard?.drinks || 0} Schlück{currentCard?.drinks !== 1 ? "e" : ""}
-              </Button>
-            </div>
-          )}
-        </div>
-      </div>
     </div>
   );
 };
