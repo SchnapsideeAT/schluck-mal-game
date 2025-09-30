@@ -302,7 +302,7 @@ const Game = () => {
           onClick={handleExitGame}
           variant="ghost"
           size="icon"
-          className="hover:bg-muted/50"
+          className="hover:bg-primary hover:text-primary-foreground"
         >
           <Home className="w-14 h-14" />
         </Button>
@@ -311,7 +311,7 @@ const Game = () => {
           onClick={navigateToSettings}
           variant="ghost"
           size="icon"
-          className="hover:bg-muted/50"
+          className="hover:bg-primary hover:text-primary-foreground"
         >
           <Settings className="w-14 h-14" />
         </Button>
