@@ -103,11 +103,11 @@ export const PlayerSetup = ({ players, onPlayersChange }: PlayerSetupProps) => {
           <h3 className="text-lg font-semibold text-foreground">
             Spieler ({players.length})
           </h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 justify-items-center">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
             {players.map((player) => (
               <div
                 key={player.id}
-                className="flex items-center justify-between bg-muted/50 rounded-lg p-3 group hover:bg-muted transition-colors"
+                className="flex items-center justify-between bg-muted/50 rounded-lg p-3 group hover:bg-muted transition-colors w-full"
               >
                 <div className="flex items-center gap-3">
                   <span className="text-2xl">{player.avatar}</span>
