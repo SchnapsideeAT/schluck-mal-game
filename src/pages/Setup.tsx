@@ -63,7 +63,7 @@ const Setup = () => {
         {/* Start button */}
         <Button
           onClick={() => {
-            if (players.length === 0) {
+            if (players.length < 2) {
               playSound('error', true);
               return;
             }
