@@ -27,56 +27,43 @@ const Rules = () => {
           <section className="bg-card border border-border/50 rounded-2xl p-6 space-y-4">
             <h2 className="text-2xl font-bold text-primary">Grundregeln</h2>
             <div className="space-y-4 text-muted-foreground">
-              
               <div className="space-y-3">
                 <div>
                   <strong className="text-foreground">Karte ziehen</strong>
-                  <ul className="ml-4 mt-1 space-y-1">
-                    <li>• Der jüngste Spieler beginnt und zieht eine Karte vom Stapel.</li>
-                  </ul>
+                  <p className="mt-1">• Der jüngste Spieler beginnt und zieht eine Karte vom Stapel.</p>
                 </div>
 
                 <div>
                   <strong className="text-foreground">Vorlesen</strong>
-                  <ul className="ml-4 mt-1 space-y-2">
-                    <li>• Der Spieler liest die Karte laut vor und entscheidet sich für eine der folgenden Optionen:</li>
-                    
-                    <li className="ml-4">
+                  <p className="mt-1">• Der Spieler liest die Karte laut vor und entscheidet sich für eine der folgenden Optionen:</p>
+                  
+                  <div className="mt-2 space-y-2">
+                    <div>
                       <strong className="text-foreground">Option 1 – Aufgabe annehmen</strong>
-                      <ul className="ml-4 mt-1 space-y-1">
-                        <li>• Der Spieler führt die auf der Karte beschriebene Aufgabe aus.</li>
-                        <li>• Schafft der Spieler die Aufgabe nicht, muss er die angegebene Anzahl an Schlücken trinken.</li>
-                      </ul>
-                    </li>
+                      <p className="mt-1">• Der Spieler führt die auf der Karte beschriebene Aufgabe aus.</p>
+                      <p>• Schafft der Spieler die Aufgabe nicht, muss er die angegebene Anzahl an Schlücken trinken.</p>
+                    </div>
 
-                    <li className="ml-4">
+                    <div>
                       <strong className="text-foreground">Option 2 – Aufgabe verweigern</strong>
-                      <ul className="ml-4 mt-1 space-y-1">
-                        <li>• Der Spieler lehnt die Aufgabe ab und trinkt die angegebene Anzahl an Schlücken.</li>
-                      </ul>
-                    </li>
+                      <p className="mt-1">• Der Spieler lehnt die Aufgabe ab und trinkt die angegebene Anzahl an Schlücken.</p>
+                    </div>
 
-                    <li className="ml-4">
+                    <div>
                       <strong className="text-foreground">Option 3 – Wild Card (falls gezogen):</strong>
-                      <ul className="ml-4 mt-1 space-y-1">
-                        <li>• Wild Cards dürfen behalten und später zu einem passenden Zeitpunkt ausgespielt werden.</li>
-                      </ul>
-                    </li>
-                  </ul>
+                      <p className="mt-1">• Wild Cards dürfen behalten und später zu einem passenden Zeitpunkt ausgespielt werden.</p>
+                    </div>
+                  </div>
                 </div>
 
                 <div>
                   <strong className="text-foreground">Weitergeben</strong>
-                  <ul className="ml-4 mt-1 space-y-1">
-                    <li>• Nach Abschluss der Aufgabe oder des Trinkens zieht der nächste Spieler eine Karte.</li>
-                  </ul>
+                  <p className="mt-1">• Nach Abschluss der Aufgabe oder des Trinkens zieht der nächste Spieler eine Karte.</p>
                 </div>
 
                 <div>
                   <strong className="text-foreground">Ende des Spiels</strong>
-                  <ul className="ml-4 mt-1 space-y-1">
-                    <li>• Das Spiel endet, wenn alle Karten gespielt wurden oder die Gruppe keine Lust mehr hat.</li>
-                  </ul>
+                  <p className="mt-1">• Das Spiel endet, wenn alle Karten gespielt wurden oder die Gruppe keine Lust mehr hat.</p>
                 </div>
               </div>
             </div>
