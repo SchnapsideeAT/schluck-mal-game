@@ -90,21 +90,9 @@ export const GameCard = ({
       )}
       
       {/* Card Container with Glow */}
-      <div className="relative inline-block scale-125 md:scale-150">
-        {/* Glow Effect Background */}
-        {showGlow && (
-          <div 
-            className="absolute inset-0 rounded-2xl"
-            style={{
-              boxShadow: `0 0 15px 2px hsl(${categoryColor} / 0.2), 0 0 30px 5px hsl(${categoryColor} / 0.1)`,
-              animation: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-              zIndex: -1
-            }}
-          />
-        )}
-        
+      <div className="relative inline-block">
         {/* SVG Card Image */}
-        <img 
+        <img
           src={cardImageSrc} 
           alt={`${card.category} Card ${card.id}`}
           className="w-full h-auto max-h-[85vh] sm:max-h-[75vh] md:max-h-[80vh] object-contain rounded-2xl block"
