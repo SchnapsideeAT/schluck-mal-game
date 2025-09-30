@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Plus } from "lucide-react";
 import { toast } from "sonner";
 import { loadLastPlayers, saveLastPlayers } from "@/utils/localStorage";
+import { playSound } from "@/utils/sounds";
 
 interface PlayerSetupProps {
   players: Player[];
@@ -67,6 +68,7 @@ export const PlayerSetup = ({
     // Save to localStorage
     saveLastPlayers([...players, newPlayer]);
     toast.success(`${newPlayerName} hinzugefügt!`);
+    playSound('success', true);
   };
 
   const removePlayer = (playerId: string) => {
@@ -74,6 +76,7 @@ export const PlayerSetup = ({
     onPlayersChange(updatedPlayers);
     saveLastPlayers(updatedPlayers);
     toast.info("Spieler entfernt");
+    playSound('buttonClick', true);
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {

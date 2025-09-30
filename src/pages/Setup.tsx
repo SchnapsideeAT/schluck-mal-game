@@ -8,6 +8,7 @@ import { Tutorial } from "@/components/Tutorial";
 import { Player } from "@/types/card";
 import { toast } from "sonner";
 import { saveLastPlayers } from "@/utils/localStorage";
+import { playSound } from "@/utils/sounds";
 
 const Setup = () => {
   const navigate = useNavigate();
@@ -65,8 +66,10 @@ const Setup = () => {
           onClick={() => {
             if (players.length === 0) {
               toast.error("Füge mindestens einen Spieler hinzu!");
+              playSound('error', true);
               return;
             }
+            playSound('success', true);
             saveLastPlayers(players);
             navigate("/game", { state: { players } });
           }}
@@ -78,7 +81,7 @@ const Setup = () => {
         </Button>
 
         <Button
-          onClick={() => navigate("/")}
+          onClick={() => { playSound('buttonClick', true); navigate("/"); }}
           variant="ghost"
           className="w-full hover:bg-muted/50 hover:text-primary"
         >

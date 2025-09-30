@@ -10,6 +10,7 @@ import { toast } from "sonner";
 import { useSwipe } from "@/hooks/useSwipe";
 import { saveGameState, loadGameState, clearGameState } from "@/utils/localStorage";
 import { triggerHaptic } from "@/utils/haptics";
+import { playSound } from "@/utils/sounds";
 import { 
   AlertDialog, 
   AlertDialogAction, 
@@ -129,8 +130,9 @@ const Game = () => {
     setTimeout(() => {
       setCurrentIndex(currentIndex + 1);
       setShowCard(true);
+      playSound('cardDraw', soundEnabled);
     }, 200);
-  }, [currentIndex, deck]);
+  }, [currentIndex, deck, soundEnabled]);
 
   const getCategoryColor = useCallback((category: string) => {
     const colors: Record<string, string> = {
@@ -159,10 +161,15 @@ const Game = () => {
     updatedPlayers[currentPlayerIndex].totalDrinks = (updatedPlayers[currentPlayerIndex].totalDrinks || 0);
     setPlayers(updatedPlayers);
     
+    // Sound effect
+    playSound('swipeRight', soundEnabled);
+    playSound('success', soundEnabled);
+    
     // Move to next player
     setCurrentPlayerIndex((currentPlayerIndex + 1) % players.length);
+    playSound('playerChange', soundEnabled);
     drawCard('right');
-  }, [currentPlayerIndex, players, drawCard]);
+  }, [currentPlayerIndex, players, drawCard, soundEnabled]);
 
   const handleDrink = useCallback(() => {
     const drinks = deck[currentIndex]?.drinks || 0;
@@ -173,10 +180,15 @@ const Game = () => {
     updatedPlayers[currentPlayerIndex].totalDrinks += drinks;
     setPlayers(updatedPlayers);
     
+    // Sound effects
+    playSound('swipeLeft', soundEnabled);
+    playSound('drink', soundEnabled);
+    
     // Move to next player
     setCurrentPlayerIndex((currentPlayerIndex + 1) % players.length);
+    playSound('playerChange', soundEnabled);
     drawCard('left');
-  }, [currentIndex, deck, currentPlayerIndex, players, drawCard]);
+  }, [currentIndex, deck, currentPlayerIndex, players, drawCard, soundEnabled]);
 
   const handleRestart = useCallback(() => {
     setShowRestartDialog(true);
@@ -200,7 +212,9 @@ const Game = () => {
     if (hapticEnabled) {
       triggerHaptic('medium');
     }
-  }, [players, hapticEnabled]);
+    
+    playSound('success', soundEnabled);
+  }, [players, hapticEnabled, soundEnabled]);
   
   const showStatistics = useCallback(() => {
     navigate("/statistics", { 
