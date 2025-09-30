@@ -12,6 +12,7 @@ export interface GameState {
 
 const GAME_STATE_KEY = 'schluck-mal-game-state';
 const LAST_PLAYERS_KEY = 'schluck-mal-last-players';
+const LAST_CATEGORIES_KEY = 'schluck-mal-last-categories';
 const TUTORIAL_SHOWN_KEY = 'schluck-mal-tutorial-shown';
 
 // Game State
@@ -70,6 +71,25 @@ export const loadLastPlayers = (): any[] | null => {
     return saved ? JSON.parse(saved) : null;
   } catch (error) {
     console.error('Failed to load last players:', error);
+    return null;
+  }
+};
+
+// Last Categories
+export const saveLastCategories = (categories: any[]): void => {
+  try {
+    localStorage.setItem(LAST_CATEGORIES_KEY, JSON.stringify(categories));
+  } catch (error) {
+    console.error('Failed to save last categories:', error);
+  }
+};
+
+export const loadLastCategories = (): any[] | null => {
+  try {
+    const saved = localStorage.getItem(LAST_CATEGORIES_KEY);
+    return saved ? JSON.parse(saved) : null;
+  } catch (error) {
+    console.error('Failed to load last categories:', error);
     return null;
   }
 };

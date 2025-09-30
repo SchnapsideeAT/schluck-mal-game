@@ -38,6 +38,7 @@ const Game = () => {
   const [showCard, setShowCard] = useState(state?.showCard ?? false);
   const [cardAccepted, setCardAccepted] = useState(state?.cardAccepted ?? false);
   const [players, setPlayers] = useState<Player[]>(state?.players || []);
+  const [selectedCategories, setSelectedCategories] = useState<CardCategory[]>(state?.selectedCategories || []);
   const [currentPlayerIndex, setCurrentPlayerIndex] = useState(state?.currentPlayerIndex ?? 0);
   const [soundEnabled, setSoundEnabled] = useState(true);
   const [hapticEnabled, setHapticEnabled] = useState(true);
@@ -86,6 +87,28 @@ const Game = () => {
       setDeck(shuffled);
     }
   }, []);
+
+  // Check if game is finished
+  useEffect(() => {
+    if (currentIndex >= 0 && currentIndex >= deck.length - 1 && showCard) {
+      // Game is finished, navigate to statistics
+      const timer = setTimeout(() => {
+        navigate("/statistics", { 
+          state: { 
+            players,
+            deck,
+            currentIndex,
+            currentPlayerIndex,
+            showCard,
+            cardAccepted,
+            gameFinished: true,
+            selectedCategories
+          } 
+        });
+      }, 1000); // Small delay to show the last card
+      return () => clearTimeout(timer);
+    }
+  }, [currentIndex, deck.length, showCard, navigate, players, currentPlayerIndex, cardAccepted, selectedCategories]);
 
   const drawCard = useCallback((exitDirection?: 'left' | 'right') => {
     if (currentIndex >= deck.length - 1) {
@@ -174,10 +197,11 @@ const Game = () => {
         currentIndex,
         currentPlayerIndex,
         showCard,
-        cardAccepted
+        cardAccepted,
+        selectedCategories
       } 
     });
-  }, [navigate, players, deck, currentIndex, currentPlayerIndex, showCard, cardAccepted]);
+  }, [navigate, players, deck, currentIndex, currentPlayerIndex, showCard, cardAccepted, selectedCategories]);
 
   const navigateToSettings = () => {
     // Save before navigating

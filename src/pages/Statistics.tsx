@@ -1,9 +1,10 @@
 import { useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Player, Card } from "@/types/card";
-import { ArrowLeft, Trophy, Beer, Crown, Medal } from "lucide-react";
+import { Player, Card, CardCategory } from "@/types/card";
+import { ArrowLeft, Trophy, Beer, Crown, Medal, RotateCcw } from "lucide-react";
 import { Confetti } from "@/components/Confetti";
+import { saveLastPlayers, saveLastCategories, clearGameState } from "@/utils/localStorage";
 
 const Statistics = () => {
   const navigate = useNavigate();
@@ -15,9 +16,12 @@ const Statistics = () => {
     currentPlayerIndex?: number;
     showCard?: boolean;
     cardAccepted?: boolean;
+    gameFinished?: boolean;
+    selectedCategories?: CardCategory[];
   } | null;
   
   const players = state?.players || [];
+  const gameFinished = state?.gameFinished || false;
 
   // Trigger confetti on mount if there are players
   useEffect(() => {
@@ -60,6 +64,22 @@ const Statistics = () => {
       default:
         return "bg-muted/50 border-border/30";
     }
+  };
+
+  const handleNewGame = () => {
+    // Save players and categories for the next round
+    if (state?.players) {
+      saveLastPlayers(state.players);
+    }
+    if (state?.selectedCategories) {
+      saveLastCategories(state.selectedCategories);
+    }
+    
+    // Clear the game state
+    clearGameState();
+    
+    // Navigate to setup
+    navigate("/setup");
   };
 
   return (
@@ -167,15 +187,30 @@ const Statistics = () => {
           </div>
         )}
 
-        {/* Back Button */}
-        <Button
-          onClick={() => navigate("/game", { state })}
-          size="lg"
-          className="w-full h-14 text-lg bg-primary hover:shadow-[var(--shadow-button)] transition-all duration-300"
-        >
-          <ArrowLeft className="w-5 h-5 mr-2" />
-          Zurück zum Spiel
-        </Button>
+        {/* Action Buttons */}
+        <div className="space-y-3">
+          {gameFinished && (
+            <Button
+              onClick={handleNewGame}
+              size="lg"
+              className="w-full h-14 text-lg bg-primary hover:shadow-[var(--shadow-button)] transition-all duration-300"
+            >
+              <RotateCcw className="w-5 h-5 mr-2" />
+              Neues Spiel starten
+            </Button>
+          )}
+          
+          {!gameFinished && (
+            <Button
+              onClick={() => navigate("/game", { state })}
+              size="lg"
+              className="w-full h-14 text-lg bg-primary hover:shadow-[var(--shadow-button)] transition-all duration-300"
+            >
+              <ArrowLeft className="w-5 h-5 mr-2" />
+              Zurück zum Spiel
+            </Button>
+          )}
+        </div>
       </div>
     </div>
   );

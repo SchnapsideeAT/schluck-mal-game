@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Users } from "lucide-react";
@@ -7,6 +7,7 @@ import { Tutorial } from "@/components/Tutorial";
 import { CategorySelector } from "@/components/CategorySelector";
 import { Player, CardCategory } from "@/types/card";
 import { playSound } from "@/utils/sounds";
+import { loadLastPlayers, loadLastCategories } from "@/utils/localStorage";
 
 const Setup = () => {
   const navigate = useNavigate();
@@ -18,6 +19,20 @@ const Setup = () => {
     "Duell",
     "Wildcard"
   ]);
+
+  // Load last players and categories on mount
+  useEffect(() => {
+    const lastPlayers = loadLastPlayers();
+    const lastCategories = loadLastCategories();
+    
+    if (lastPlayers && lastPlayers.length > 0) {
+      setPlayers(lastPlayers);
+    }
+    
+    if (lastCategories && lastCategories.length > 0) {
+      setSelectedCategories(lastCategories);
+    }
+  }, []);
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-6">
