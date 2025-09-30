@@ -1,20 +1,50 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Player } from "@/types/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Plus } from "lucide-react";
 import { toast } from "sonner";
+import { loadLastPlayers, saveLastPlayers } from "@/utils/localStorage";
+
 interface PlayerSetupProps {
   players: Player[];
   onPlayersChange: (players: Player[]) => void;
 }
+
 const AVATAR_OPTIONS = ["😎", "🤠", "🥳", "😈", "🤡", "👻", "🐶", "🐱", "🦊", "🐼", "🐨", "🦁", "🍺", "🍻", "🍷", "🥂", "🍾", "🍹"];
+
 export const PlayerSetup = ({
   players,
   onPlayersChange
 }: PlayerSetupProps) => {
   const [newPlayerName, setNewPlayerName] = useState("");
   const [selectedAvatar, setSelectedAvatar] = useState(AVATAR_OPTIONS[0]);
+  const [showLastPlayers, setShowLastPlayers] = useState(false);
+
+  // Load last players on mount
+  useEffect(() => {
+    if (players.length === 0) {
+      const lastPlayers = loadLastPlayers();
+      if (lastPlayers && lastPlayers.length > 0) {
+        setShowLastPlayers(true);
+        toast("Letzte Spieler gefunden", {
+          description: "Möchtest du die gleichen Spieler verwenden?",
+          action: {
+            label: "Laden",
+            onClick: () => {
+              onPlayersChange(lastPlayers.map(p => ({
+                ...p,
+                id: Date.now().toString() + Math.random(),
+                totalDrinks: 0
+              })));
+              toast.success("Spieler geladen!");
+            }
+          }
+        });
+      }
+    }
+  }, []);
+
   const addPlayer = () => {
     if (!newPlayerName.trim()) {
       return;
@@ -22,24 +52,36 @@ export const PlayerSetup = ({
     if (players.length >= 10) {
       return;
     }
+
     const newPlayer: Player = {
       id: Date.now().toString(),
       name: newPlayerName.trim(),
       avatar: selectedAvatar,
       totalDrinks: 0
     };
+
     onPlayersChange([...players, newPlayer]);
     setNewPlayerName("");
     setSelectedAvatar(AVATAR_OPTIONS[Math.floor(Math.random() * AVATAR_OPTIONS.length)]);
+    
+    // Save to localStorage
+    saveLastPlayers([...players, newPlayer]);
+    toast.success(`${newPlayerName} hinzugefügt!`);
   };
+
   const removePlayer = (playerId: string) => {
-    onPlayersChange(players.filter(p => p.id !== playerId));
+    const updatedPlayers = players.filter(p => p.id !== playerId);
+    onPlayersChange(updatedPlayers);
+    saveLastPlayers(updatedPlayers);
+    toast.info("Spieler entfernt");
   };
+
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === "Enter") {
       addPlayer();
     }
   };
+
   return <div className="space-y-8">
       {/* Add Player Section */}
       <div className="bg-card border border-border/50 rounded-2xl p-6 space-y-4">
@@ -70,9 +112,9 @@ export const PlayerSetup = ({
             Spieler ({players.length})
           </h3>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-            {players.map(player => <div key={player.id} onClick={() => removePlayer(player.id)} className="flex items-center gap-3 bg-muted/50 rounded-lg p-3 hover:bg-destructive/20 hover:border-destructive/50 border border-transparent transition-all cursor-pointer">
-                <span className="text-2xl">{player.avatar}</span>
-                <span className="font-medium text-foreground">{player.name}</span>
+            {players.map(player => <div key={player.id} onClick={() => removePlayer(player.id)} className="flex items-center gap-3 bg-muted/50 rounded-lg p-3 hover:bg-destructive/20 hover:border-destructive/50 border border-transparent transition-all cursor-pointer w-full">
+                <span className="text-2xl shrink-0">{player.avatar}</span>
+                <span className="font-medium text-foreground truncate">{player.name}</span>
               </div>)}
           </div>
         </div>}

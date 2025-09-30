@@ -1,7 +1,9 @@
+import { useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Player, Card } from "@/types/card";
 import { ArrowLeft, Trophy, Beer, Crown, Medal } from "lucide-react";
+import { Confetti } from "@/components/Confetti";
 
 const Statistics = () => {
   const navigate = useNavigate();
@@ -16,6 +18,17 @@ const Statistics = () => {
   } | null;
   
   const players = state?.players || [];
+
+  // Trigger confetti on mount if there are players
+  useEffect(() => {
+    // Small delay for page transition
+    const timer = setTimeout(() => {
+      if (players.length > 0) {
+        // Confetti will auto-trigger via component
+      }
+    }, 300);
+    return () => clearTimeout(timer);
+  }, []);
 
   // Sort players by total drinks (descending)
   const sortedPlayers = [...players].sort((a, b) => b.totalDrinks - a.totalDrinks);
@@ -51,6 +64,9 @@ const Statistics = () => {
 
   return (
     <div className="min-h-screen flex flex-col p-6">
+      {/* Confetti Effect */}
+      <Confetti trigger={sortedPlayers.length > 0 && sortedPlayers[0].totalDrinks > 0} />
+      
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <Button

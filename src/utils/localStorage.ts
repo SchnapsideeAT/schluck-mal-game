@@ -1,0 +1,100 @@
+// LocalStorage utilities for game state persistence
+
+export interface GameState {
+  players: any[];
+  deck: any[];
+  currentIndex: number;
+  currentPlayerIndex: number;
+  showCard: boolean;
+  cardAccepted: boolean;
+  timestamp: number;
+}
+
+const GAME_STATE_KEY = 'schluck-mal-game-state';
+const LAST_PLAYERS_KEY = 'schluck-mal-last-players';
+const TUTORIAL_SHOWN_KEY = 'schluck-mal-tutorial-shown';
+
+// Game State
+export const saveGameState = (state: GameState): void => {
+  try {
+    localStorage.setItem(GAME_STATE_KEY, JSON.stringify({
+      ...state,
+      timestamp: Date.now()
+    }));
+  } catch (error) {
+    console.error('Failed to save game state:', error);
+  }
+};
+
+export const loadGameState = (): GameState | null => {
+  try {
+    const saved = localStorage.getItem(GAME_STATE_KEY);
+    if (!saved) return null;
+    
+    const state = JSON.parse(saved) as GameState;
+    
+    // Check if state is less than 24 hours old
+    const hoursSinceLastSave = (Date.now() - state.timestamp) / (1000 * 60 * 60);
+    if (hoursSinceLastSave > 24) {
+      clearGameState();
+      return null;
+    }
+    
+    return state;
+  } catch (error) {
+    console.error('Failed to load game state:', error);
+    return null;
+  }
+};
+
+export const clearGameState = (): void => {
+  try {
+    localStorage.removeItem(GAME_STATE_KEY);
+  } catch (error) {
+    console.error('Failed to clear game state:', error);
+  }
+};
+
+// Last Players
+export const saveLastPlayers = (players: any[]): void => {
+  try {
+    localStorage.setItem(LAST_PLAYERS_KEY, JSON.stringify(players));
+  } catch (error) {
+    console.error('Failed to save last players:', error);
+  }
+};
+
+export const loadLastPlayers = (): any[] | null => {
+  try {
+    const saved = localStorage.getItem(LAST_PLAYERS_KEY);
+    return saved ? JSON.parse(saved) : null;
+  } catch (error) {
+    console.error('Failed to load last players:', error);
+    return null;
+  }
+};
+
+// Tutorial
+export const hasShownTutorial = (): boolean => {
+  try {
+    return localStorage.getItem(TUTORIAL_SHOWN_KEY) === 'true';
+  } catch (error) {
+    return false;
+  }
+};
+
+export const markTutorialAsShown = (): void => {
+  try {
+    localStorage.setItem(TUTORIAL_SHOWN_KEY, 'true');
+  } catch (error) {
+    console.error('Failed to mark tutorial as shown:', error);
+  }
+};
+
+export const resetTutorial = (): void => {
+  try {
+    localStorage.removeItem(TUTORIAL_SHOWN_KEY);
+  } catch (error) {
+    console.error('Failed to reset tutorial:', error);
+  }
+};

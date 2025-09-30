@@ -4,8 +4,10 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, Users } from "lucide-react";
 import { CategoryIcon } from "@/components/CategoryIcon";
 import { PlayerSetup } from "@/components/PlayerSetup";
+import { Tutorial } from "@/components/Tutorial";
 import { Player } from "@/types/card";
 import { toast } from "sonner";
+import { saveLastPlayers } from "@/utils/localStorage";
 
 const Setup = () => {
   const navigate = useNavigate();
@@ -13,6 +15,9 @@ const Setup = () => {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-6">
+      {/* Tutorial Component */}
+      <Tutorial />
+      
       <div className="slide-up max-w-lg w-full space-y-8 text-center">
         <div className="space-y-4">
           <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-primary/20 border border-primary/50 mb-4">
@@ -62,6 +67,7 @@ const Setup = () => {
               toast.error("Füge mindestens einen Spieler hinzu!");
               return;
             }
+            saveLastPlayers(players);
             navigate("/game", { state: { players } });
           }}
           size="lg"

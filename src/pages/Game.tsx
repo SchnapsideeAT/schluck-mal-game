@@ -2,11 +2,24 @@ import { useState, useEffect, useMemo, useCallback } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { GameCard } from "@/components/GameCard";
+import { GameSettings } from "@/components/GameSettings";
 import { shuffleDeck } from "@/utils/cardUtils";
 import { Card, Player } from "@/types/card";
 import { ArrowRight, Beer, Check, Home, RotateCcw, Trophy } from "lucide-react";
 import { toast } from "sonner";
 import { useSwipe } from "@/hooks/useSwipe";
+import { saveGameState, loadGameState, clearGameState } from "@/utils/localStorage";
+import { triggerHaptic } from "@/utils/haptics";
+import { 
+  AlertDialog, 
+  AlertDialogAction, 
+  AlertDialogCancel, 
+  AlertDialogContent, 
+  AlertDialogDescription, 
+  AlertDialogFooter, 
+  AlertDialogHeader, 
+  AlertDialogTitle 
+} from "@/components/ui/alert-dialog";
 
 const Game = () => {
   const navigate = useNavigate();
@@ -26,17 +39,73 @@ const Game = () => {
   const [cardAccepted, setCardAccepted] = useState(state?.cardAccepted ?? false);
   const [players, setPlayers] = useState<Player[]>(state?.players || []);
   const [currentPlayerIndex, setCurrentPlayerIndex] = useState(state?.currentPlayerIndex ?? 0);
+  const [soundEnabled, setSoundEnabled] = useState(true);
+  const [hapticEnabled, setHapticEnabled] = useState(true);
+  const [showExitDialog, setShowExitDialog] = useState(false);
+  const [showRestartDialog, setShowRestartDialog] = useState(false);
 
+  // Auto-save game state every 10 seconds
   useEffect(() => {
-    // Only initialize if no existing state
+    const interval = setInterval(() => {
+      if (players.length > 0 && deck.length > 0 && currentIndex >= 0) {
+        saveGameState({
+          players,
+          deck,
+          currentIndex,
+          currentPlayerIndex,
+          showCard,
+          cardAccepted,
+          timestamp: Date.now()
+        });
+      }
+    }, 10000); // Save every 10 seconds
+
+    return () => clearInterval(interval);
+  }, [players, deck, currentIndex, currentPlayerIndex, showCard, cardAccepted]);
+
+  // Load saved game state on mount
+  useEffect(() => {
+    // Try to load saved state if no state was passed
     if (!state?.deck || state.deck.length === 0) {
-      const shuffled = shuffleDeck();
-      setDeck(shuffled);
+      const savedState = loadGameState();
+      
+      if (savedState && savedState.players.length > 0) {
+        // Ask user if they want to continue
+        toast("Gespeichertes Spiel gefunden", {
+          description: "Möchtest du das letzte Spiel fortsetzen?",
+          action: {
+            label: "Fortsetzen",
+            onClick: () => {
+              setPlayers(savedState.players);
+              setDeck(savedState.deck);
+              setCurrentIndex(savedState.currentIndex);
+              setCurrentPlayerIndex(savedState.currentPlayerIndex);
+              setShowCard(savedState.showCard);
+              setCardAccepted(savedState.cardAccepted);
+              toast.success("Spiel wiederhergestellt!");
+            }
+          },
+          cancel: {
+            label: "Neu starten",
+            onClick: () => {
+              clearGameState();
+              const shuffled = shuffleDeck();
+              setDeck(shuffled);
+            }
+          }
+        });
+      } else {
+        const shuffled = shuffleDeck();
+        setDeck(shuffled);
+      }
     }
     
     // Redirect if no players
     if (!state?.players || state.players.length === 0) {
-      navigate("/setup");
+      const savedState = loadGameState();
+      if (!savedState || savedState.players.length === 0) {
+        navigate("/setup");
+      }
     }
   }, []);
 
@@ -77,10 +146,10 @@ const Game = () => {
   const handleAccept = useCallback(() => {
     setCardAccepted(true);
     // Haptic feedback
-    if ('vibrate' in navigator) {
-      navigator.vibrate(20);
+    if (hapticEnabled) {
+      triggerHaptic('light');
     }
-  }, []);
+  }, [hapticEnabled]);
 
   const handleComplete = useCallback(() => {
     const currentPlayer = players[currentPlayerIndex];
@@ -110,6 +179,10 @@ const Game = () => {
   }, [currentIndex, deck, currentPlayerIndex, players, drawCard]);
 
   const handleRestart = useCallback(() => {
+    setShowRestartDialog(true);
+  }, []);
+
+  const confirmRestart = useCallback(() => {
     const shuffled = shuffleDeck();
     setDeck(shuffled);
     setCurrentIndex(-1);
@@ -119,7 +192,15 @@ const Game = () => {
     // Reset drink counts
     const resetPlayers = players.map(p => ({ ...p, totalDrinks: 0 }));
     setPlayers(resetPlayers);
-  }, [players]);
+    
+    clearGameState();
+    setShowRestartDialog(false);
+    toast.success("Spiel neu gestartet!");
+    
+    if (hapticEnabled) {
+      triggerHaptic('medium');
+    }
+  }, [players, hapticEnabled]);
   
   const showStatistics = useCallback(() => {
     navigate("/statistics", { 
@@ -135,7 +216,7 @@ const Game = () => {
   }, [navigate, players, deck, currentIndex, currentPlayerIndex, showCard, cardAccepted]);
 
   // Swipe gesture handlers
-  const { swipeState, swipeHandlers, triggerHaptic } = useSwipe({
+  const { swipeState, swipeHandlers } = useSwipe({
     onSwipeLeft: () => {
       // Swipe left = drink (skip task)
       if (currentIndex >= 0) {
@@ -143,7 +224,7 @@ const Game = () => {
       }
     },
     onSwipeRight: () => {
-      // Swipe right = complete task (simplified - one swipe)
+      // Swipe right = complete task
       if (currentIndex >= 0) {
         handleComplete();
       }
@@ -153,12 +234,50 @@ const Game = () => {
   const currentCard = useMemo(() => deck[currentIndex], [deck, currentIndex]);
   const cardsRemaining = useMemo(() => deck.length - currentIndex - 1, [deck.length, currentIndex]);
 
+  // Prefetch next card image
+  useEffect(() => {
+    if (currentIndex < deck.length - 1) {
+      const nextCard = deck[currentIndex + 1];
+      if (nextCard) {
+        const img = new Image();
+        img.src = getCardImage(nextCard.category, nextCard.id);
+      }
+    }
+  }, [currentIndex, deck]);
+
+  const handleExitGame = () => {
+    setShowExitDialog(true);
+  };
+
+  const confirmExit = () => {
+    // Save before leaving
+    saveGameState({
+      players,
+      deck,
+      currentIndex,
+      currentPlayerIndex,
+      showCard,
+      cardAccepted,
+      timestamp: Date.now()
+    });
+    navigate("/");
+  };
+
+  // Import helper
+  const getCardImage = (category: string, id: number) => {
+    try {
+      return new URL(`../assets/cards/${category}-${String(id).padStart(2, '0')}.svg`, import.meta.url).href;
+    } catch {
+      return '';
+    }
+  };
+
   return (
     <div className="min-h-screen flex flex-col px-6 pt-8 pb-12 relative">
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <Button
-          onClick={() => navigate("/")}
+          onClick={handleExitGame}
           variant="ghost"
           size="icon"
           className="hover:bg-muted/50"
@@ -167,6 +286,12 @@ const Game = () => {
         </Button>
         
         <div className="flex gap-2">
+          <GameSettings
+            soundEnabled={soundEnabled}
+            onSoundToggle={setSoundEnabled}
+            hapticEnabled={hapticEnabled}
+            onHapticToggle={setHapticEnabled}
+          />
           <Button
             onClick={showStatistics}
             variant="ghost"
@@ -238,6 +363,42 @@ const Game = () => {
           </div>
         </div>
       )}
+
+      {/* Exit Confirmation Dialog */}
+      <AlertDialog open={showExitDialog} onOpenChange={setShowExitDialog}>
+        <AlertDialogContent className="bg-card border-primary/30">
+          <AlertDialogHeader>
+            <AlertDialogTitle>Spiel verlassen?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Dein Fortschritt wird automatisch gespeichert und du kannst später weiterspielen.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Abbrechen</AlertDialogCancel>
+            <AlertDialogAction onClick={confirmExit} className="bg-primary">
+              Speichern & Verlassen
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      {/* Restart Confirmation Dialog */}
+      <AlertDialog open={showRestartDialog} onOpenChange={setShowRestartDialog}>
+        <AlertDialogContent className="bg-card border-primary/30">
+          <AlertDialogHeader>
+            <AlertDialogTitle>Spiel neu starten?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Alle aktuellen Fortschritte und Statistiken gehen verloren. Diese Aktion kann nicht rückgängig gemacht werden.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Abbrechen</AlertDialogCancel>
+            <AlertDialogAction onClick={confirmRestart} className="bg-destructive hover:bg-destructive/90">
+              Neu starten
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
 
     </div>
   );

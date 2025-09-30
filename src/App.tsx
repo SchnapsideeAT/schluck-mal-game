@@ -20,9 +20,19 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <Toaster />
-      <Sonner />
+      <Sonner 
+        position="top-center"
+        toastOptions={{
+          style: {
+            background: 'hsl(0 0% 14%)',
+            border: '1px solid hsl(48 91% 60% / 0.3)',
+            color: 'hsl(0 0% 95%)',
+          },
+        }}
+      />
       <BrowserRouter>
-        <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="animate-pulse text-primary">Laden...</div></div>}>
+        <div className="page-transition">
+          <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="animate-pulse text-primary">Laden...</div></div>}>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/setup" element={<Setup />} />
@@ -34,6 +44,7 @@ const App = () => (
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Suspense>
+        </div>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
