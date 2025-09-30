@@ -128,13 +128,11 @@ const Game = () => {
     setCardAccepted(false);
     
     // Load new card while old one is animating out
-    // Mobile: 300ms animation, Desktop: 400ms animation
-    const animationDelay = window.innerWidth < 768 ? 300 : 400;
     setTimeout(() => {
       setCurrentIndex(currentIndex + 1);
       setShowCard(true);
       playSound('cardDraw', soundEnabled);
-    }, animationDelay);
+    }, 200);
   }, [currentIndex, deck, soundEnabled]);
 
   const getCategoryColor = useCallback((category: string) => {
@@ -302,18 +300,18 @@ const Game = () => {
           onClick={handleExitGame}
           variant="ghost"
           size="icon"
-          className="group hover:bg-muted/50"
+          className="hover:bg-muted/50"
         >
-          <Home className="w-28 h-28 group-hover:text-primary transition-colors" />
+          <Home className="w-7 h-7" />
         </Button>
         
         <Button
           onClick={navigateToSettings}
           variant="ghost"
           size="icon"
-          className="group hover:bg-muted/50"
+          className="hover:bg-muted/50"
         >
-          <Settings className="w-28 h-28 group-hover:text-primary transition-colors" />
+          <Settings className="w-7 h-7" />
         </Button>
       </div>
 
@@ -339,7 +337,7 @@ const Game = () => {
             <div className="w-full mx-auto relative">
               {/* Card back (behind) - only show if there are more cards */}
               {currentIndex < deck.length - 1 && (
-                <div className="card-back-offset">
+                <div className="absolute inset-0 z-0" style={{ transform: 'translate(8px, 8px)' }}>
                   <CardBack />
                 </div>
               )}

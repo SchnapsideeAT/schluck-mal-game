@@ -53,7 +53,7 @@ export const GameCard = memo(({
 
   return (
     <div 
-      className={`w-full relative touch-none flex items-center justify-center ${!isExiting ? 'card-enter' : ''}`}
+      className={`card-flip w-full relative touch-none flex items-center justify-center ${!isExiting ? 'animate-enter' : ''}`}
       style={{
         transform: exitTransform,
         opacity: isExiting ? 0 : opacity,
@@ -92,7 +92,12 @@ export const GameCard = memo(({
       )}
       
       {/* Card Container with Glow */}
-      <div className="card-scale-container relative">
+      <div 
+        className="relative inline-block"
+        style={{ 
+          transform: window.innerWidth < 768 ? 'scale(1.6)' : 'scale(1)' 
+        }}
+      >
         {/* Glow Effect Background */}
         {showGlow && (
           <div 
