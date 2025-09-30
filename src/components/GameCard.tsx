@@ -3,7 +3,8 @@ import { Card, CardCategory } from "@/types/card";
 import { getCardImage } from "@/utils/cardImageMapper";
 
 interface GameCardProps {
-  card: Card;
+  card?: Card;
+  isCardBack?: boolean;
   swipeDistance?: number;
   swipeDirection?: 'left' | 'right' | 'up' | null;
   onTouchStart?: (e: React.TouchEvent) => void;
@@ -25,6 +26,7 @@ const categoryColorMap: Record<CardCategory, string> = {
 
 export const GameCard = memo(({ 
   card, 
+  isCardBack = false,
   swipeDistance = 0, 
   swipeDirection,
   onTouchStart,
@@ -35,11 +37,13 @@ export const GameCard = memo(({
   onMouseUp,
   showGlow = true
 }: GameCardProps) => {
-  const cardImageSrc = getCardImage(card.category, card.id);
-  const categoryColor = categoryColorMap[card.category];
+  const cardImageSrc = isCardBack 
+    ? new URL('../assets/cards/card-back.svg', import.meta.url).href
+    : card ? getCardImage(card.category, card.id) : '';
+  const categoryColor = card ? categoryColorMap[card.category] : "0 0% 50%";
 
   // Check if card is exiting
-  const isExiting = (card as any).exiting;
+  const isExiting = card ? (card as any).exiting : false;
   const exitDirection = isExiting;
 
   // Calculate rotation and opacity based on swipe
@@ -113,12 +117,14 @@ export const GameCard = memo(({
         {/* SVG Card Image */}
         <img 
           src={cardImageSrc} 
-          alt={`${card.category} Card ${card.id}`}
+          alt={isCardBack ? 'Card Back' : card ? `${card.category} Card ${card.id}` : 'Card'}
           className="w-full h-auto object-contain rounded-2xl block"
           draggable={false}
           onError={(e) => {
-            console.error(`Failed to load ${card.category} card ${card.id}:`, cardImageSrc);
-            console.error('Image element:', e.currentTarget);
+            if (!isCardBack && card) {
+              console.error(`Failed to load ${card.category} card ${card.id}:`, cardImageSrc);
+              console.error('Image element:', e.currentTarget);
+            }
           }}
         />
       </div>

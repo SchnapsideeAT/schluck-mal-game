@@ -309,11 +309,11 @@ const Game = () => {
             </div>
           ) : showCard && currentCard ? (
             <div className="w-full mx-auto relative">
-              {/* Next card (behind) */}
+              {/* Card back (behind) */}
               {currentIndex < deck.length - 1 && (
                 <div className="absolute inset-0 z-0">
                   <GameCard 
-                    card={deck[currentIndex + 1]}
+                    isCardBack={true}
                     swipeDistance={0}
                     swipeDirection={null}
                     showGlow={false}
