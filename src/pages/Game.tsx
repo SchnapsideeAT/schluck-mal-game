@@ -189,7 +189,16 @@ const Game = () => {
       cardAccepted,
       timestamp: Date.now()
     });
-    navigate("/settings");
+    navigate("/settings", {
+      state: {
+        players,
+        deck,
+        currentIndex,
+        currentPlayerIndex,
+        showCard,
+        cardAccepted
+      }
+    });
   };
 
   // Swipe gesture handlers for card (left/right only)
