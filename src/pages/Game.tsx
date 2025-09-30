@@ -237,7 +237,7 @@ const Game = () => {
       {/* Current Player Display - Bottom */}
       {players.length > 0 && currentIndex >= 0 && (
         <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-20">
-          <div className="inline-flex items-center gap-3 bg-gradient-to-r from-primary/20 to-primary/10 border-2 border-primary/40 rounded-md px-6 py-3 shadow-lg shadow-primary/20">
+          <div className="inline-flex items-center gap-3 bg-gradient-to-r from-primary/20 to-primary/10 border-2 border-primary/40 rounded-md px-6 py-3">
             <span className="text-3xl">{players[currentPlayerIndex].avatar}</span>
             <span className="text-xl font-bold text-primary">{players[currentPlayerIndex].name}</span>
           </div>
