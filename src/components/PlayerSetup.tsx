@@ -10,7 +10,7 @@ interface PlayerSetupProps {
   onPlayersChange: (players: Player[]) => void;
 }
 
-const AVATAR_OPTIONS = ["😎", "🤠", "🥳", "😈", "🤡", "👻", "🐶", "🐱", "🦊", "🐼", "🐨", "🦁", "🍺", "🍻", "🍷", "🥂", "🍾", "🍹"];
+const AVATAR_OPTIONS = ["🍺", "🍻", "🍷", "🥂", "🍾", "🍹", "🤡", "😈", "🥳", "🦁"];
 
 export const PlayerSetup = ({
   players,
