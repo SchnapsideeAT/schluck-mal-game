@@ -89,27 +89,27 @@ import Wahrheit30 from "@/assets/cards/Warheit-30.svg";
 import Wahrheit31 from "@/assets/cards/Warheit-31.svg";
 import Wahrheit32 from "@/assets/cards/Warheit-32.svg";
 
-// Wildcard (20 cards) - NOTE: Filename is "Wild Card" with space
-import Wildcard01 from "@/assets/cards/Wild Card-01.svg";
-import Wildcard02 from "@/assets/cards/Wild Card-02.svg";
-import Wildcard03 from "@/assets/cards/Wild Card-03.svg";
-import Wildcard04 from "@/assets/cards/Wild Card-04.svg";
-import Wildcard05 from "@/assets/cards/Wild Card-05.svg";
-import Wildcard06 from "@/assets/cards/Wild Card-06.svg";
-import Wildcard07 from "@/assets/cards/Wild Card-07.svg";
-import Wildcard08 from "@/assets/cards/Wild Card-08.svg";
-import Wildcard09 from "@/assets/cards/Wild Card-09.svg";
-import Wildcard10 from "@/assets/cards/Wild Card-10.svg";
-import Wildcard11 from "@/assets/cards/Wild Card-11.svg";
-import Wildcard12 from "@/assets/cards/Wild Card-12.svg";
-import Wildcard13 from "@/assets/cards/Wild Card-13.svg";
-import Wildcard14 from "@/assets/cards/Wild Card-14.svg";
-import Wildcard15 from "@/assets/cards/Wild Card-15.svg";
-import Wildcard16 from "@/assets/cards/Wild Card-16.svg";
-import Wildcard17 from "@/assets/cards/Wild Card-17.svg";
-import Wildcard18 from "@/assets/cards/Wild Card-18.svg";
-import Wildcard19 from "@/assets/cards/Wild Card-19.svg";
-import Wildcard20 from "@/assets/cards/Wild Card-20.svg";
+// Wildcard (20 cards)
+import Wildcard01 from "@/assets/cards/WildCard-01.svg";
+import Wildcard02 from "@/assets/cards/WildCard-02.svg";
+import Wildcard03 from "@/assets/cards/WildCard-03.svg";
+import Wildcard04 from "@/assets/cards/WildCard-04.svg";
+import Wildcard05 from "@/assets/cards/WildCard-05.svg";
+import Wildcard06 from "@/assets/cards/WildCard-06.svg";
+import Wildcard07 from "@/assets/cards/WildCard-07.svg";
+import Wildcard08 from "@/assets/cards/WildCard-08.svg";
+import Wildcard09 from "@/assets/cards/WildCard-09.svg";
+import Wildcard10 from "@/assets/cards/WildCard-10.svg";
+import Wildcard11 from "@/assets/cards/WildCard-11.svg";
+import Wildcard12 from "@/assets/cards/WildCard-12.svg";
+import Wildcard13 from "@/assets/cards/WildCard-13.svg";
+import Wildcard14 from "@/assets/cards/WildCard-14.svg";
+import Wildcard15 from "@/assets/cards/WildCard-15.svg";
+import Wildcard16 from "@/assets/cards/WildCard-16.svg";
+import Wildcard17 from "@/assets/cards/WildCard-17.svg";
+import Wildcard18 from "@/assets/cards/WildCard-18.svg";
+import Wildcard19 from "@/assets/cards/WildCard-19.svg";
+import Wildcard20 from "@/assets/cards/WildCard-20.svg";
 
 const cardImages = {
   Aufgabe: [
