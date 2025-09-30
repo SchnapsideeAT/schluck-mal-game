@@ -24,28 +24,6 @@ const Setup = () => {
           </h1>
         </div>
 
-        {/* Info card */}
-        <div className="bg-card border border-border/50 rounded-2xl p-8 space-y-4 text-left">
-          <h3 className="text-xl font-semibold text-primary">Bevor es losgeht:</h3>
-          <ul className="space-y-3 text-muted-foreground">
-            <li className="flex items-start gap-3">
-              <span className="text-primary font-bold">•</span>
-              <span>Stellt sicher, dass alle Mitspieler volljährig sind</span>
-            </li>
-            <li className="flex items-start gap-3">
-              <span className="text-primary font-bold">•</span>
-              <span>Bereitet eure Getränke vor</span>
-            </li>
-            <li className="flex items-start gap-3">
-              <span className="text-primary font-bold">•</span>
-              <span>Setzt euch in einen Kreis oder um einen Tisch</span>
-            </li>
-            <li className="flex items-start gap-3">
-              <span className="text-primary font-bold">•</span>
-              <span>Legt fest, wer anfängt (z.B. jüngster Spieler)</span>
-            </li>
-          </ul>
-        </div>
 
         {/* Categories preview */}
         <div className="bg-card border border-border/50 rounded-2xl p-6">
