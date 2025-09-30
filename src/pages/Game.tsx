@@ -203,7 +203,11 @@ const Game = () => {
       {/* Card display area */}
       <div className="flex-1 flex items-center justify-center">
         {currentIndex === -1 ? (
-          <div className="text-center space-y-6 slide-up">
+          <div 
+            className="text-center space-y-6 slide-up cursor-pointer"
+            onClick={() => drawCard()}
+            onTouchStart={() => drawCard()}
+          >
             <div className="inline-flex items-center justify-center w-24 h-24 rounded-full bg-primary/20 border border-primary/50 pulse-glow">
               <Beer className="w-12 h-12 text-primary" />
             </div>
