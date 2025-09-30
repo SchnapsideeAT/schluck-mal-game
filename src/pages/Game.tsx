@@ -217,7 +217,7 @@ const Game = () => {
             </div>
           </div>
         ) : showCard && currentCard ? (
-          <div className="mx-auto relative">
+          <div className="w-full mx-auto relative">
             {/* Next card (behind) */}
             {currentIndex < deck.length - 1 && (
               <div className="absolute inset-0 z-0">
