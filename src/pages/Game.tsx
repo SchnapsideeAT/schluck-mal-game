@@ -41,7 +41,6 @@ const Game = () => {
   const [soundEnabled, setSoundEnabled] = useState(true);
   const [hapticEnabled, setHapticEnabled] = useState(true);
   const [showExitDialog, setShowExitDialog] = useState(false);
-  const [isTransitioning, setIsTransitioning] = useState(false);
 
   // Disable scrolling on mobile
   useEffect(() => {
@@ -87,14 +86,10 @@ const Game = () => {
     }
   }, []);
 
-  const currentCard = useMemo(() => deck[currentIndex], [deck, currentIndex]);
-
   const drawCard = useCallback((exitDirection?: 'left' | 'right') => {
-    if (currentIndex >= deck.length - 1 || isTransitioning) {
+    if (currentIndex >= deck.length - 1) {
       return;
     }
-    
-    setIsTransitioning(true);
     
     // Mark current card as exiting if direction provided
     if (exitDirection && currentCard) {
@@ -107,20 +102,13 @@ const Game = () => {
     
     setCardAccepted(false);
     
-    // Fallback guard to prevent hanging
-    const fallbackTimeout = setTimeout(() => {
-      setIsTransitioning(false);
-    }, 1000);
-    
-    // Wait for exit animation to complete (250ms), then load new card
+    // Load new card while old one is animating out
     setTimeout(() => {
-      clearTimeout(fallbackTimeout);
       setCurrentIndex(currentIndex + 1);
       setShowCard(true);
       playSound('cardDraw', soundEnabled);
-      setIsTransitioning(false);
-    }, 260);
-  }, [currentIndex, deck, soundEnabled, isTransitioning, currentCard]);
+    }, 200);
+  }, [currentIndex, deck, soundEnabled]);
 
   const getCategoryColor = useCallback((category: string) => {
     const colors: Record<string, string> = {
@@ -142,8 +130,6 @@ const Game = () => {
   }, [hapticEnabled]);
 
   const handleComplete = useCallback(() => {
-    if (isTransitioning) return;
-    
     const currentPlayer = players[currentPlayerIndex];
     
     // Update player stats
@@ -158,11 +144,9 @@ const Game = () => {
     setCurrentPlayerIndex((currentPlayerIndex + 1) % players.length);
     playSound('playerChange', soundEnabled);
     drawCard('right');
-  }, [currentPlayerIndex, players, drawCard, soundEnabled, isTransitioning]);
+  }, [currentPlayerIndex, players, drawCard, soundEnabled]);
 
   const handleDrink = useCallback(() => {
-    if (isTransitioning) return;
-    
     const drinks = deck[currentIndex]?.drinks || 0;
     const currentPlayer = players[currentPlayerIndex];
     
@@ -179,7 +163,7 @@ const Game = () => {
     setCurrentPlayerIndex((currentPlayerIndex + 1) % players.length);
     playSound('playerChange', soundEnabled);
     drawCard('left');
-  }, [currentIndex, deck, currentPlayerIndex, players, drawCard, soundEnabled, isTransitioning]);
+  }, [currentIndex, deck, currentPlayerIndex, players, drawCard, soundEnabled]);
 
   const showStatistics = useCallback(() => {
     navigate("/statistics", { 
@@ -221,13 +205,13 @@ const Game = () => {
   const { swipeState: cardSwipeState, swipeHandlers: cardSwipeHandlers } = useSwipe({
     onSwipeLeft: () => {
       // Swipe left = drink (skip task)
-      if (currentIndex >= 0 && !isTransitioning) {
+      if (currentIndex >= 0) {
         handleDrink();
       }
     },
     onSwipeRight: () => {
       // Swipe right = complete task
-      if (currentIndex >= 0 && !isTransitioning) {
+      if (currentIndex >= 0) {
         handleComplete();
       }
     },
@@ -241,6 +225,7 @@ const Game = () => {
     },
   });
 
+  const currentCard = useMemo(() => deck[currentIndex], [deck, currentIndex]);
   const cardsRemaining = useMemo(() => deck.length - currentIndex - 1, [deck.length, currentIndex]);
 
   // Prefetch next card image
@@ -307,7 +292,7 @@ const Game = () => {
       {/* Main container with proper spacing */}
       <div className="flex-1 flex flex-col">
         {/* Card display area */}
-        <div className="flex-1 flex items-center justify-center py-8 relative">
+        <div className="flex-1 flex items-center justify-center py-8">
           {currentIndex === -1 ? (
             <div 
               className="text-center space-y-6 slide-up cursor-pointer"
@@ -323,14 +308,29 @@ const Game = () => {
               </div>
             </div>
           ) : showCard && currentCard ? (
-            <div className="w-full px-6">
-              <GameCard 
-                key={currentIndex}
-                card={currentCard}
-                swipeDistance={cardSwipeState.swipeDistance}
-                swipeDirection={cardSwipeState.swipeDirection}
-                {...cardSwipeHandlers}
-              />
+            <div className="w-full mx-auto relative">
+              {/* Next card (behind) */}
+              {currentIndex < deck.length - 1 && (
+                <div className="absolute inset-0 z-0">
+                  <GameCard 
+                    card={deck[currentIndex + 1]}
+                    swipeDistance={0}
+                    swipeDirection={null}
+                    showGlow={false}
+                  />
+                </div>
+              )}
+              
+              {/* Current card (on top) */}
+              <div className="relative z-10">
+                <GameCard 
+                  key={currentIndex}
+                  card={currentCard}
+                  swipeDistance={cardSwipeState.swipeDistance}
+                  swipeDirection={cardSwipeState.swipeDirection}
+                  {...cardSwipeHandlers}
+                />
+              </div>
             </div>
           ) : null}
         </div>

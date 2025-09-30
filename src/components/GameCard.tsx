@@ -3,8 +3,7 @@ import { Card, CardCategory } from "@/types/card";
 import { getCardImage } from "@/utils/cardImageMapper";
 
 interface GameCardProps {
-  card?: Card;
-  isCardBack?: boolean;
+  card: Card;
   swipeDistance?: number;
   swipeDirection?: 'left' | 'right' | 'up' | null;
   onTouchStart?: (e: React.TouchEvent) => void;
@@ -26,7 +25,6 @@ const categoryColorMap: Record<CardCategory, string> = {
 
 export const GameCard = memo(({ 
   card, 
-  isCardBack = false,
   swipeDistance = 0, 
   swipeDirection,
   onTouchStart,
@@ -37,14 +35,11 @@ export const GameCard = memo(({
   onMouseUp,
   showGlow = true
 }: GameCardProps) => {
-  const cardImageSrc = isCardBack 
-    ? new URL('../assets/cards/card-back.svg', import.meta.url).href
-    : card ? getCardImage(card.category, card.id) : '';
-  const cardBackImageSrc = new URL('../assets/cards/card-back.svg', import.meta.url).href;
-  const categoryColor = card ? categoryColorMap[card.category] : "0 0% 50%";
+  const cardImageSrc = getCardImage(card.category, card.id);
+  const categoryColor = categoryColorMap[card.category];
 
   // Check if card is exiting
-  const isExiting = card ? (card as any).exiting : false;
+  const isExiting = (card as any).exiting;
   const exitDirection = isExiting;
 
   // Calculate rotation and opacity based on swipe
@@ -55,20 +50,16 @@ export const GameCard = memo(({
   const exitTransform = isExiting 
     ? `translateX(${exitDirection === 'left' ? '-150vw' : '150vw'}) rotate(${exitDirection === 'left' ? '-30deg' : '30deg'})`
     : `translateX(${swipeDistance}px) rotate(${rotation}deg)`;
-  
-  // Determine if card should animate - only when not swiping
-  const shouldAnimate = !isExiting && !isCardBack && Math.abs(swipeDistance) < 5;
 
   return (
     <div 
-      className={`w-full relative touch-none flex items-center justify-center card-3d`}
+      className={`card-flip w-full relative touch-none flex items-center justify-center ${!isExiting ? 'animate-enter' : ''}`}
       style={{
         transform: exitTransform,
         opacity: isExiting ? 0 : opacity,
-        transition: isExiting ? 'transform 0.25s ease-out, opacity 0.25s ease-out' : swipeDistance !== 0 ? 'none' : 'transform 0.2s ease-out',
-        cursor: isCardBack ? 'default' : 'grab',
-        willChange: (isExiting || swipeDistance !== 0) ? 'transform, opacity' : 'auto',
-        perspective: '1000px'
+        transition: isExiting ? 'transform 0.5s ease-in, opacity 0.5s ease-in' : 'none',
+        cursor: 'grab',
+        willChange: isExiting || swipeDistance !== 0 ? 'transform, opacity' : 'auto'
       }}
       onTouchStart={onTouchStart}
       onTouchMove={onTouchMove}
@@ -100,65 +91,36 @@ export const GameCard = memo(({
         />
       )}
       
-      {/* Card Container with 3D Flip */}
+      {/* Card Container with Glow */}
       <div 
-        className={`relative inline-block card-inner ${shouldAnimate ? 'animate-enter' : ''}`}
+        className="relative inline-block"
         style={{ 
-          transform: window.innerWidth < 768 ? 'scale(1.6)' : 'scale(1)',
-          transformStyle: 'preserve-3d'
+          transform: window.innerWidth < 768 ? 'scale(1.6)' : 'scale(1)' 
         }}
       >
-        {/* Card Back Face */}
-        <div 
-          className="absolute inset-0 card-face card-back-face"
-          style={{
-            backfaceVisibility: 'hidden',
-            WebkitBackfaceVisibility: 'hidden',
-            transform: 'rotateY(180deg)'
-          }}
-        >
-          <img 
-            src={cardBackImageSrc} 
-            alt="Card Back"
-            className="w-full h-auto object-contain rounded-2xl block"
-            draggable={false}
-          />
-        </div>
-
-        {/* Card Front Face */}
-        <div 
-          className="relative card-face"
-          style={{
-            backfaceVisibility: 'hidden',
-            WebkitBackfaceVisibility: 'hidden'
-          }}
-        >
-          {/* Glow Effect Background with depth */}
-          {showGlow && !isCardBack && (
-            <div 
-              className="absolute inset-0 rounded-2xl"
-              style={{
-                boxShadow: `0 0 15px 2px hsl(${categoryColor} / 0.2), 0 0 30px 5px hsl(${categoryColor} / 0.1), 0 8px 25px -5px rgba(0, 0, 0, 0.4)`,
-                animation: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                zIndex: -1
-              }}
-            />
-          )}
-          
-          {/* SVG Card Image */}
-          <img 
-            src={cardImageSrc} 
-            alt={isCardBack ? 'Card Back' : card ? `${card.category} Card ${card.id}` : 'Card'}
-            className="w-full h-auto object-contain rounded-2xl block"
-            draggable={false}
-            onError={(e) => {
-              if (!isCardBack && card) {
-                console.error(`Failed to load ${card.category} card ${card.id}:`, cardImageSrc);
-                console.error('Image element:', e.currentTarget);
-              }
+        {/* Glow Effect Background */}
+        {showGlow && (
+          <div 
+            className="absolute inset-0 rounded-2xl"
+            style={{
+              boxShadow: `0 0 15px 2px hsl(${categoryColor} / 0.2), 0 0 30px 5px hsl(${categoryColor} / 0.1)`,
+              animation: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+              zIndex: -1
             }}
           />
-        </div>
+        )}
+        
+        {/* SVG Card Image */}
+        <img 
+          src={cardImageSrc} 
+          alt={`${card.category} Card ${card.id}`}
+          className="w-full h-auto object-contain rounded-2xl block"
+          draggable={false}
+          onError={(e) => {
+            console.error(`Failed to load ${card.category} card ${card.id}:`, cardImageSrc);
+            console.error('Image element:', e.currentTarget);
+          }}
+        />
       </div>
     </div>
   );
