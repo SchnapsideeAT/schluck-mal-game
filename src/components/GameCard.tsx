@@ -70,8 +70,9 @@ export const GameCard = ({
       {/* Left Screen Edge Glow (Red) - when swiping left */}
       {swipeDirection === 'left' && !isExiting && (
         <div 
-          className="fixed left-0 top-0 bottom-0 w-1 pointer-events-none z-50"
+          className="fixed top-0 bottom-0 w-1 pointer-events-none z-50"
           style={{
+            left: '-4px',
             boxShadow: '5px 0 30px 10px rgba(239, 68, 68, 0.6), 15px 0 80px 40px rgba(239, 68, 68, 0.4), 30px 0 150px 80px rgba(239, 68, 68, 0.2)',
           }}
         />
@@ -80,8 +81,9 @@ export const GameCard = ({
       {/* Right Screen Edge Glow (Green) - when swiping right */}
       {swipeDirection === 'right' && !isExiting && (
         <div 
-          className="fixed right-0 top-0 bottom-0 w-1 pointer-events-none z-50"
+          className="fixed top-0 bottom-0 w-1 pointer-events-none z-50"
           style={{
+            right: '-4px',
             boxShadow: '-5px 0 30px 10px rgba(34, 197, 94, 0.6), -15px 0 80px 40px rgba(34, 197, 94, 0.4), -30px 0 150px 80px rgba(34, 197, 94, 0.2)',
           }}
         />
