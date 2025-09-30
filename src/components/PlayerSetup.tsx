@@ -103,7 +103,7 @@ export const PlayerSetup = ({ players, onPlayersChange }: PlayerSetupProps) => {
           <h3 className="text-lg font-semibold text-foreground">
             Spieler ({players.length})
           </h3>
-          <div className="space-y-2">
+          <div className="flex flex-wrap gap-2">
             {players.map((player) => (
               <div
                 key={player.id}
