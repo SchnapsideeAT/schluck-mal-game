@@ -52,7 +52,7 @@ export const GameCard = ({
 
   return (
     <div 
-      className={`card-flip w-full relative touch-none max-h-[85vh] sm:max-h-[75vh] md:max-h-[80vh] flex items-center justify-center ${!isExiting ? 'animate-enter' : ''}`}
+      className={`card-flip w-full relative touch-none flex items-center justify-center ${!isExiting ? 'animate-enter' : ''}`}
       style={{
         transform: exitTransform,
         opacity: isExiting ? 0 : opacity,
@@ -90,7 +90,7 @@ export const GameCard = ({
       )}
       
       {/* Card Container with Glow */}
-      <div className="relative inline-block" style={{ transform: 'scale(1.5)' }}>
+      <div className="relative inline-block">
         {/* Glow Effect Background */}
         {showGlow && (
           <div 
@@ -107,7 +107,7 @@ export const GameCard = ({
         <img 
           src={cardImageSrc} 
           alt={`${card.category} Card ${card.id}`}
-          className="w-full h-auto max-h-[85vh] sm:max-h-[75vh] md:max-h-[80vh] object-contain rounded-2xl block"
+          className="w-full h-auto object-contain rounded-2xl block"
           draggable={false}
           onError={(e) => {
             console.error(`Failed to load ${card.category} card ${card.id}:`, cardImageSrc);
