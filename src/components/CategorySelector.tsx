@@ -42,8 +42,10 @@ export const CategorySelector = ({ selectedCategories, onCategoriesChange }: Cat
             <button
               key={category}
               onClick={() => toggleCategory(category)}
-              className={`flex flex-col items-center gap-2 bg-muted/30 hover:bg-muted/50 rounded-lg p-4 transition-all duration-200 ${
-                isSelected ? 'ring-2 ring-primary shadow-md' : ''
+              className={`flex flex-col items-center gap-2 rounded-lg p-4 transition-all ${
+                isSelected 
+                  ? 'bg-primary/20 border-2 border-primary scale-110' 
+                  : 'bg-muted/50 border border-border/30 hover:bg-muted hover:scale-105'
               } ${isLastOdd ? 'col-span-2' : ''}`}
             >
               <CategoryIcon category={category} />
