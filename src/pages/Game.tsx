@@ -333,29 +333,15 @@ const Game = () => {
               </div>
             </div>
           ) : showCard && currentCard ? (
-            <div className="w-full mx-auto relative">
-              {/* Next card (behind) */}
-              {currentIndex < deck.length - 1 && (
-                <div className="absolute inset-0 z-0">
-                  <GameCard 
-                    card={deck[currentIndex + 1]}
-                    swipeDistance={0}
-                    swipeDirection={null}
-                    showGlow={false}
-                  />
-                </div>
-              )}
-              
-              {/* Current card (on top) */}
-              <div className="relative z-10">
-                <GameCard 
-                  key={currentIndex}
-                  card={currentCard}
-                  swipeDistance={cardSwipeState.swipeDistance}
-                  swipeDirection={cardSwipeState.swipeDirection}
-                  {...cardSwipeHandlers}
-                />
-              </div>
+            <div className="w-full mx-auto">
+              {/* Current card */}
+              <GameCard 
+                key={currentIndex}
+                card={currentCard}
+                swipeDistance={cardSwipeState.swipeDistance}
+                swipeDirection={cardSwipeState.swipeDirection}
+                {...cardSwipeHandlers}
+              />
             </div>
           ) : null}
         </div>
