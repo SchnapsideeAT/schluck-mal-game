@@ -40,6 +40,7 @@ export const GameCard = memo(({
   const cardImageSrc = isCardBack 
     ? new URL('../assets/cards/card-back.svg', import.meta.url).href
     : card ? getCardImage(card.category, card.id) : '';
+  const cardBackImageSrc = new URL('../assets/cards/card-back.svg', import.meta.url).href;
   const categoryColor = card ? categoryColorMap[card.category] : "0 0% 50%";
 
   // Check if card is exiting
@@ -60,13 +61,14 @@ export const GameCard = memo(({
 
   return (
     <div 
-      className={`w-full relative touch-none flex items-center justify-center ${shouldAnimate ? 'animate-enter' : ''}`}
+      className={`w-full relative touch-none flex items-center justify-center card-3d`}
       style={{
         transform: exitTransform,
         opacity: isExiting ? 0 : opacity,
         transition: isExiting ? 'transform 0.25s ease-out, opacity 0.25s ease-out' : swipeDistance !== 0 ? 'none' : 'transform 0.2s ease-out',
         cursor: isCardBack ? 'default' : 'grab',
-        willChange: (isExiting || swipeDistance !== 0) ? 'transform, opacity' : 'auto'
+        willChange: (isExiting || swipeDistance !== 0) ? 'transform, opacity' : 'auto',
+        perspective: '1000px'
       }}
       onTouchStart={onTouchStart}
       onTouchMove={onTouchMove}
@@ -98,38 +100,65 @@ export const GameCard = memo(({
         />
       )}
       
-      {/* Card Container with Glow */}
+      {/* Card Container with 3D Flip */}
       <div 
-        className="relative inline-block"
+        className={`relative inline-block card-inner ${shouldAnimate ? 'animate-enter' : ''}`}
         style={{ 
-          transform: window.innerWidth < 768 ? 'scale(1.6)' : 'scale(1)' 
+          transform: window.innerWidth < 768 ? 'scale(1.6)' : 'scale(1)',
+          transformStyle: 'preserve-3d'
         }}
       >
-        {/* Glow Effect Background with depth */}
-        {showGlow && (
-          <div 
-            className="absolute inset-0 rounded-2xl"
-            style={{
-              boxShadow: `0 0 15px 2px hsl(${categoryColor} / 0.2), 0 0 30px 5px hsl(${categoryColor} / 0.1), 0 8px 25px -5px rgba(0, 0, 0, 0.4)`,
-              animation: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-              zIndex: -1
+        {/* Card Back Face */}
+        <div 
+          className="absolute inset-0 card-face card-back-face"
+          style={{
+            backfaceVisibility: 'hidden',
+            WebkitBackfaceVisibility: 'hidden',
+            transform: 'rotateY(180deg)'
+          }}
+        >
+          <img 
+            src={cardBackImageSrc} 
+            alt="Card Back"
+            className="w-full h-auto object-contain rounded-2xl block"
+            draggable={false}
+          />
+        </div>
+
+        {/* Card Front Face */}
+        <div 
+          className="relative card-face"
+          style={{
+            backfaceVisibility: 'hidden',
+            WebkitBackfaceVisibility: 'hidden'
+          }}
+        >
+          {/* Glow Effect Background with depth */}
+          {showGlow && !isCardBack && (
+            <div 
+              className="absolute inset-0 rounded-2xl"
+              style={{
+                boxShadow: `0 0 15px 2px hsl(${categoryColor} / 0.2), 0 0 30px 5px hsl(${categoryColor} / 0.1), 0 8px 25px -5px rgba(0, 0, 0, 0.4)`,
+                animation: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                zIndex: -1
+              }}
+            />
+          )}
+          
+          {/* SVG Card Image */}
+          <img 
+            src={cardImageSrc} 
+            alt={isCardBack ? 'Card Back' : card ? `${card.category} Card ${card.id}` : 'Card'}
+            className="w-full h-auto object-contain rounded-2xl block"
+            draggable={false}
+            onError={(e) => {
+              if (!isCardBack && card) {
+                console.error(`Failed to load ${card.category} card ${card.id}:`, cardImageSrc);
+                console.error('Image element:', e.currentTarget);
+              }
             }}
           />
-        )}
-        
-        {/* SVG Card Image */}
-        <img 
-          src={cardImageSrc} 
-          alt={isCardBack ? 'Card Back' : card ? `${card.category} Card ${card.id}` : 'Card'}
-          className="w-full h-auto object-contain rounded-2xl block"
-          draggable={false}
-          onError={(e) => {
-            if (!isCardBack && card) {
-              console.error(`Failed to load ${card.category} card ${card.id}:`, cardImageSrc);
-              console.error('Image element:', e.currentTarget);
-            }
-          }}
-        />
+        </div>
       </div>
     </div>
   );
