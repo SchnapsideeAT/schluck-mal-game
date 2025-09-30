@@ -324,6 +324,7 @@ const Game = () => {
               {/* Current card (on top) */}
               <div className="relative z-10">
                 <GameCard 
+                  key={currentIndex}
                   card={currentCard}
                   swipeDistance={cardSwipeState.swipeDistance}
                   swipeDirection={cardSwipeState.swipeDirection}
