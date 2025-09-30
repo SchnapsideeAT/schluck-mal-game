@@ -304,7 +304,7 @@ const Game = () => {
           size="icon"
           className="group"
         >
-          <Home className="w-14 h-14 group-hover:text-primary transition-colors" />
+          <Home className="w-28 h-28 md:w-14 md:h-14 group-hover:text-primary transition-colors" />
         </Button>
         
         <Button
@@ -313,7 +313,7 @@ const Game = () => {
           size="icon"
           className="group"
         >
-          <Settings className="w-14 h-14 group-hover:text-primary transition-colors" />
+          <Settings className="w-28 h-28 md:w-14 md:h-14 group-hover:text-primary transition-colors" />
         </Button>
       </div>
 
