@@ -107,17 +107,19 @@ const Game = () => {
     
     setCardAccepted(false);
     
-    // Wait for exit animation to complete (300ms), then load new card
+    // Fallback guard to prevent hanging
+    const fallbackTimeout = setTimeout(() => {
+      setIsTransitioning(false);
+    }, 1000);
+    
+    // Wait for exit animation to complete (250ms), then load new card
     setTimeout(() => {
+      clearTimeout(fallbackTimeout);
       setCurrentIndex(currentIndex + 1);
       setShowCard(true);
       playSound('cardDraw', soundEnabled);
-      
-      // Reset transition state after enter animation
-      setTimeout(() => {
-        setIsTransitioning(false);
-      }, 100);
-    }, 320);
+      setIsTransitioning(false);
+    }, 260);
   }, [currentIndex, deck, soundEnabled, isTransitioning, currentCard]);
 
   const getCategoryColor = useCallback((category: string) => {

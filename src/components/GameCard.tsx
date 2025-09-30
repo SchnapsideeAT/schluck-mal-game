@@ -55,8 +55,8 @@ export const GameCard = memo(({
     ? `translateX(${exitDirection === 'left' ? '-150vw' : '150vw'}) rotate(${exitDirection === 'left' ? '-30deg' : '30deg'})`
     : `translateX(${swipeDistance}px) rotate(${rotation}deg)`;
   
-  // Determine if card should animate
-  const shouldAnimate = !isExiting && !isCardBack;
+  // Determine if card should animate - only when not swiping
+  const shouldAnimate = !isExiting && !isCardBack && Math.abs(swipeDistance) < 5;
 
   return (
     <div 
@@ -64,7 +64,7 @@ export const GameCard = memo(({
       style={{
         transform: exitTransform,
         opacity: isExiting ? 0 : opacity,
-        transition: isExiting ? 'transform 0.3s ease-out, opacity 0.3s ease-out' : swipeDistance !== 0 ? 'none' : 'transform 0.2s ease-out',
+        transition: isExiting ? 'transform 0.25s ease-out, opacity 0.25s ease-out' : swipeDistance !== 0 ? 'none' : 'transform 0.2s ease-out',
         cursor: isCardBack ? 'default' : 'grab',
         willChange: (isExiting || swipeDistance !== 0) ? 'transform, opacity' : 'auto'
       }}
