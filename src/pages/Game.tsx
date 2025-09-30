@@ -292,7 +292,7 @@ const Game = () => {
       {/* Main container with proper spacing */}
       <div className="flex-1 flex flex-col">
         {/* Card display area */}
-        <div className="flex-1 flex items-center justify-center py-8">
+        <div className="flex-1 flex items-center justify-center py-8 relative">
           {currentIndex === -1 ? (
             <div 
               className="text-center space-y-6 slide-up cursor-pointer"
@@ -308,30 +308,34 @@ const Game = () => {
               </div>
             </div>
           ) : showCard && currentCard ? (
-            <div className="w-full mx-auto relative">
-              {/* Card back (behind) */}
+            <>
+              {/* Card back layer - always stable in background */}
               {currentIndex < deck.length - 1 && (
-                <div className="absolute inset-0 z-0">
-                  <GameCard 
-                    isCardBack={true}
-                    swipeDistance={0}
-                    swipeDirection={null}
-                    showGlow={false}
-                  />
+                <div className="absolute inset-0 flex items-center justify-center pointer-events-none" style={{ zIndex: 1 }}>
+                  <div className="w-full px-6">
+                    <GameCard 
+                      isCardBack={true}
+                      swipeDistance={0}
+                      swipeDirection={null}
+                      showGlow={false}
+                    />
+                  </div>
                 </div>
               )}
               
-              {/* Current card (on top) */}
-              <div className="relative z-10">
-                <GameCard 
-                  key={currentIndex}
-                  card={currentCard}
-                  swipeDistance={cardSwipeState.swipeDistance}
-                  swipeDirection={cardSwipeState.swipeDirection}
-                  {...cardSwipeHandlers}
-                />
+              {/* Current card layer - interactive on top */}
+              <div className="absolute inset-0 flex items-center justify-center" style={{ zIndex: 2 }}>
+                <div className="w-full px-6">
+                  <GameCard 
+                    key={currentIndex}
+                    card={currentCard}
+                    swipeDistance={cardSwipeState.swipeDistance}
+                    swipeDirection={cardSwipeState.swipeDirection}
+                    {...cardSwipeHandlers}
+                  />
+                </div>
               </div>
-            </div>
+            </>
           ) : null}
         </div>
       </div>
