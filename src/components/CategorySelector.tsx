@@ -44,7 +44,7 @@ export const CategorySelector = ({ selectedCategories, onCategoriesChange }: Cat
               onClick={() => toggleCategory(category)}
               className={`flex flex-col items-center gap-2 rounded-lg p-4 transition-all border-2 ${
                 isSelected 
-                  ? 'bg-primary/20 border-primary' 
+                  ? 'border-primary' 
                   : 'bg-muted/50 border-transparent hover:bg-muted'
               } ${isLastOdd ? 'col-span-2' : ''}`}
             >
