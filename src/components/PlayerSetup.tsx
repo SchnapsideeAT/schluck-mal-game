@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Player } from "@/types/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { X, Plus } from "lucide-react";
+import { Plus } from "lucide-react";
 import { toast } from "sonner";
 interface PlayerSetupProps {
   players: Player[];
@@ -70,14 +70,9 @@ export const PlayerSetup = ({
             Spieler ({players.length})
           </h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 justify-items-center">
-            {players.map(player => <div key={player.id} className="flex items-center justify-between bg-muted/50 rounded-lg p-3 group hover:bg-muted transition-colors">
-                <div className="flex items-center gap-3">
-                  <span className="text-2xl">{player.avatar}</span>
-                  <span className="font-medium text-foreground">{player.name}</span>
-                </div>
-                <Button onClick={() => removePlayer(player.id)} variant="ghost" size="icon" className="opacity-0 group-hover:opacity-100 transition-opacity hover:bg-destructive/20 hover:text-destructive">
-                  <X className="w-4 h-4" />
-                </Button>
+            {players.map(player => <div key={player.id} onClick={() => removePlayer(player.id)} className="flex items-center gap-3 bg-muted/50 rounded-lg p-3 hover:bg-destructive/20 hover:border-destructive/50 border border-transparent transition-all cursor-pointer">
+                <span className="text-2xl">{player.avatar}</span>
+                <span className="font-medium text-foreground">{player.name}</span>
               </div>)}
           </div>
         </div>}
