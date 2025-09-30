@@ -6,7 +6,6 @@ import { CategoryIcon } from "@/components/CategoryIcon";
 import { PlayerSetup } from "@/components/PlayerSetup";
 import { Tutorial } from "@/components/Tutorial";
 import { Player } from "@/types/card";
-import { toast } from "sonner";
 import { playSound } from "@/utils/sounds";
 
 const Setup = () => {
@@ -64,7 +63,6 @@ const Setup = () => {
         <Button
           onClick={() => {
             if (players.length === 0) {
-              toast.error("Füge mindestens einen Spieler hinzu!");
               playSound('error', true);
               return;
             }

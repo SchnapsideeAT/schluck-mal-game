@@ -3,7 +3,6 @@ import { Player } from "@/types/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Plus } from "lucide-react";
-import { toast } from "sonner";
 import { playSound } from "@/utils/sounds";
 
 interface PlayerSetupProps {
@@ -39,14 +38,12 @@ export const PlayerSetup = ({
     setNewPlayerName("");
     setSelectedAvatar(AVATAR_OPTIONS[Math.floor(Math.random() * AVATAR_OPTIONS.length)]);
     
-    toast.success(`${newPlayerName} hinzugefügt!`);
     playSound('success', true);
   };
 
   const removePlayer = (playerId: string) => {
     const updatedPlayers = players.filter(p => p.id !== playerId);
     onPlayersChange(updatedPlayers);
-    toast.info("Spieler entfernt");
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {

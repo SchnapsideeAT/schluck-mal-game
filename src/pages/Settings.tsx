@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { ArrowLeft, Volume2, VolumeX, Globe } from "lucide-react";
-import { toast } from "sonner";
 
 const Settings = () => {
   const navigate = useNavigate();
@@ -12,12 +11,10 @@ const Settings = () => {
 
   const handleSoundToggle = (checked: boolean) => {
     setSoundEnabled(checked);
-    toast.success(checked ? "Soundeffekte aktiviert" : "Soundeffekte deaktiviert");
   };
 
   const handleMusicToggle = (checked: boolean) => {
     setMusicEnabled(checked);
-    toast.success(checked ? "Musik aktiviert" : "Musik deaktiviert");
   };
 
   return (

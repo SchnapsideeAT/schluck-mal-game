@@ -1,6 +1,4 @@
 import { lazy, Suspense } from "react";
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
@@ -19,17 +17,6 @@ const queryClient = new QueryClient();
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
-      <Toaster />
-      <Sonner 
-        position="top-center"
-        toastOptions={{
-          style: {
-            background: 'hsl(0 0% 14%)',
-            border: '1px solid hsl(48 91% 60% / 0.3)',
-            color: 'hsl(0 0% 95%)',
-          },
-        }}
-      />
       <BrowserRouter>
         <div className="page-transition">
           <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="animate-pulse text-primary">Laden...</div></div>}>

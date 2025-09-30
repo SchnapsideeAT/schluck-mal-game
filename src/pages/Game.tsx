@@ -6,7 +6,6 @@ import { GameSettings } from "@/components/GameSettings";
 import { shuffleDeck } from "@/utils/cardUtils";
 import { Card, Player } from "@/types/card";
 import { ArrowRight, Beer, Check, Home, RotateCcw, Trophy } from "lucide-react";
-import { toast } from "sonner";
 import { useSwipe } from "@/hooks/useSwipe";
 import { saveGameState, loadGameState, clearGameState } from "@/utils/localStorage";
 import { triggerHaptic } from "@/utils/haptics";
@@ -176,7 +175,6 @@ const Game = () => {
     
     clearGameState();
     setShowRestartDialog(false);
-    toast.success("Spiel neu gestartet!");
     
     if (hapticEnabled) {
       triggerHaptic('medium');
