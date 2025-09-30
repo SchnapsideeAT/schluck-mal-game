@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { Card, CardCategory } from "@/types/card";
 import { getCardImage } from "@/utils/cardImageMapper";
 
@@ -22,7 +23,7 @@ const categoryColorMap: Record<CardCategory, string> = {
   Wildcard: "352 78% 58%",
 };
 
-export const GameCard = ({ 
+export const GameCard = memo(({ 
   card, 
   swipeDistance = 0, 
   swipeDirection,
@@ -57,7 +58,8 @@ export const GameCard = ({
         transform: exitTransform,
         opacity: isExiting ? 0 : opacity,
         transition: isExiting ? 'transform 0.5s ease-in, opacity 0.5s ease-in' : 'none',
-        cursor: 'grab'
+        cursor: 'grab',
+        willChange: isExiting || swipeDistance !== 0 ? 'transform, opacity' : 'auto'
       }}
       onTouchStart={onTouchStart}
       onTouchMove={onTouchMove}
@@ -122,4 +124,4 @@ export const GameCard = ({
       </div>
     </div>
   );
-};
+});

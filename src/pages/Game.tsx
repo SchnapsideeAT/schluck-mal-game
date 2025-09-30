@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { GameCard } from "@/components/GameCard";
@@ -40,7 +40,7 @@ const Game = () => {
     }
   }, []);
 
-  const drawCard = (exitDirection?: 'left' | 'right') => {
+  const drawCard = useCallback((exitDirection?: 'left' | 'right') => {
     if (currentIndex >= deck.length - 1) {
       return;
     }
@@ -61,9 +61,9 @@ const Game = () => {
       setCurrentIndex(currentIndex + 1);
       setShowCard(true);
     }, 200);
-  };
+  }, [currentIndex, deck]);
 
-  const getCategoryColor = (category: string) => {
+  const getCategoryColor = useCallback((category: string) => {
     const colors: Record<string, string> = {
       Wahrheit: "category-truth",
       Aufgabe: "category-task",
@@ -72,17 +72,17 @@ const Game = () => {
       Wildcard: "category-wildcard",
     };
     return colors[category] || "primary";
-  };
+  }, []);
 
-  const handleAccept = () => {
+  const handleAccept = useCallback(() => {
     setCardAccepted(true);
     // Haptic feedback
     if ('vibrate' in navigator) {
       navigator.vibrate(20);
     }
-  };
+  }, []);
 
-  const handleComplete = () => {
+  const handleComplete = useCallback(() => {
     const currentPlayer = players[currentPlayerIndex];
     
     // Update player stats
@@ -93,9 +93,9 @@ const Game = () => {
     // Move to next player
     setCurrentPlayerIndex((currentPlayerIndex + 1) % players.length);
     drawCard('right');
-  };
+  }, [currentPlayerIndex, players, drawCard]);
 
-  const handleDrink = () => {
+  const handleDrink = useCallback(() => {
     const drinks = deck[currentIndex]?.drinks || 0;
     const currentPlayer = players[currentPlayerIndex];
     
@@ -107,9 +107,9 @@ const Game = () => {
     // Move to next player
     setCurrentPlayerIndex((currentPlayerIndex + 1) % players.length);
     drawCard('left');
-  };
+  }, [currentIndex, deck, currentPlayerIndex, players, drawCard]);
 
-  const handleRestart = () => {
+  const handleRestart = useCallback(() => {
     const shuffled = shuffleDeck();
     setDeck(shuffled);
     setCurrentIndex(-1);
@@ -119,9 +119,9 @@ const Game = () => {
     // Reset drink counts
     const resetPlayers = players.map(p => ({ ...p, totalDrinks: 0 }));
     setPlayers(resetPlayers);
-  };
+  }, [players]);
   
-  const showStatistics = () => {
+  const showStatistics = useCallback(() => {
     navigate("/statistics", { 
       state: { 
         players,
@@ -132,7 +132,7 @@ const Game = () => {
         cardAccepted
       } 
     });
-  };
+  }, [navigate, players, deck, currentIndex, currentPlayerIndex, showCard, cardAccepted]);
 
   // Swipe gesture handlers
   const { swipeState, swipeHandlers, triggerHaptic } = useSwipe({
@@ -150,8 +150,8 @@ const Game = () => {
     },
   });
 
-  const currentCard = deck[currentIndex];
-  const cardsRemaining = deck.length - currentIndex - 1;
+  const currentCard = useMemo(() => deck[currentIndex], [deck, currentIndex]);
+  const cardsRemaining = useMemo(() => deck.length - currentIndex - 1, [deck.length, currentIndex]);
 
   return (
     <div className="min-h-screen flex flex-col px-6 pt-8 pb-12 relative">
