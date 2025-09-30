@@ -73,7 +73,7 @@ export const GameCard = ({
           className="fixed top-0 bottom-0 w-1 pointer-events-none z-50"
           style={{
             left: '-4px',
-            boxShadow: '5px 0 30px 10px rgba(239, 68, 68, 0.6), 15px 0 80px 40px rgba(239, 68, 68, 0.4), 30px 0 150px 80px rgba(239, 68, 68, 0.2)',
+            boxShadow: '5px 0 20px 8px rgba(239, 68, 68, 0.4), 15px 0 50px 30px rgba(239, 68, 68, 0.25), 30px 0 100px 60px rgba(239, 68, 68, 0.15)',
           }}
         />
       )}
@@ -84,13 +84,13 @@ export const GameCard = ({
           className="fixed top-0 bottom-0 w-1 pointer-events-none z-50"
           style={{
             right: '-4px',
-            boxShadow: '-5px 0 30px 10px rgba(34, 197, 94, 0.6), -15px 0 80px 40px rgba(34, 197, 94, 0.4), -30px 0 150px 80px rgba(34, 197, 94, 0.2)',
+            boxShadow: '-5px 0 20px 8px rgba(34, 197, 94, 0.4), -15px 0 50px 30px rgba(34, 197, 94, 0.25), -30px 0 100px 60px rgba(34, 197, 94, 0.15)',
           }}
         />
       )}
       
       {/* Card Container with Glow */}
-      <div className="relative inline-block" style={{ transform: 'scale(1.5)' }}>
+      <div className="relative inline-block scale-125 md:scale-150">
         {/* Glow Effect Background */}
         {showGlow && (
           <div 
