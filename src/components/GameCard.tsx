@@ -46,7 +46,7 @@ export const GameCard = ({
 
   return (
     <div 
-      className={`card-flip w-full relative touch-none max-h-[92vh] sm:max-h-[80vh] md:max-h-[85vh] flex items-center justify-center ${!isExiting ? 'animate-enter' : ''}`}
+      className={`card-flip w-full relative touch-none h-[90vh] sm:h-[80vh] md:h-[85vh] flex items-center justify-center ${!isExiting ? 'animate-enter' : ''}`}
       style={{
         transform: exitTransform,
         opacity: isExiting ? 0 : opacity,
@@ -99,7 +99,7 @@ export const GameCard = ({
         <img 
           src={cardImageSrc} 
           alt={`${card.category} Card ${card.id}`}
-          className="w-full h-auto max-h-[92vh] sm:max-h-[80vh] md:max-h-[85vh] object-contain rounded-2xl block"
+          className="w-full h-full object-contain rounded-2xl block"
           draggable={false}
           onError={(e) => {
             console.error(`Failed to load ${card.category} card ${card.id}:`, cardImageSrc);
