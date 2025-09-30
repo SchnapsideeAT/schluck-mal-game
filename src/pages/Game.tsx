@@ -154,7 +154,7 @@ const Game = () => {
   const cardsRemaining = deck.length - currentIndex - 1;
 
   return (
-    <div className="min-h-screen flex flex-col p-6 pb-32 relative">
+    <div className="min-h-screen flex flex-col p-6 relative">
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <Button
