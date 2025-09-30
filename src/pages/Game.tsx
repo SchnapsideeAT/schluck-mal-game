@@ -44,6 +44,17 @@ const Game = () => {
   const [showExitDialog, setShowExitDialog] = useState(false);
   const [showRestartDialog, setShowRestartDialog] = useState(false);
 
+  // Disable scrolling on mobile
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+    document.documentElement.style.overflow = 'hidden';
+    
+    return () => {
+      document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
+    };
+  }, []);
+
   // Auto-save game state every 10 seconds
   useEffect(() => {
     const interval = setInterval(() => {
@@ -260,7 +271,7 @@ const Game = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col px-6 pt-8 pb-32 relative">
+    <div className="min-h-screen h-screen flex flex-col px-6 pt-8 pb-32 relative overflow-hidden">
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <Button
