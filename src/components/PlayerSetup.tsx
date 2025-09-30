@@ -40,7 +40,7 @@ export const PlayerSetup = ({
       addPlayer();
     }
   };
-  return <div className="space-y-6">
+  return <div className="space-y-8">
       {/* Add Player Section */}
       <div className="bg-card border border-border/50 rounded-2xl p-6 space-y-4">
         <h3 className="text-lg font-semibold text-foreground">Spieler hinzufügen</h3>
