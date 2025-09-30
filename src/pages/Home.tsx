@@ -65,7 +65,7 @@ const Home = () => {
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter className="gap-3">
-            <AlertDialogCancel className="border-destructive/50 hover:bg-destructive/10">
+            <AlertDialogCancel className="border-destructive/50 hover:bg-destructive/10 hover:text-destructive">
               Abbrechen
             </AlertDialogCancel>
             <AlertDialogAction onClick={confirmStart} className="bg-primary hover:shadow-[var(--shadow-button)]">
