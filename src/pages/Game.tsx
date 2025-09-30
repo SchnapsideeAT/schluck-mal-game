@@ -301,7 +301,7 @@ const Game = () => {
           variant="ghost"
           className="group hover:bg-muted/50 h-16 w-16 p-0"
         >
-          <Home className="!w-14 !h-14 group-hover:text-primary transition-colors" />
+          <Home className="!w-7 !h-7 group-hover:text-primary transition-colors" />
         </Button>
         
         <Button
@@ -309,7 +309,7 @@ const Game = () => {
           variant="ghost"
           className="group hover:bg-muted/50 h-16 w-16 p-0"
         >
-          <Settings className="!w-14 !h-14 group-hover:text-primary transition-colors" />
+          <Settings className="!w-7 !h-7 group-hover:text-primary transition-colors" />
         </Button>
       </div>
 
