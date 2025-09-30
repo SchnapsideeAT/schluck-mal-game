@@ -107,7 +107,7 @@ const Game = () => {
       setCurrentIndex(currentIndex + 1);
       setShowCard(true);
       playSound('cardDraw', soundEnabled);
-    }, 200);
+    }, 500);
   }, [currentIndex, deck, soundEnabled]);
 
   const getCategoryColor = useCallback((category: string) => {

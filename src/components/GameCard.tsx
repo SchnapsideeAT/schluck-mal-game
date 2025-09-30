@@ -57,12 +57,12 @@ export const GameCard = memo(({
 
   return (
     <div 
-      className={`card-flip w-full relative touch-none flex items-center justify-center ${!isExiting ? 'animate-enter' : ''}`}
+      className={`card-flip w-full relative touch-none flex items-center justify-center ${!isExiting && !isCardBack ? 'animate-enter' : ''}`}
       style={{
         transform: exitTransform,
         opacity: isExiting ? 0 : opacity,
         transition: isExiting ? 'transform 0.5s ease-in, opacity 0.5s ease-in' : 'none',
-        cursor: 'grab',
+        cursor: isCardBack ? 'default' : 'grab',
         willChange: isExiting || swipeDistance !== 0 ? 'transform, opacity' : 'auto'
       }}
       onTouchStart={onTouchStart}
