@@ -70,10 +70,10 @@ export const GameCard = ({
       {/* Left Screen Edge Glow (Red) - when swiping left */}
       {swipeDirection === 'left' && !isExiting && (
         <div 
-          className="fixed top-0 bottom-0 w-1 pointer-events-none z-50"
+          className="fixed left-0 top-0 bottom-0 w-1 pointer-events-none z-50"
           style={{
-            left: '-4px',
-            boxShadow: '5px 0 20px 8px rgba(239, 68, 68, 0.4), 15px 0 50px 30px rgba(239, 68, 68, 0.25), 30px 0 100px 60px rgba(239, 68, 68, 0.15)',
+            backgroundColor: 'rgb(239, 68, 68)',
+            boxShadow: '0 0 80px 40px rgba(239, 68, 68, 0.8), 0 0 120px 60px rgba(239, 68, 68, 0.5)',
           }}
         />
       )}
@@ -81,10 +81,10 @@ export const GameCard = ({
       {/* Right Screen Edge Glow (Green) - when swiping right */}
       {swipeDirection === 'right' && !isExiting && (
         <div 
-          className="fixed top-0 bottom-0 w-1 pointer-events-none z-50"
+          className="fixed right-0 top-0 bottom-0 w-1 pointer-events-none z-50"
           style={{
-            right: '-4px',
-            boxShadow: '-5px 0 20px 8px rgba(34, 197, 94, 0.4), -15px 0 50px 30px rgba(34, 197, 94, 0.25), -30px 0 100px 60px rgba(34, 197, 94, 0.15)',
+            backgroundColor: 'rgb(34, 197, 94)',
+            boxShadow: '0 0 80px 40px rgba(34, 197, 94, 0.8), 0 0 120px 60px rgba(34, 197, 94, 0.5)',
           }}
         />
       )}
@@ -104,7 +104,7 @@ export const GameCard = ({
         )}
         
         {/* SVG Card Image */}
-        <img
+        <img 
           src={cardImageSrc} 
           alt={`${card.category} Card ${card.id}`}
           className="w-full h-auto max-h-[85vh] sm:max-h-[75vh] md:max-h-[80vh] object-contain rounded-2xl block"
