@@ -41,6 +41,7 @@ const Game = () => {
   const [soundEnabled, setSoundEnabled] = useState(true);
   const [hapticEnabled, setHapticEnabled] = useState(true);
   const [showExitDialog, setShowExitDialog] = useState(false);
+  const [isTransitioning, setIsTransitioning] = useState(false);
 
   // Disable scrolling on mobile
   useEffect(() => {
@@ -86,10 +87,14 @@ const Game = () => {
     }
   }, []);
 
+  const currentCard = useMemo(() => deck[currentIndex], [deck, currentIndex]);
+
   const drawCard = useCallback((exitDirection?: 'left' | 'right') => {
-    if (currentIndex >= deck.length - 1) {
+    if (currentIndex >= deck.length - 1 || isTransitioning) {
       return;
     }
+    
+    setIsTransitioning(true);
     
     // Mark current card as exiting if direction provided
     if (exitDirection && currentCard) {
@@ -102,13 +107,18 @@ const Game = () => {
     
     setCardAccepted(false);
     
-    // Load new card while old one is animating out
+    // Wait for exit animation to complete (300ms), then load new card
     setTimeout(() => {
       setCurrentIndex(currentIndex + 1);
       setShowCard(true);
       playSound('cardDraw', soundEnabled);
-    }, 250);
-  }, [currentIndex, deck, soundEnabled]);
+      
+      // Reset transition state after enter animation
+      setTimeout(() => {
+        setIsTransitioning(false);
+      }, 100);
+    }, 320);
+  }, [currentIndex, deck, soundEnabled, isTransitioning, currentCard]);
 
   const getCategoryColor = useCallback((category: string) => {
     const colors: Record<string, string> = {
@@ -130,6 +140,8 @@ const Game = () => {
   }, [hapticEnabled]);
 
   const handleComplete = useCallback(() => {
+    if (isTransitioning) return;
+    
     const currentPlayer = players[currentPlayerIndex];
     
     // Update player stats
@@ -144,9 +156,11 @@ const Game = () => {
     setCurrentPlayerIndex((currentPlayerIndex + 1) % players.length);
     playSound('playerChange', soundEnabled);
     drawCard('right');
-  }, [currentPlayerIndex, players, drawCard, soundEnabled]);
+  }, [currentPlayerIndex, players, drawCard, soundEnabled, isTransitioning]);
 
   const handleDrink = useCallback(() => {
+    if (isTransitioning) return;
+    
     const drinks = deck[currentIndex]?.drinks || 0;
     const currentPlayer = players[currentPlayerIndex];
     
@@ -163,7 +177,7 @@ const Game = () => {
     setCurrentPlayerIndex((currentPlayerIndex + 1) % players.length);
     playSound('playerChange', soundEnabled);
     drawCard('left');
-  }, [currentIndex, deck, currentPlayerIndex, players, drawCard, soundEnabled]);
+  }, [currentIndex, deck, currentPlayerIndex, players, drawCard, soundEnabled, isTransitioning]);
 
   const showStatistics = useCallback(() => {
     navigate("/statistics", { 
@@ -205,13 +219,13 @@ const Game = () => {
   const { swipeState: cardSwipeState, swipeHandlers: cardSwipeHandlers } = useSwipe({
     onSwipeLeft: () => {
       // Swipe left = drink (skip task)
-      if (currentIndex >= 0) {
+      if (currentIndex >= 0 && !isTransitioning) {
         handleDrink();
       }
     },
     onSwipeRight: () => {
       // Swipe right = complete task
-      if (currentIndex >= 0) {
+      if (currentIndex >= 0 && !isTransitioning) {
         handleComplete();
       }
     },
@@ -225,7 +239,6 @@ const Game = () => {
     },
   });
 
-  const currentCard = useMemo(() => deck[currentIndex], [deck, currentIndex]);
   const cardsRemaining = useMemo(() => deck.length - currentIndex - 1, [deck.length, currentIndex]);
 
   // Prefetch next card image

@@ -54,16 +54,19 @@ export const GameCard = memo(({
   const exitTransform = isExiting 
     ? `translateX(${exitDirection === 'left' ? '-150vw' : '150vw'}) rotate(${exitDirection === 'left' ? '-30deg' : '30deg'})`
     : `translateX(${swipeDistance}px) rotate(${rotation}deg)`;
+  
+  // Determine if card should animate
+  const shouldAnimate = !isExiting && !isCardBack;
 
   return (
     <div 
-      className={`card-flip w-full relative touch-none flex items-center justify-center ${!isExiting && !isCardBack ? 'animate-enter' : ''}`}
+      className={`w-full relative touch-none flex items-center justify-center ${shouldAnimate ? 'animate-enter' : ''}`}
       style={{
         transform: exitTransform,
         opacity: isExiting ? 0 : opacity,
-        transition: isExiting ? 'transform 0.25s ease-in, opacity 0.25s ease-in' : 'none',
+        transition: isExiting ? 'transform 0.3s ease-out, opacity 0.3s ease-out' : swipeDistance !== 0 ? 'none' : 'transform 0.2s ease-out',
         cursor: isCardBack ? 'default' : 'grab',
-        willChange: isExiting || swipeDistance !== 0 ? 'transform, opacity' : 'auto'
+        willChange: (isExiting || swipeDistance !== 0) ? 'transform, opacity' : 'auto'
       }}
       onTouchStart={onTouchStart}
       onTouchMove={onTouchMove}
