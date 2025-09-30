@@ -27,7 +27,6 @@ const Rules = () => {
           <section className="bg-card border border-border/50 rounded-2xl p-6 space-y-4">
             <h2 className="text-2xl font-bold text-primary">Grundregeln</h2>
             <div className="space-y-4 text-muted-foreground">
-              <p>Das Spiel verläuft rundenbasiert im Uhrzeigersinn.</p>
               
               <div className="space-y-3">
                 <div>
@@ -46,14 +45,14 @@ const Rules = () => {
                       <strong className="text-foreground">Option 1 – Aufgabe annehmen</strong>
                       <ul className="ml-4 mt-1 space-y-1">
                         <li>• Der Spieler führt die auf der Karte beschriebene Aufgabe aus.</li>
-                        <li>• Schafft der Spieler die Aufgabe nicht, muss er die angegebene Anzahl an Schlücken trinken. (steht auf der Karte oben rechts und unten links).</li>
+                        <li>• Schafft der Spieler die Aufgabe nicht, muss er die angegebene Anzahl an Schlücken trinken.</li>
                       </ul>
                     </li>
 
                     <li className="ml-4">
                       <strong className="text-foreground">Option 2 – Aufgabe verweigern</strong>
                       <ul className="ml-4 mt-1 space-y-1">
-                        <li>• Der Spieler lehnt die Aufgabe ab und trinkt die angegebene Anzahl an Schlücken (steht auf der Karte oben rechts und unten links).</li>
+                        <li>• Der Spieler lehnt die Aufgabe ab und trinkt die angegebene Anzahl an Schlücken.</li>
                       </ul>
                     </li>
 
@@ -86,10 +85,19 @@ const Rules = () => {
           {/* Categories */}
           <section className="space-y-4">
             <h2 className="text-2xl font-bold text-primary">Kartenkategorien</h2>
-            <p className="text-muted-foreground">Die Karten sind in fünf Kategorien unterteilt:</p>
             
             <div className="grid gap-4 md:grid-cols-2">
-              <div className="bg-card border border-category-truth/50 rounded-xl p-5 space-y-2">
+              <div className="bg-card border border-category-wildcard/50 rounded-xl p-5 space-y-2 md:col-span-2">
+                <div className="flex items-center gap-3 mb-2">
+                  <CategoryIcon category="Wildcard" className="w-6 h-6" />
+                  <h3 className="text-xl font-semibold text-category-wildcard">Wild Cards</h3>
+                </div>
+                <p className="text-sm text-muted-foreground">
+                  Spezialkarten mit einzigartigen Effekten, die das Spiel beeinflussen können.
+                </p>
+              </div>
+
+              <div className="bg-card border border-category-truth/50 rounded-xl p-5 space-y-2 md:col-span-2">
                 <div className="flex items-center gap-3 mb-2">
                   <CategoryIcon category="Wahrheit" className="w-6 h-6" />
                   <h3 className="text-xl font-semibold text-category-truth">Wahrheit</h3>
@@ -133,16 +141,6 @@ const Rules = () => {
                   Der Spieler wählt einen Gegner für einen Wettkampf. Der Verlierer trinkt.
                 </p>
               </div>
-
-              <div className="bg-card border border-category-wildcard/50 rounded-xl p-5 space-y-2 md:col-span-2">
-                <div className="flex items-center gap-3 mb-2">
-                  <CategoryIcon category="Wildcard" className="w-6 h-6" />
-                  <h3 className="text-xl font-semibold text-category-wildcard">Wild Cards</h3>
-                </div>
-                <p className="text-sm text-muted-foreground">
-                  Spezialkarten mit einzigartigen Effekten, die das Spiel beeinflussen können.
-                </p>
-              </div>
             </div>
           </section>
 
@@ -157,6 +155,29 @@ const Rules = () => {
               <li className="flex items-start gap-2">
                 <span className="text-primary font-bold mt-1">•</span>
                 <span><strong className="text-foreground">No-Chill-Regel:</strong> Bei Unklarheiten entscheidet die Gruppe demokratisch.</span>
+              </li>
+            </ul>
+          </section>
+
+          {/* Important notes */}
+          <section className="bg-destructive/10 border border-destructive/30 rounded-2xl p-6 space-y-3">
+            <h2 className="text-2xl font-bold text-destructive">Wichtige Hinweise</h2>
+            <ul className="space-y-2 text-sm text-foreground/90">
+              <li className="flex items-start gap-2">
+                <span className="text-destructive font-bold mt-1">⚠</span>
+                <span>Spielt verantwortungsvoll und kennt eure Grenzen!</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-destructive font-bold mt-1">⚠</span>
+                <span>Niemand wird gezwungen, Alkohol zu trinken. Respektiert gegenseitige Grenzen.</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-destructive font-bold mt-1">⚠</span>
+                <span>Fahrt niemals unter Alkoholeinfluss!</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-destructive font-bold mt-1">⚠</span>
+                <span>Sorgt dafür, dass ausreichend Wasser und alkoholfreie Getränke verfügbar sind.</span>
               </li>
             </ul>
           </section>
