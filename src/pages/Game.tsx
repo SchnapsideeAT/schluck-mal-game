@@ -291,10 +291,7 @@ const Game = () => {
       </div>
 
       {/* Main container with proper spacing */}
-      <div className="flex-1 flex flex-col"
-      >
-
-
+      <div className="flex-1 flex flex-col">
         {/* Card display area */}
         <div className="flex-1 flex items-center justify-center py-8">
           {currentIndex === -1 ? (
@@ -337,17 +334,17 @@ const Game = () => {
             </div>
           ) : null}
         </div>
-
-        {/* Current Player Display */}
-        {players.length > 0 && currentIndex >= 0 && currentCard && (
-          <div className="flex justify-center pb-6">
-            <div className={`flex items-center justify-center gap-3 ${getCategoryColor(currentCard.category)} py-2 px-8 rounded-full transition-colors duration-500 ease-in-out`}>
-              <span className="text-2xl drop-shadow-lg">{players[currentPlayerIndex].avatar}</span>
-              <span className="text-lg font-bold text-white drop-shadow-lg">{players[currentPlayerIndex].name}</span>
-            </div>
-          </div>
-        )}
       </div>
+
+      {/* Current Player Display - Separate Section */}
+      {players.length > 0 && currentIndex >= 0 && currentCard && (
+        <div className={`${getCategoryColor(currentCard.category)} transition-colors duration-500 ease-in-out py-3`}>
+          <div className="flex items-center justify-center gap-3">
+            <span className="text-2xl drop-shadow-lg">{players[currentPlayerIndex].avatar}</span>
+            <span className="text-lg font-bold text-white drop-shadow-lg">{players[currentPlayerIndex].name}</span>
+          </div>
+        </div>
+      )}
 
       {/* Invisible Bottom Swipe Area for Statistics */}
       <div 
