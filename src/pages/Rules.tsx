@@ -135,7 +135,7 @@ const Rules = () => {
                 <p className="text-sm text-muted-foreground">
                   Der Spieler muss eine Frage ehrlich beantworten oder trinken.
                 </p>
-                <div className="text-sm text-muted-foreground ml-3 space-y-1">
+                <div className="text-sm text-muted-foreground space-y-1">
                   <p><strong className="text-foreground">Unterkategorie:</strong></p>
                   <p>• „Ich habe noch nie": Wer die genannte Aktion bereits gemacht hat, muss trinken.</p>
                   <p>• „Wählt den": Die Gruppe wählt eine Person, die trinken muss.</p>
