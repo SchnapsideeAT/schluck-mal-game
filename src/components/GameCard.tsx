@@ -8,6 +8,9 @@ interface GameCardProps {
   onTouchStart?: (e: React.TouchEvent) => void;
   onTouchMove?: (e: React.TouchEvent) => void;
   onTouchEnd?: () => void;
+  onMouseDown?: (e: React.MouseEvent) => void;
+  onMouseMove?: (e: React.MouseEvent) => void;
+  onMouseUp?: () => void;
   showGlow?: boolean;
 }
 
@@ -26,6 +29,9 @@ export const GameCard = ({
   onTouchStart,
   onTouchMove,
   onTouchEnd,
+  onMouseDown,
+  onMouseMove,
+  onMouseUp,
   showGlow = true
 }: GameCardProps) => {
   const cardImageSrc = getCardImage(card.category, card.id);
@@ -51,10 +57,14 @@ export const GameCard = ({
         transform: exitTransform,
         opacity: isExiting ? 0 : opacity,
         transition: isExiting ? 'transform 0.5s ease-in, opacity 0.5s ease-in' : 'none',
+        cursor: 'grab'
       }}
       onTouchStart={onTouchStart}
       onTouchMove={onTouchMove}
       onTouchEnd={onTouchEnd}
+      onMouseDown={onMouseDown}
+      onMouseMove={onMouseMove}
+      onMouseUp={onMouseUp}
     >
       
       {/* Left Screen Edge Glow (Red) - when swiping left */}
