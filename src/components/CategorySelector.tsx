@@ -1,7 +1,6 @@
 import { CardCategory } from "@/types/card";
 import { CategoryIcon } from "./CategoryIcon";
 import { getCategoryCount } from "@/utils/cardUtils";
-import { Check } from "lucide-react";
 
 interface CategorySelectorProps {
   selectedCategories: CardCategory[];
@@ -34,9 +33,10 @@ export const CategorySelector = ({ selectedCategories, onCategoriesChange }: Cat
       <h3 className="text-lg font-semibold text-foreground mb-4">
         Wähle deine Kategorien:
       </h3>
-      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-        {categories.map((category) => {
+      <div className="grid grid-cols-2 gap-3">
+        {categories.map((category, index) => {
           const isSelected = selectedCategories.includes(category);
+          const isLastOdd = categories.length % 2 !== 0 && index === categories.length - 1;
           
           return (
             <button
@@ -44,13 +44,8 @@ export const CategorySelector = ({ selectedCategories, onCategoriesChange }: Cat
               onClick={() => toggleCategory(category)}
               className={`flex flex-col items-center gap-2 bg-muted/30 hover:bg-muted/50 rounded-lg p-4 transition-all duration-200 ${
                 isSelected ? 'ring-2 ring-primary shadow-md' : ''
-              }`}
+              } ${isLastOdd ? 'col-span-2' : ''}`}
             >
-              <div className={`flex items-center justify-center h-5 w-5 shrink-0 rounded border-2 transition-colors ${
-                isSelected ? 'bg-primary border-primary' : 'border-muted-foreground/50'
-              }`}>
-                {isSelected && <Check className="h-3 w-3 text-primary-foreground" />}
-              </div>
               <CategoryIcon category={category} />
               <span className={`text-sm font-medium ${categoryColors[category]} text-center`}>
                 {category}
