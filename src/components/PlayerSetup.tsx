@@ -80,7 +80,7 @@ export const PlayerSetup = ({
       {/* Minimum Players Warning */}
       {players.length < 2 && <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-xl p-4 text-center">
           <p className="text-sm text-yellow-600 dark:text-yellow-400">
-            Mindestens 2 Spieler empfohlen (aktuell: {players.length})
+            Mindestens 2 Spieler empfohlen
           </p>
         </div>}
     </div>;
