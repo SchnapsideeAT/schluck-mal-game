@@ -339,11 +339,11 @@ const Game = () => {
         </div>
 
         {/* Current Player Display */}
-        {players.length > 0 && currentIndex >= 0 && (
+        {players.length > 0 && currentIndex >= 0 && currentCard && (
           <div className="flex justify-center pb-6">
-            <div className="inline-flex items-center gap-3 bg-gradient-to-r from-primary/20 to-primary/10 border-2 border-primary/40 rounded-md px-6 py-3">
-              <span className="text-3xl">{players[currentPlayerIndex].avatar}</span>
-              <span className="text-xl font-bold text-primary">{players[currentPlayerIndex].name}</span>
+            <div className={`flex items-center justify-center gap-3 ${getCategoryColor(currentCard.category)} py-2 px-8 rounded-full`}>
+              <span className="text-2xl drop-shadow-lg">{players[currentPlayerIndex].avatar}</span>
+              <span className="text-lg font-bold text-white drop-shadow-lg">{players[currentPlayerIndex].name}</span>
             </div>
           </div>
         )}
