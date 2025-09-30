@@ -48,7 +48,7 @@ export const GameCard = ({
       style={{
         transform: exitTransform,
         opacity: isExiting ? 0 : opacity,
-        transition: isExiting ? 'transform 0.5s ease-in, opacity 0.5s ease-in' : (swipeDistance === 0 ? 'transform 0.3s ease, opacity 0.3s ease' : 'none'),
+        transition: isExiting ? 'transform 0.5s ease-in, opacity 0.5s ease-in' : 'none',
       }}
       onTouchStart={onTouchStart}
       onTouchMove={onTouchMove}
