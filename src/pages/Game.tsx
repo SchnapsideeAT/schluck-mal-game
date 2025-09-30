@@ -103,13 +103,13 @@ const Game = () => {
 
   const getCategoryColor = useCallback((category: string) => {
     const colors: Record<string, string> = {
-      Wahrheit: "category-truth",
-      Aufgabe: "category-task",
-      Gruppe: "category-group",
-      Duell: "category-duel",
-      Wildcard: "category-wildcard",
+      Wahrheit: "bg-category-truth",
+      Aufgabe: "bg-category-task",
+      Gruppe: "bg-category-group",
+      Duell: "bg-category-duel",
+      Wildcard: "bg-category-wildcard",
     };
-    return colors[category] || "primary";
+    return colors[category] || "bg-primary";
   }, []);
 
   const handleAccept = useCallback(() => {
