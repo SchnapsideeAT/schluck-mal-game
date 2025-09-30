@@ -20,3 +20,18 @@ export interface GameState {
   deck: Card[];
   players: Player[];
 }
+
+export interface Deck {
+  id: string;
+  name: string;
+  description: string;
+  categories: CardCategory[];
+  isPurchased: boolean;
+  price?: number;
+  cardCount: number;
+}
+
+export interface CategoryCount {
+  category: CardCategory;
+  count: number;
+}

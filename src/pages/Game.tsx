@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { GameCard } from "@/components/GameCard";
 import { shuffleDeck } from "@/utils/cardUtils";
-import { Card, Player } from "@/types/card";
+import { Card, Player, CardCategory } from "@/types/card";
 import { ArrowRight, Beer, Check, Home, Settings } from "lucide-react";
 import { useSwipe } from "@/hooks/useSwipe";
 import { saveGameState, loadGameState, clearGameState } from "@/utils/localStorage";
@@ -25,6 +25,7 @@ const Game = () => {
   const location = useLocation();
   const state = location.state as { 
     players?: Player[];
+    selectedCategories?: CardCategory[];
     deck?: Card[];
     currentIndex?: number;
     currentPlayerIndex?: number;
@@ -81,7 +82,7 @@ const Game = () => {
     
     // Initialize deck if not provided
     if (!state?.deck || state.deck.length === 0) {
-      const shuffled = shuffleDeck();
+      const shuffled = shuffleDeck(state?.selectedCategories);
       setDeck(shuffled);
     }
   }, []);

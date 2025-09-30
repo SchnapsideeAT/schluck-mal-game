@@ -2,15 +2,22 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Users } from "lucide-react";
-import { CategoryIcon } from "@/components/CategoryIcon";
 import { PlayerSetup } from "@/components/PlayerSetup";
 import { Tutorial } from "@/components/Tutorial";
-import { Player } from "@/types/card";
+import { CategorySelector } from "@/components/CategorySelector";
+import { Player, CardCategory } from "@/types/card";
 import { playSound } from "@/utils/sounds";
 
 const Setup = () => {
   const navigate = useNavigate();
   const [players, setPlayers] = useState<Player[]>([]);
+  const [selectedCategories, setSelectedCategories] = useState<CardCategory[]>([
+    "Wahrheit",
+    "Aufgabe",
+    "Gruppe",
+    "Duell",
+    "Wildcard"
+  ]);
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-6">
@@ -29,32 +36,11 @@ const Setup = () => {
         </div>
 
 
-        {/* Categories preview */}
-        <div className="bg-card border border-border/50 rounded-2xl p-6">
-          <h3 className="text-lg font-semibold text-foreground mb-4">Kartenkategorien im Spiel:</h3>
-          <div className="flex flex-wrap items-center justify-center gap-3">
-            <div className="flex items-center gap-2 bg-muted/50 rounded-lg px-3 py-2">
-              <CategoryIcon category="Wahrheit" />
-              <span className="text-sm font-medium text-category-truth">Wahrheit</span>
-            </div>
-            <div className="flex items-center gap-2 bg-muted/50 rounded-lg px-3 py-2">
-              <CategoryIcon category="Aufgabe" />
-              <span className="text-sm font-medium text-category-task">Aufgabe</span>
-            </div>
-            <div className="flex items-center gap-2 bg-muted/50 rounded-lg px-3 py-2">
-              <CategoryIcon category="Gruppe" />
-              <span className="text-sm font-medium text-category-group">Gruppe</span>
-            </div>
-            <div className="flex items-center gap-2 bg-muted/50 rounded-lg px-3 py-2">
-              <CategoryIcon category="Duell" />
-              <span className="text-sm font-medium text-category-duel">Duell</span>
-            </div>
-            <div className="flex items-center gap-2 bg-muted/50 rounded-lg px-3 py-2">
-              <CategoryIcon category="Wildcard" />
-              <span className="text-sm font-medium text-category-wildcard">Wildcard</span>
-            </div>
-          </div>
-        </div>
+        {/* Category Selector */}
+        <CategorySelector 
+          selectedCategories={selectedCategories}
+          onCategoriesChange={setSelectedCategories}
+        />
 
         {/* Player Setup Component */}
         <PlayerSetup players={players} onPlayersChange={setPlayers} />
@@ -66,8 +52,12 @@ const Setup = () => {
               playSound('error', true);
               return;
             }
+            if (selectedCategories.length === 0) {
+              playSound('error', true);
+              return;
+            }
             playSound('success', true);
-            navigate("/game", { state: { players } });
+            navigate("/game", { state: { players, selectedCategories } });
           }}
           size="lg"
           className="w-full h-16 text-lg bg-primary hover:shadow-[var(--shadow-button)] transition-all duration-300 hover:scale-105"
