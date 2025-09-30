@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo, useCallback } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { GameCard } from "@/components/GameCard";
+import { CardBack } from "@/components/CardBack";
 import { shuffleDeck } from "@/utils/cardUtils";
 import { Card, Player, CardCategory } from "@/types/card";
 import { ArrowRight, Beer, Check, Home, Settings } from "lucide-react";
@@ -333,15 +334,24 @@ const Game = () => {
               </div>
             </div>
           ) : showCard && currentCard ? (
-            <div className="w-full mx-auto">
-              {/* Current card */}
-              <GameCard 
-                key={currentIndex}
-                card={currentCard}
-                swipeDistance={cardSwipeState.swipeDistance}
-                swipeDirection={cardSwipeState.swipeDirection}
-                {...cardSwipeHandlers}
-              />
+            <div className="w-full mx-auto relative">
+              {/* Card back (behind) - only show if there are more cards */}
+              {currentIndex < deck.length - 1 && (
+                <div className="absolute inset-0 z-0" style={{ transform: 'translate(8px, 8px)' }}>
+                  <CardBack />
+                </div>
+              )}
+              
+              {/* Current card (on top) */}
+              <div className="relative z-10">
+                <GameCard 
+                  key={currentIndex}
+                  card={currentCard}
+                  swipeDistance={cardSwipeState.swipeDistance}
+                  swipeDirection={cardSwipeState.swipeDirection}
+                  {...cardSwipeHandlers}
+                />
+              </div>
             </div>
           ) : null}
         </div>
