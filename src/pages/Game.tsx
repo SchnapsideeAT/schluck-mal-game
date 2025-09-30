@@ -228,8 +228,8 @@ const Game = () => {
     });
   }, [navigate, players, deck, currentIndex, currentPlayerIndex, showCard, cardAccepted]);
 
-  // Swipe gesture handlers
-  const { swipeState, swipeHandlers } = useSwipe({
+  // Swipe gesture handlers for card (left/right only)
+  const { swipeState: cardSwipeState, swipeHandlers: cardSwipeHandlers } = useSwipe({
     onSwipeLeft: () => {
       // Swipe left = drink (skip task)
       if (currentIndex >= 0) {
@@ -242,6 +242,10 @@ const Game = () => {
         handleComplete();
       }
     },
+  });
+
+  // Swipe gesture handlers for bottom area (up only)
+  const { swipeHandlers: bottomSwipeHandlers } = useSwipe({
     onSwipeUp: () => {
       // Swipe up = show statistics
       showStatistics();
@@ -354,24 +358,30 @@ const Game = () => {
             <div className="relative z-10">
               <GameCard 
                 card={currentCard}
-                swipeDistance={swipeState.swipeDistance}
-                swipeDirection={swipeState.swipeDirection}
-                {...swipeHandlers}
+                swipeDistance={cardSwipeState.swipeDistance}
+                swipeDirection={cardSwipeState.swipeDirection}
+                {...cardSwipeHandlers}
               />
             </div>
           </div>
         ) : null}
       </div>
 
-      {/* Current Player Display - Bottom */}
-      {players.length > 0 && currentIndex >= 0 && (
-        <div className="flex justify-center mt-6">
-          <div className="inline-flex items-center gap-3 bg-gradient-to-r from-primary/20 to-primary/10 border-2 border-primary/40 rounded-md px-6 py-3">
-            <span className="text-3xl">{players[currentPlayerIndex].avatar}</span>
-            <span className="text-xl font-bold text-primary">{players[currentPlayerIndex].name}</span>
+      {/* Bottom Swipe Area - Stats and Player Display */}
+      <div 
+        className="fixed bottom-0 left-0 right-0 h-[30vh] flex flex-col justify-end pb-12 px-6 pointer-events-auto"
+        {...bottomSwipeHandlers}
+      >
+        {/* Current Player Display */}
+        {players.length > 0 && currentIndex >= 0 && (
+          <div className="flex justify-center">
+            <div className="inline-flex items-center gap-3 bg-gradient-to-r from-primary/20 to-primary/10 border-2 border-primary/40 rounded-md px-6 py-3">
+              <span className="text-3xl">{players[currentPlayerIndex].avatar}</span>
+              <span className="text-xl font-bold text-primary">{players[currentPlayerIndex].name}</span>
+            </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
 
       {/* Exit Confirmation Dialog */}
       <AlertDialog open={showExitDialog} onOpenChange={setShowExitDialog}>
