@@ -186,14 +186,6 @@ const Game = () => {
         </div>
       </div>
 
-      {/* Cards Remaining Display */}
-      <div className="flex justify-center mb-6">
-        <div className="inline-flex flex-col items-center gap-1">
-          <p className="text-sm text-muted-foreground">Verbleibende Karten</p>
-          <p className="text-2xl font-bold text-primary">{cardsRemaining}</p>
-        </div>
-      </div>
-
       {/* Card display area */}
       <div className="flex-1 flex items-center justify-center">
         {currentIndex === -1 ? (
