@@ -84,7 +84,7 @@ export const PlayerSetup = ({ players, onPlayersChange }: PlayerSetupProps) => {
             value={newPlayerName}
             onChange={(e) => setNewPlayerName(e.target.value)}
             onKeyPress={handleKeyPress}
-            maxLength={20}
+            maxLength={10}
             className="flex-1"
           />
           <Button
