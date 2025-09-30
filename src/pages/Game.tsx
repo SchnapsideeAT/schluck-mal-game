@@ -221,6 +221,7 @@ const Game = () => {
                   card={deck[currentIndex + 1]}
                   swipeDistance={0}
                   swipeDirection={null}
+                  showGlow={false}
                 />
               </div>
             )}

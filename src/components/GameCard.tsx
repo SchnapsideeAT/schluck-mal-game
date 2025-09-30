@@ -8,6 +8,7 @@ interface GameCardProps {
   onTouchStart?: (e: React.TouchEvent) => void;
   onTouchMove?: (e: React.TouchEvent) => void;
   onTouchEnd?: () => void;
+  showGlow?: boolean;
 }
 
 const categoryColorMap: Record<CardCategory, string> = {
@@ -24,7 +25,8 @@ export const GameCard = ({
   swipeDirection,
   onTouchStart,
   onTouchMove,
-  onTouchEnd 
+  onTouchEnd,
+  showGlow = true
 }: GameCardProps) => {
   const cardImageSrc = getCardImage(card.category, card.id);
   const categoryColor = categoryColorMap[card.category];
@@ -82,14 +84,16 @@ export const GameCard = ({
       {/* Card Container with Glow */}
       <div className="relative inline-block">
         {/* Glow Effect Background */}
-        <div 
-          className="absolute inset-0 rounded-2xl"
-          style={{
-            boxShadow: `0 0 20px 3px hsl(${categoryColor} / 0.25), 0 0 40px 8px hsl(${categoryColor} / 0.12)`,
-            animation: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-            zIndex: -1
-          }}
-        />
+        {showGlow && (
+          <div 
+            className="absolute inset-0 rounded-2xl"
+            style={{
+              boxShadow: `0 0 20px 3px hsl(${categoryColor} / 0.25), 0 0 40px 8px hsl(${categoryColor} / 0.12)`,
+              animation: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+              zIndex: -1
+            }}
+          />
+        )}
         
         {/* SVG Card Image */}
         <img 
