@@ -18,12 +18,6 @@ const Home = () => {
       <div className="min-h-screen flex flex-col items-center justify-center p-6 relative overflow-hidden">
         
         <div className="slide-up max-w-lg w-full space-y-8 text-center relative z-10">
-          {/* Background glow effect behind UI */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full -z-10 pointer-events-none" style={{
-          background: `radial-gradient(circle, hsl(48 91% 60% / 0.25) 0%, hsl(48 91% 60% / 0.12) 50%, transparent 70%)`,
-          filter: 'blur(60px)',
-          animation: 'pulseGlowBg 3s ease-in-out infinite'
-        }} />
           
           {/* Logo/Title */}
           <div className="space-y-6">
