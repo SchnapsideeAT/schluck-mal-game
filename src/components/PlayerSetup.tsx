@@ -29,7 +29,8 @@ export const PlayerSetup = ({
       if (lastPlayers && lastPlayers.length > 0) {
         setShowLastPlayers(true);
         toast("Letzte Spieler gefunden", {
-          description: "Möchtest du die gleichen Spieler verwenden?",
+          description: "Tippe auf 'Laden' um sie zu verwenden.",
+          duration: 5000,
           action: {
             label: "Laden",
             onClick: () => {
@@ -40,6 +41,10 @@ export const PlayerSetup = ({
               })));
               toast.success("Spieler geladen!");
             }
+          },
+          cancel: {
+            label: "Ignorieren",
+            onClick: () => {}
           }
         });
       }
