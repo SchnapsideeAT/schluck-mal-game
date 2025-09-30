@@ -1,4 +1,5 @@
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState } from "react";
+import { triggerHaptic, type HapticType } from "@/utils/haptics";
 
 interface SwipeHandlers {
   onSwipeLeft?: () => void;
@@ -26,16 +27,6 @@ export const useSwipe = (handlers: SwipeHandlers) => {
   const minSwipeDistance = 100; // Minimum distance for a swipe
   const swipeThreshold = 30; // Distance to show visual feedback (schneller trigger)
 
-  const triggerHaptic = (type: 'light' | 'medium' | 'heavy' = 'medium') => {
-    if ('vibrate' in navigator) {
-      const patterns = {
-        light: 10,
-        medium: 20,
-        heavy: 30,
-      };
-      navigator.vibrate(patterns[type]);
-    }
-  };
 
   const handleTouchStart = (e: React.TouchEvent) => {
     touchStartX.current = e.touches[0].clientX;
