@@ -163,7 +163,6 @@ const Game = () => {
     
     // Sound effect
     playSound('swipeRight', soundEnabled);
-    playSound('success', soundEnabled);
     
     // Move to next player
     setCurrentPlayerIndex((currentPlayerIndex + 1) % players.length);
