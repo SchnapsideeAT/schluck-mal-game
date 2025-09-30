@@ -36,6 +36,7 @@ export const GameCard = ({
 }: GameCardProps) => {
   const cardImageSrc = getCardImage(card.category, card.id);
   const categoryColor = categoryColorMap[card.category];
+  const isSwiping = swipeDistance !== 0;
 
   // Check if card is exiting
   const isExiting = (card as any).exiting;
@@ -56,7 +57,11 @@ export const GameCard = ({
       style={{
         transform: exitTransform,
         opacity: isExiting ? 0 : opacity,
-        transition: isExiting ? 'transform 0.5s ease-in, opacity 0.5s ease-in' : 'none',
+        transition: isExiting 
+          ? 'transform 0.5s ease-in, opacity 0.5s ease-in' 
+          : isSwiping 
+            ? 'none' 
+            : 'transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease-out',
         cursor: 'grab'
       }}
       onTouchStart={onTouchStart}
