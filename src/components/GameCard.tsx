@@ -85,7 +85,7 @@ export const GameCard = ({
         <div 
           className="absolute inset-0 rounded-2xl"
           style={{
-            boxShadow: `0 0 30px 5px hsl(${categoryColor} / 0.6), 0 0 60px 15px hsl(${categoryColor} / 0.3)`,
+            boxShadow: `0 0 20px 3px hsl(${categoryColor} / 0.25), 0 0 40px 8px hsl(${categoryColor} / 0.12)`,
             animation: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
             zIndex: -1
           }}
@@ -94,9 +94,13 @@ export const GameCard = ({
         {/* SVG Card Image */}
         <img 
           src={cardImageSrc} 
-          alt={`${card.category} Card`}
+          alt={`${card.category} Card ${card.id}`}
           className="w-full h-auto max-h-[85vh] sm:max-h-[75vh] md:max-h-[80vh] object-contain rounded-2xl block"
           draggable={false}
+          onError={(e) => {
+            console.error(`Failed to load ${card.category} card ${card.id}:`, cardImageSrc);
+            console.error('Image element:', e.currentTarget);
+          }}
         />
       </div>
     </div>
