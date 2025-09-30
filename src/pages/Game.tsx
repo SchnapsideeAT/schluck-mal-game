@@ -166,11 +166,6 @@ const Game = () => {
           <Home className="w-5 h-5" />
         </Button>
         
-        <div className="text-center">
-          <p className="text-sm text-muted-foreground">Verbleibende Karten</p>
-          <p className="text-2xl font-bold text-primary">{cardsRemaining}</p>
-        </div>
-
         <div className="flex gap-2">
           <Button
             onClick={showStatistics}
@@ -188,6 +183,14 @@ const Game = () => {
           >
             <RotateCcw className="w-5 h-5" />
           </Button>
+        </div>
+      </div>
+
+      {/* Cards Remaining Display */}
+      <div className="flex justify-center mb-6">
+        <div className="inline-flex flex-col items-center gap-1 bg-gradient-to-r from-primary/20 to-primary/10 border-2 border-primary/40 rounded-md px-6 py-3">
+          <p className="text-sm text-muted-foreground">Verbleibende Karten</p>
+          <p className="text-2xl font-bold text-primary">{cardsRemaining}</p>
         </div>
       </div>
 
