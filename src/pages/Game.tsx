@@ -188,7 +188,7 @@ const Game = () => {
 
       {/* Cards Remaining Display */}
       <div className="flex justify-center mb-6">
-        <div className="inline-flex flex-col items-center gap-1 bg-gradient-to-r from-primary/20 to-primary/10 border-2 border-primary/40 rounded-md px-6 py-3">
+        <div className="inline-flex flex-col items-center gap-1">
           <p className="text-sm text-muted-foreground">Verbleibende Karten</p>
           <p className="text-2xl font-bold text-primary">{cardsRemaining}</p>
         </div>
