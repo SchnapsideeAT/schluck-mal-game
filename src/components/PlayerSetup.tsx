@@ -65,7 +65,7 @@ export const PlayerSetup = ({
       </div>
 
       {/* Players List */}
-      {players.length > 0 && <div className="bg-card border border-border/50 rounded-2xl p-6 space-y-3">
+      {players.length > 0 && <div className="bg-card border border-border/50 rounded-2xl p-6 space-y-4">
           <h3 className="text-lg font-semibold text-foreground">
             Spieler ({players.length})
           </h3>
