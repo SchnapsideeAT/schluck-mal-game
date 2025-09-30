@@ -154,7 +154,7 @@ const Game = () => {
   const cardsRemaining = deck.length - currentIndex - 1;
 
   return (
-    <div className="min-h-screen flex flex-col p-6 pb-32 relative">
+    <div className="min-h-screen flex flex-col p-4 pb-28 relative">
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <Button
@@ -201,7 +201,7 @@ const Game = () => {
       </div>
 
       {/* Card display area */}
-      <div className="flex-1 flex items-center justify-center">
+      <div className="flex-1 flex items-center justify-center min-h-0">
         {currentIndex === -1 ? (
           <div className="text-center space-y-6 slide-up">
             <div className="inline-flex items-center justify-center w-24 h-24 rounded-full bg-primary/20 border border-primary/50 pulse-glow">
@@ -213,7 +213,7 @@ const Game = () => {
             </div>
           </div>
         ) : showCard && currentCard ? (
-          <div className="w-full max-w-[98vw] sm:max-w-xl md:max-w-2xl mx-auto relative">
+          <div className="w-full h-full max-w-[95vw] sm:max-w-xl md:max-w-2xl mx-auto relative">
             {/* Next card (behind) */}
             {currentIndex < deck.length - 1 && (
               <div className="absolute inset-0 z-0">
