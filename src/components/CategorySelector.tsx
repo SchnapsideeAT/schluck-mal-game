@@ -1,7 +1,7 @@
 import { CardCategory } from "@/types/card";
 import { CategoryIcon } from "./CategoryIcon";
-import { Checkbox } from "./ui/checkbox";
 import { getCategoryCount } from "@/utils/cardUtils";
+import { Check } from "lucide-react";
 
 interface CategorySelectorProps {
   selectedCategories: CardCategory[];
@@ -47,11 +47,11 @@ export const CategorySelector = ({ selectedCategories, onCategoriesChange }: Cat
                 isSelected ? 'ring-2 ring-primary shadow-md' : ''
               }`}
             >
-              <Checkbox 
-                checked={isSelected}
-                onCheckedChange={() => toggleCategory(category)}
-                className="pointer-events-none"
-              />
+              <div className={`flex items-center justify-center h-5 w-5 shrink-0 rounded border-2 transition-colors ${
+                isSelected ? 'bg-primary border-primary' : 'border-muted-foreground/50'
+              }`}>
+                {isSelected && <Check className="h-3 w-3 text-primary-foreground" />}
+              </div>
               <CategoryIcon category={category} />
               <span className={`text-sm font-medium ${categoryColors[category]} flex-1 text-left`}>
                 {category}
