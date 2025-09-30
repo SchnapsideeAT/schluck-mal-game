@@ -166,19 +166,10 @@ const Game = () => {
           <Home className="w-5 h-5" />
         </Button>
         
-        {/* Current Player Display */}
-        {players.length > 0 && currentIndex >= 0 ? (
-          <div className="inline-flex items-center gap-2 bg-primary/10 border border-primary/30 rounded-full px-4 py-2">
-            <span className="text-2xl">{players[currentPlayerIndex].avatar}</span>
-            <span className="font-semibold text-primary">{players[currentPlayerIndex].name}</span>
-            <span className="text-sm text-muted-foreground">ist dran</span>
-          </div>
-        ) : (
-          <div className="text-center">
-            <p className="text-sm text-muted-foreground">Verbleibende Karten</p>
-            <p className="text-2xl font-bold text-primary">{cardsRemaining}</p>
-          </div>
-        )}
+        <div className="text-center">
+          <p className="text-sm text-muted-foreground">Verbleibende Karten</p>
+          <p className="text-2xl font-bold text-primary">{cardsRemaining}</p>
+        </div>
 
         <div className="flex gap-2">
           <Button
@@ -242,6 +233,16 @@ const Game = () => {
           </div>
         ) : null}
       </div>
+
+      {/* Current Player Display - Bottom */}
+      {players.length > 0 && currentIndex >= 0 && (
+        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-20">
+          <div className="inline-flex items-center gap-3 bg-gradient-to-r from-primary/20 to-primary/10 border-2 border-primary/40 rounded-full px-6 py-3 shadow-lg shadow-primary/20 animate-in slide-in-from-bottom-4">
+            <span className="text-3xl animate-bounce">{players[currentPlayerIndex].avatar}</span>
+            <span className="text-xl font-bold text-primary">{players[currentPlayerIndex].name}</span>
+          </div>
+        </div>
+      )}
 
     </div>
   );
