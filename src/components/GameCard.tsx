@@ -92,12 +92,7 @@ export const GameCard = memo(({
       )}
       
       {/* Card Container with Glow */}
-      <div 
-        className="relative inline-block"
-        style={{ 
-          transform: window.innerWidth < 768 ? 'scale(1.6)' : 'scale(1)' 
-        }}
-      >
+      <div className="card-scale-container relative">
         {/* Glow Effect Background */}
         {showGlow && (
           <div 

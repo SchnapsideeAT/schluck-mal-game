@@ -337,7 +337,7 @@ const Game = () => {
             <div className="w-full mx-auto relative">
               {/* Card back (behind) - only show if there are more cards */}
               {currentIndex < deck.length - 1 && (
-                <div className="absolute inset-0 z-0" style={{ transform: 'translate(8px, 8px)' }}>
+                <div className="card-back-offset">
                   <CardBack />
                 </div>
               )}
