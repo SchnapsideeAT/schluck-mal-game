@@ -19,12 +19,18 @@ export const CategoryIcon = ({ category, className = "w-5 h-5" }: CategoryIconPr
   const color = categoryColorMap[category];
   
   return (
-    <img 
-      src={iconSrc} 
-      alt={`${category} Icon`}
+    <div 
       className={className}
       style={{
-        filter: `drop-shadow(0 0 6px ${color})`
+        maskImage: `url(${iconSrc})`,
+        maskRepeat: 'no-repeat',
+        maskPosition: 'center',
+        maskSize: 'contain',
+        WebkitMaskImage: `url(${iconSrc})`,
+        WebkitMaskRepeat: 'no-repeat',
+        WebkitMaskPosition: 'center',
+        WebkitMaskSize: 'contain',
+        backgroundColor: color,
       }}
     />
   );
