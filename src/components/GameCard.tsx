@@ -90,7 +90,12 @@ export const GameCard = ({
       )}
       
       {/* Card Container with Glow */}
-      <div className="relative inline-block">
+      <div 
+        className="relative inline-block"
+        style={{ 
+          transform: window.innerWidth < 768 ? 'scale(1.6)' : 'scale(1)' 
+        }}
+      >
         {/* Glow Effect Background */}
         {showGlow && (
           <div 
