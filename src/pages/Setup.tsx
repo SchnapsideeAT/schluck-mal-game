@@ -81,7 +81,7 @@ const Setup = () => {
         </Button>
 
         <Button
-          onClick={() => { playSound('buttonClick', true); navigate("/"); }}
+          onClick={() => navigate("/")}
           variant="ghost"
           className="w-full hover:bg-muted/50 hover:text-primary"
         >

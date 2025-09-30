@@ -76,7 +76,6 @@ export const PlayerSetup = ({
     onPlayersChange(updatedPlayers);
     saveLastPlayers(updatedPlayers);
     toast.info("Spieler entfernt");
-    playSound('buttonClick', true);
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
