@@ -5,7 +5,7 @@ import { getCardImage } from "@/utils/cardImageMapper";
 interface GameCardProps {
   card: Card;
   swipeDistance?: number;
-  swipeDirection?: 'left' | 'right' | null;
+  swipeDirection?: 'left' | 'right' | 'up' | null;
   onTouchStart?: (e: React.TouchEvent) => void;
   onTouchMove?: (e: React.TouchEvent) => void;
   onTouchEnd?: () => void;

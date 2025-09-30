@@ -242,6 +242,10 @@ const Game = () => {
         handleComplete();
       }
     },
+    onSwipeUp: () => {
+      // Swipe up = show statistics
+      showStatistics();
+    },
   });
 
   const currentCard = useMemo(() => deck[currentIndex], [deck, currentIndex]);
@@ -305,14 +309,6 @@ const Game = () => {
             hapticEnabled={hapticEnabled}
             onHapticToggle={setHapticEnabled}
           />
-          <Button
-            onClick={showStatistics}
-            variant="ghost"
-            size="icon"
-            className="hover:bg-muted/50"
-          >
-            <Trophy className="w-7 h-7" />
-          </Button>
           <Button
             onClick={handleRestart}
             variant="ghost"
