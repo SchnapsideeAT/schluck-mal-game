@@ -323,34 +323,15 @@ const Game = () => {
               </div>
             </div>
           ) : showCard && currentCard ? (
-            <>
-              {/* Card back layer - always stable in background */}
-              {currentIndex < deck.length - 1 && (
-                <div className="absolute inset-0 flex items-center justify-center pointer-events-none" style={{ zIndex: 1 }}>
-                  <div className="w-full px-6">
-                    <GameCard 
-                      isCardBack={true}
-                      swipeDistance={0}
-                      swipeDirection={null}
-                      showGlow={false}
-                    />
-                  </div>
-                </div>
-              )}
-              
-              {/* Current card layer - interactive on top */}
-              <div className="absolute inset-0 flex items-center justify-center" style={{ zIndex: 2 }}>
-                <div className="w-full px-6">
-                  <GameCard 
-                    key={currentIndex}
-                    card={currentCard}
-                    swipeDistance={cardSwipeState.swipeDistance}
-                    swipeDirection={cardSwipeState.swipeDirection}
-                    {...cardSwipeHandlers}
-                  />
-                </div>
-              </div>
-            </>
+            <div className="w-full px-6">
+              <GameCard 
+                key={currentIndex}
+                card={currentCard}
+                swipeDistance={cardSwipeState.swipeDistance}
+                swipeDirection={cardSwipeState.swipeDirection}
+                {...cardSwipeHandlers}
+              />
+            </div>
           ) : null}
         </div>
       </div>

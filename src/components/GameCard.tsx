@@ -105,12 +105,12 @@ export const GameCard = memo(({
           transform: window.innerWidth < 768 ? 'scale(1.6)' : 'scale(1)' 
         }}
       >
-        {/* Glow Effect Background */}
+        {/* Glow Effect Background with depth */}
         {showGlow && (
           <div 
             className="absolute inset-0 rounded-2xl"
             style={{
-              boxShadow: `0 0 15px 2px hsl(${categoryColor} / 0.2), 0 0 30px 5px hsl(${categoryColor} / 0.1)`,
+              boxShadow: `0 0 15px 2px hsl(${categoryColor} / 0.2), 0 0 30px 5px hsl(${categoryColor} / 0.1), 0 8px 25px -5px rgba(0, 0, 0, 0.4)`,
               animation: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
               zIndex: -1
             }}
