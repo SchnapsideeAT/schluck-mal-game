@@ -62,8 +62,7 @@ export const GameCard = ({
         <div 
           className="fixed left-0 top-0 bottom-0 right-0 pointer-events-none z-50"
           style={{
-            border: '8px solid rgba(239, 68, 68, 0.8)',
-            boxShadow: 'inset 0 0 60px 20px rgba(239, 68, 68, 0.4)',
+            boxShadow: 'inset 0 0 80px 30px rgba(239, 68, 68, 0.6)',
             animation: 'pulse 0.8s cubic-bezier(0.4, 0, 0.6, 1) infinite'
           }}
         />
@@ -74,8 +73,7 @@ export const GameCard = ({
         <div 
           className="fixed left-0 top-0 bottom-0 right-0 pointer-events-none z-50"
           style={{
-            border: '8px solid rgba(34, 197, 94, 0.8)',
-            boxShadow: 'inset 0 0 60px 20px rgba(34, 197, 94, 0.4)',
+            boxShadow: 'inset 0 0 80px 30px rgba(34, 197, 94, 0.6)',
             animation: 'pulse 0.8s cubic-bezier(0.4, 0, 0.6, 1) infinite'
           }}
         />
