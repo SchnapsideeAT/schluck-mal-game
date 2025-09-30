@@ -57,24 +57,24 @@ export const GameCard = ({
       onTouchEnd={onTouchEnd}
     >
       
-      {/* Left Side Glow (Red - Drink) - Full Border */}
+      {/* Left Border Glow (Red) - when swiping left */}
       {swipeDirection === 'left' && !isExiting && (
         <div 
-          className="fixed left-0 top-0 bottom-0 right-0 pointer-events-none z-50"
+          className="fixed left-0 top-0 bottom-0 w-2 pointer-events-none z-50"
           style={{
-            boxShadow: 'inset 0 0 80px 30px rgba(239, 68, 68, 0.6)',
-            animation: 'pulse 0.8s cubic-bezier(0.4, 0, 0.6, 1) infinite'
+            background: 'rgba(239, 68, 68, 0.9)',
+            boxShadow: '4px 0 40px 15px rgba(239, 68, 68, 0.7)',
           }}
         />
       )}
       
-      {/* Right Side Glow (Green - Complete) - Full Border */}
+      {/* Right Border Glow (Green) - when swiping right */}
       {swipeDirection === 'right' && !isExiting && (
         <div 
-          className="fixed left-0 top-0 bottom-0 right-0 pointer-events-none z-50"
+          className="fixed right-0 top-0 bottom-0 w-2 pointer-events-none z-50"
           style={{
-            boxShadow: 'inset 0 0 80px 30px rgba(34, 197, 94, 0.6)',
-            animation: 'pulse 0.8s cubic-bezier(0.4, 0, 0.6, 1) infinite'
+            background: 'rgba(34, 197, 94, 0.9)',
+            boxShadow: '-4px 0 40px 15px rgba(34, 197, 94, 0.7)',
           }}
         />
       )}
