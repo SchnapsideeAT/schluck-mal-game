@@ -61,7 +61,7 @@ export const GameCard = memo(({
       style={{
         transform: exitTransform,
         opacity: isExiting ? 0 : opacity,
-        transition: isExiting ? 'transform 0.5s ease-in, opacity 0.5s ease-in' : 'none',
+        transition: isExiting ? 'transform 0.25s ease-in, opacity 0.25s ease-in' : 'none',
         cursor: isCardBack ? 'default' : 'grab',
         willChange: isExiting || swipeDistance !== 0 ? 'transform, opacity' : 'auto'
       }}
