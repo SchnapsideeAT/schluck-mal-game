@@ -1,20 +1,80 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
-import { ArrowLeft, Volume2, VolumeX, Globe } from "lucide-react";
+import { ArrowLeft, Volume2, VolumeX, Globe, RotateCcw, Smartphone } from "lucide-react";
+import { loadGameState, clearGameState } from "@/utils/localStorage";
+import { shuffleDeck } from "@/utils/cardUtils";
+import { 
+  AlertDialog, 
+  AlertDialogAction, 
+  AlertDialogCancel, 
+  AlertDialogContent, 
+  AlertDialogDescription, 
+  AlertDialogFooter, 
+  AlertDialogHeader, 
+  AlertDialogTitle 
+} from "@/components/ui/alert-dialog";
 
 const Settings = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [soundEnabled, setSoundEnabled] = useState(true);
-  const [musicEnabled, setMusicEnabled] = useState(true);
+  const [hapticEnabled, setHapticEnabled] = useState(true);
+  const [showRestartDialog, setShowRestartDialog] = useState(false);
+  const [hasActiveGame, setHasActiveGame] = useState(false);
+
+  useEffect(() => {
+    const gameState = loadGameState();
+    setHasActiveGame(!!gameState);
+  }, []);
 
   const handleSoundToggle = (checked: boolean) => {
     setSoundEnabled(checked);
+    localStorage.setItem('soundEnabled', JSON.stringify(checked));
   };
 
-  const handleMusicToggle = (checked: boolean) => {
-    setMusicEnabled(checked);
+  const handleHapticToggle = (checked: boolean) => {
+    setHapticEnabled(checked);
+    localStorage.setItem('hapticEnabled', JSON.stringify(checked));
+  };
+
+  const handleRestart = () => {
+    if (hasActiveGame) {
+      setShowRestartDialog(true);
+    }
+  };
+
+  const confirmRestart = () => {
+    clearGameState();
+    setShowRestartDialog(false);
+    setHasActiveGame(false);
+    // Navigate back to game with fresh state
+    const shuffled = shuffleDeck();
+    const gameState = loadGameState();
+    if (gameState?.players) {
+      const resetPlayers = gameState.players.map(p => ({ ...p, totalDrinks: 0 }));
+      navigate("/game", { 
+        state: { 
+          players: resetPlayers,
+          deck: shuffled,
+          currentIndex: -1,
+          currentPlayerIndex: 0,
+          showCard: false,
+          cardAccepted: false
+        } 
+      });
+    }
+  };
+
+  const goBack = () => {
+    if (location.state && 'players' in location.state) {
+      // Coming from game, go back to game
+      navigate("/game", { state: location.state });
+    } else {
+      // Go to home
+      navigate("/");
+    }
   };
 
   return (
@@ -23,7 +83,7 @@ const Settings = () => {
         {/* Header */}
         <div className="flex items-center gap-4 mb-8">
           <Button
-            onClick={() => navigate("/")}
+            onClick={goBack}
             variant="ghost"
             size="icon"
             className="hover:bg-muted/50"
@@ -34,15 +94,36 @@ const Settings = () => {
         </div>
 
         <div className="space-y-6 slide-up">
-          {/* Audio settings */}
+          {/* Game Control */}
+          {hasActiveGame && (
+            <section className="bg-card border border-border/50 rounded-2xl p-6 space-y-6">
+              <h2 className="text-2xl font-bold text-primary flex items-center gap-3">
+                <RotateCcw className="w-7 h-7" />
+                Spiel
+              </h2>
+
+              <div className="space-y-4">
+                <Button
+                  onClick={handleRestart}
+                  variant="destructive"
+                  className="w-full"
+                  size="lg"
+                >
+                  <RotateCcw className="w-5 h-5 mr-2" />
+                  Spiel neu starten
+                </Button>
+                <p className="text-xs text-muted-foreground text-center">
+                  Alle aktuellen Fortschritte gehen verloren
+                </p>
+              </div>
+            </section>
+          )}
+
+          {/* Audio & Haptic settings */}
           <section className="bg-card border border-border/50 rounded-2xl p-6 space-y-6">
             <h2 className="text-2xl font-bold text-primary flex items-center gap-3">
-              {soundEnabled || musicEnabled ? (
-                <Volume2 className="w-7 h-7" />
-              ) : (
-                <VolumeX className="w-7 h-7" />
-              )}
-              Audio
+              <Smartphone className="w-7 h-7" />
+              Spieleinstellungen
             </h2>
 
             <div className="space-y-4">
@@ -62,14 +143,14 @@ const Settings = () => {
 
               <div className="flex items-center justify-between p-4 rounded-xl bg-muted/30 hover:bg-muted/50 transition-colors">
                 <div className="space-y-1">
-                  <p className="font-semibold text-foreground">Hintergrundmusik</p>
+                  <p className="font-semibold text-foreground">Haptisches Feedback</p>
                   <p className="text-sm text-muted-foreground">
-                    Spiele Musik während des Spiels
+                    Vibrationen bei Interaktionen
                   </p>
                 </div>
                 <Switch
-                  checked={musicEnabled}
-                  onCheckedChange={handleMusicToggle}
+                  checked={hapticEnabled}
+                  onCheckedChange={handleHapticToggle}
                   className="data-[state=checked]:bg-primary"
                 />
               </div>
@@ -116,6 +197,24 @@ const Settings = () => {
           </section>
         </div>
       </div>
+
+      {/* Restart Confirmation Dialog */}
+      <AlertDialog open={showRestartDialog} onOpenChange={setShowRestartDialog}>
+        <AlertDialogContent className="bg-card border-primary/30">
+          <AlertDialogHeader>
+            <AlertDialogTitle>Spiel neu starten?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Alle aktuellen Fortschritte und Statistiken gehen verloren. Diese Aktion kann nicht rückgängig gemacht werden.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Abbrechen</AlertDialogCancel>
+            <AlertDialogAction onClick={confirmRestart} className="bg-destructive hover:bg-destructive/90">
+              Neu starten
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };

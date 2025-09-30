@@ -2,10 +2,9 @@ import { useState, useEffect, useMemo, useCallback } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { GameCard } from "@/components/GameCard";
-import { GameSettings } from "@/components/GameSettings";
 import { shuffleDeck } from "@/utils/cardUtils";
 import { Card, Player } from "@/types/card";
-import { ArrowRight, Beer, Check, Home, RotateCcw, Trophy } from "lucide-react";
+import { ArrowRight, Beer, Check, Home, Settings } from "lucide-react";
 import { useSwipe } from "@/hooks/useSwipe";
 import { saveGameState, loadGameState, clearGameState } from "@/utils/localStorage";
 import { triggerHaptic } from "@/utils/haptics";
@@ -42,7 +41,6 @@ const Game = () => {
   const [soundEnabled, setSoundEnabled] = useState(true);
   const [hapticEnabled, setHapticEnabled] = useState(true);
   const [showExitDialog, setShowExitDialog] = useState(false);
-  const [showRestartDialog, setShowRestartDialog] = useState(false);
 
   // Disable scrolling on mobile
   useEffect(() => {
@@ -167,31 +165,6 @@ const Game = () => {
     drawCard('left');
   }, [currentIndex, deck, currentPlayerIndex, players, drawCard, soundEnabled]);
 
-  const handleRestart = useCallback(() => {
-    setShowRestartDialog(true);
-  }, []);
-
-  const confirmRestart = useCallback(() => {
-    const shuffled = shuffleDeck();
-    setDeck(shuffled);
-    setCurrentIndex(-1);
-    setShowCard(false);
-    setCurrentPlayerIndex(0);
-    
-    // Reset drink counts
-    const resetPlayers = players.map(p => ({ ...p, totalDrinks: 0 }));
-    setPlayers(resetPlayers);
-    
-    clearGameState();
-    setShowRestartDialog(false);
-    
-    if (hapticEnabled) {
-      triggerHaptic('medium');
-    }
-    
-    playSound('success', soundEnabled);
-  }, [players, hapticEnabled, soundEnabled]);
-  
   const showStatistics = useCallback(() => {
     navigate("/statistics", { 
       state: { 
@@ -204,6 +177,20 @@ const Game = () => {
       } 
     });
   }, [navigate, players, deck, currentIndex, currentPlayerIndex, showCard, cardAccepted]);
+
+  const navigateToSettings = () => {
+    // Save before navigating
+    saveGameState({
+      players,
+      deck,
+      currentIndex,
+      currentPlayerIndex,
+      showCard,
+      cardAccepted,
+      timestamp: Date.now()
+    });
+    navigate("/settings");
+  };
 
   // Swipe gesture handlers for card (left/right only)
   const { swipeState: cardSwipeState, swipeHandlers: cardSwipeHandlers } = useSwipe({
@@ -283,22 +270,14 @@ const Game = () => {
           <Home className="w-7 h-7" />
         </Button>
         
-        <div className="flex gap-2">
-          <GameSettings
-            soundEnabled={soundEnabled}
-            onSoundToggle={setSoundEnabled}
-            hapticEnabled={hapticEnabled}
-            onHapticToggle={setHapticEnabled}
-          />
-          <Button
-            onClick={handleRestart}
-            variant="ghost"
-            size="icon"
-            className="hover:bg-muted/50"
-          >
-            <RotateCcw className="w-7 h-7" />
-          </Button>
-        </div>
+        <Button
+          onClick={navigateToSettings}
+          variant="ghost"
+          size="icon"
+          className="hover:bg-muted/50"
+        >
+          <Settings className="w-7 h-7" />
+        </Button>
       </div>
 
       {/* Main container with proper spacing */}
@@ -373,24 +352,6 @@ const Game = () => {
             <AlertDialogCancel>Abbrechen</AlertDialogCancel>
             <AlertDialogAction onClick={confirmExit} className="bg-primary">
               Speichern & Verlassen
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
-
-      {/* Restart Confirmation Dialog */}
-      <AlertDialog open={showRestartDialog} onOpenChange={setShowRestartDialog}>
-        <AlertDialogContent className="bg-card border-primary/30">
-          <AlertDialogHeader>
-            <AlertDialogTitle>Spiel neu starten?</AlertDialogTitle>
-            <AlertDialogDescription>
-              Alle aktuellen Fortschritte und Statistiken gehen verloren. Diese Aktion kann nicht rückgängig gemacht werden.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Abbrechen</AlertDialogCancel>
-            <AlertDialogAction onClick={confirmRestart} className="bg-destructive hover:bg-destructive/90">
-              Neu starten
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
