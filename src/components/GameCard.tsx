@@ -60,10 +60,10 @@ export const GameCard = ({
       {/* Left Border Glow (Red) - when swiping left */}
       {swipeDirection === 'left' && !isExiting && (
         <div 
-          className="fixed left-0 top-0 bottom-0 w-2 pointer-events-none z-50"
+          className="fixed left-0 top-0 bottom-0 w-16 pointer-events-none z-50"
           style={{
-            background: 'rgba(239, 68, 68, 0.9)',
-            boxShadow: '4px 0 40px 15px rgba(239, 68, 68, 0.7)',
+            background: 'linear-gradient(to right, rgba(239, 68, 68, 0.8) 0%, rgba(239, 68, 68, 0.3) 50%, transparent 100%)',
+            boxShadow: '8px 0 60px 30px rgba(239, 68, 68, 0.8)',
           }}
         />
       )}
@@ -71,10 +71,10 @@ export const GameCard = ({
       {/* Right Border Glow (Green) - when swiping right */}
       {swipeDirection === 'right' && !isExiting && (
         <div 
-          className="fixed right-0 top-0 bottom-0 w-2 pointer-events-none z-50"
+          className="fixed right-0 top-0 bottom-0 w-16 pointer-events-none z-50"
           style={{
-            background: 'rgba(34, 197, 94, 0.9)',
-            boxShadow: '-4px 0 40px 15px rgba(34, 197, 94, 0.7)',
+            background: 'linear-gradient(to left, rgba(34, 197, 94, 0.8) 0%, rgba(34, 197, 94, 0.3) 50%, transparent 100%)',
+            boxShadow: '-8px 0 60px 30px rgba(34, 197, 94, 0.8)',
           }}
         />
       )}
