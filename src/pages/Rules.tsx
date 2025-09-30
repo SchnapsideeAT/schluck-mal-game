@@ -26,25 +26,67 @@ const Rules = () => {
           {/* Basic rules */}
           <section className="bg-card border border-border/50 rounded-2xl p-6 space-y-4">
             <h2 className="text-2xl font-bold text-primary">Grundregeln</h2>
-            <div className="space-y-3 text-muted-foreground">
-              <p>
-                <strong className="text-foreground">Ziel des Spiels:</strong> Spaß haben und eure Freunde besser kennenlernen – mit einer Prise Alkohol!
-              </p>
-              <p>
-                <strong className="text-foreground">Ablauf:</strong> Reihum zieht jeder Spieler eine Karte. Die Karte gibt eine Aufgabe, Frage oder Aktion vor.
-              </p>
-              <p>
-                <strong className="text-foreground">Entscheidung:</strong> Du kannst die Aufgabe annehmen oder sie ablehnen und stattdessen die angegebene Anzahl an Schlücken trinken.
-              </p>
-              <p>
-                <strong className="text-foreground">Spielende:</strong> Das Spiel endet, wenn alle Karten gespielt wurden oder die Gruppe beschließt aufzuhören.
-              </p>
+            <div className="space-y-4 text-muted-foreground">
+              <p>Das Spiel verläuft rundenbasiert im Uhrzeigersinn.</p>
+              
+              <div className="space-y-3">
+                <div>
+                  <strong className="text-foreground">1. Karte ziehen</strong>
+                  <ul className="ml-4 mt-1 space-y-1">
+                    <li>• Der jüngste Spieler beginnt und zieht eine Karte vom Stapel.</li>
+                  </ul>
+                </div>
+
+                <div>
+                  <strong className="text-foreground">2. Vorlesen</strong>
+                  <ul className="ml-4 mt-1 space-y-2">
+                    <li>• Der Spieler liest die Karte laut vor und entscheidet sich für eine der folgenden Optionen:</li>
+                    
+                    <li className="ml-4">
+                      <strong className="text-foreground">Option 1 – Aufgabe annehmen</strong>
+                      <ul className="ml-4 mt-1 space-y-1">
+                        <li>• Der Spieler führt die auf der Karte beschriebene Aufgabe aus.</li>
+                        <li>• Schafft der Spieler die Aufgabe nicht, muss er die angegebene Anzahl an Schlücken trinken. (steht auf der Karte oben rechts und unten links).</li>
+                      </ul>
+                    </li>
+
+                    <li className="ml-4">
+                      <strong className="text-foreground">Option 2 – Aufgabe verweigern</strong>
+                      <ul className="ml-4 mt-1 space-y-1">
+                        <li>• Der Spieler lehnt die Aufgabe ab und trinkt die angegebene Anzahl an Schlücken (steht auf der Karte oben rechts und unten links).</li>
+                      </ul>
+                    </li>
+
+                    <li className="ml-4">
+                      <strong className="text-foreground">Option 3 – Wild Card (falls gezogen):</strong>
+                      <ul className="ml-4 mt-1 space-y-1">
+                        <li>• Wild Cards dürfen behalten und später zu einem passenden Zeitpunkt ausgespielt werden.</li>
+                      </ul>
+                    </li>
+                  </ul>
+                </div>
+
+                <div>
+                  <strong className="text-foreground">3. Weitergeben</strong>
+                  <ul className="ml-4 mt-1 space-y-1">
+                    <li>• Nach Abschluss der Aufgabe oder des Trinkens zieht der nächste Spieler eine Karte.</li>
+                  </ul>
+                </div>
+
+                <div>
+                  <strong className="text-foreground">4. Ende des Spiels</strong>
+                  <ul className="ml-4 mt-1 space-y-1">
+                    <li>• Das Spiel endet, wenn alle Karten gespielt wurden oder die Gruppe keine Lust mehr hat.</li>
+                  </ul>
+                </div>
+              </div>
             </div>
           </section>
 
           {/* Categories */}
           <section className="space-y-4">
             <h2 className="text-2xl font-bold text-primary">Kartenkategorien</h2>
+            <p className="text-muted-foreground">Die Karten sind in fünf Kategorien unterteilt:</p>
             
             <div className="grid gap-4 md:grid-cols-2">
               <div className="bg-card border border-category-truth/50 rounded-xl p-5 space-y-2">
@@ -53,8 +95,13 @@ const Rules = () => {
                   <h3 className="text-xl font-semibold text-category-truth">Wahrheit</h3>
                 </div>
                 <p className="text-sm text-muted-foreground">
-                  Beantworte eine persönliche Frage ehrlich oder trinke die angegebenen Schlücke.
+                  Der Spieler muss eine Frage ehrlich beantworten oder trinken.
                 </p>
+                <div className="text-sm text-muted-foreground ml-3 space-y-1">
+                  <p><strong className="text-foreground">Unterkategorie:</strong></p>
+                  <p>• „Ich habe noch nie": Wer die genannte Aktion bereits gemacht hat, muss trinken.</p>
+                  <p>• „Wählt den": Die Gruppe wählt eine Person, die trinken muss.</p>
+                </div>
               </div>
 
               <div className="bg-card border border-category-task/50 rounded-xl p-5 space-y-2">
@@ -63,7 +110,7 @@ const Rules = () => {
                   <h3 className="text-xl font-semibold text-category-task">Aufgabe</h3>
                 </div>
                 <p className="text-sm text-muted-foreground">
-                  Führe eine lustige oder herausfordernde Aufgabe aus oder trinke die Schlücke.
+                  Der Spieler muss eine Herausforderung meistern oder trinken.
                 </p>
               </div>
 
@@ -73,7 +120,7 @@ const Rules = () => {
                   <h3 className="text-xl font-semibold text-category-group">Gruppe</h3>
                 </div>
                 <p className="text-sm text-muted-foreground">
-                  Diese Karte betrifft alle oder mehrere Spieler. Die Anweisung auf der Karte gilt für die gesamte Gruppe.
+                  Alle Spieler sind betroffen und müssen gemeinsam Aufgaben bewältigen.
                 </p>
               </div>
 
@@ -83,41 +130,33 @@ const Rules = () => {
                   <h3 className="text-xl font-semibold text-category-duel">Duell</h3>
                 </div>
                 <p className="text-sm text-muted-foreground">
-                  Fordere einen Mitspieler zu einem Wettkampf heraus. Der Verlierer trinkt die angegebenen Schlücke.
+                  Der Spieler wählt einen Gegner für einen Wettkampf. Der Verlierer trinkt.
                 </p>
               </div>
 
               <div className="bg-card border border-category-wildcard/50 rounded-xl p-5 space-y-2 md:col-span-2">
                 <div className="flex items-center gap-3 mb-2">
                   <CategoryIcon category="Wildcard" className="w-6 h-6" />
-                  <h3 className="text-xl font-semibold text-category-wildcard">Wildcard</h3>
+                  <h3 className="text-xl font-semibold text-category-wildcard">Wild Cards</h3>
                 </div>
                 <p className="text-sm text-muted-foreground">
-                  Sonderaktionen! Diese Karten können Regeln ändern, Schlücke verteilen oder andere besondere Effekte haben.
+                  Spezialkarten mit einzigartigen Effekten, die das Spiel beeinflussen können.
                 </p>
               </div>
             </div>
           </section>
 
-          {/* Important notes */}
-          <section className="bg-destructive/10 border border-destructive/30 rounded-2xl p-6 space-y-3">
-            <h2 className="text-2xl font-bold text-destructive">Wichtige Hinweise</h2>
-            <ul className="space-y-2 text-sm text-foreground/90">
+          {/* Additional rules */}
+          <section className="bg-card border border-border/50 rounded-2xl p-6 space-y-3">
+            <h2 className="text-2xl font-bold text-primary">Zusätzliche Regeln</h2>
+            <ul className="space-y-2 text-sm text-muted-foreground">
               <li className="flex items-start gap-2">
-                <span className="text-destructive font-bold mt-1">⚠</span>
-                <span>Spielt verantwortungsvoll und kennt eure Grenzen!</span>
+                <span className="text-primary font-bold mt-1">•</span>
+                <span><strong className="text-foreground">Joker:</strong> Wild Cards dürfen jederzeit während des Spiels eingesetzt werden.</span>
               </li>
               <li className="flex items-start gap-2">
-                <span className="text-destructive font-bold mt-1">⚠</span>
-                <span>Niemand wird gezwungen, Alkohol zu trinken. Respektiert gegenseitige Grenzen.</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-destructive font-bold mt-1">⚠</span>
-                <span>Fahrt niemals unter Alkoholeinfluss!</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-destructive font-bold mt-1">⚠</span>
-                <span>Sorgt dafür, dass ausreichend Wasser und alkoholfreie Getränke verfügbar sind.</span>
+                <span className="text-primary font-bold mt-1">•</span>
+                <span><strong className="text-foreground">No-Chill-Regel:</strong> Bei Unklarheiten entscheidet die Gruppe demokratisch.</span>
               </li>
             </ul>
           </section>
