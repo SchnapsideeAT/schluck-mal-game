@@ -70,9 +70,9 @@ export const PlayerSetup = ({
             Spieler ({players.length})
           </h3>
           <div className="grid grid-cols-3 gap-3">
-            {players.map(player => <div key={player.id} onClick={() => removePlayer(player.id)} className="flex items-center gap-3 bg-muted/50 rounded-lg p-3 hover:bg-destructive/20 hover:border-destructive/50 border border-transparent transition-all cursor-pointer">
-                <span className="text-2xl">{player.avatar}</span>
-                <span className="font-medium text-foreground">{player.name}</span>
+            {players.map(player => <div key={player.id} onClick={() => removePlayer(player.id)} className="flex items-center gap-3 bg-muted/50 rounded-lg p-3 hover:bg-destructive/20 hover:border-destructive/50 border border-transparent transition-all cursor-pointer w-full">
+                <span className="text-2xl shrink-0">{player.avatar}</span>
+                <span className="font-medium text-foreground truncate">{player.name}</span>
               </div>)}
           </div>
         </div>}
