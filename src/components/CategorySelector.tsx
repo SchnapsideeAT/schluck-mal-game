@@ -34,16 +34,15 @@ export const CategorySelector = ({ selectedCategories, onCategoriesChange }: Cat
       <h3 className="text-lg font-semibold text-foreground mb-4">
         Wähle deine Kategorien:
       </h3>
-      <div className="space-y-3">
+      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
         {categories.map((category) => {
           const isSelected = selectedCategories.includes(category);
-          const cardCount = getCategoryCount(category);
           
           return (
             <button
               key={category}
               onClick={() => toggleCategory(category)}
-              className={`w-full flex items-center gap-3 bg-muted/30 hover:bg-muted/50 rounded-lg px-4 py-3 transition-all duration-200 ${
+              className={`flex flex-col items-center gap-2 bg-muted/30 hover:bg-muted/50 rounded-lg p-4 transition-all duration-200 ${
                 isSelected ? 'ring-2 ring-primary shadow-md' : ''
               }`}
             >
@@ -53,11 +52,8 @@ export const CategorySelector = ({ selectedCategories, onCategoriesChange }: Cat
                 {isSelected && <Check className="h-3 w-3 text-primary-foreground" />}
               </div>
               <CategoryIcon category={category} />
-              <span className={`text-sm font-medium ${categoryColors[category]} flex-1 text-left`}>
+              <span className={`text-sm font-medium ${categoryColors[category]} text-center`}>
                 {category}
-              </span>
-              <span className="text-xs text-muted-foreground">
-                {cardCount} Karten
               </span>
             </button>
           );
