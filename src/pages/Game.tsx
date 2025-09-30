@@ -338,7 +338,7 @@ const Game = () => {
 
       {/* Current Player Display - Separate Section */}
       {players.length > 0 && currentIndex >= 0 && currentCard && (
-        <div className={`${getCategoryColor(currentCard.category)} transition-colors duration-500 ease-in-out py-6 -mx-6 -mb-12 shadow-[0_-4px_20px_rgba(0,0,0,0.3)]`}>
+        <div className={`${getCategoryColor(currentCard.category)} transition-colors duration-500 ease-in-out py-6 pb-[calc(1.5rem+env(safe-area-inset-bottom))] -mx-6 -mb-12 shadow-[0_-4px_20px_rgba(0,0,0,0.3)]`}>
           <div className="flex items-center justify-center gap-4">
             <span className="text-4xl drop-shadow-lg">{players[currentPlayerIndex].avatar}</span>
             <span className="text-2xl font-bold text-white drop-shadow-lg">{players[currentPlayerIndex].name}</span>
