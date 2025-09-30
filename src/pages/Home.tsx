@@ -1,22 +1,17 @@
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Play, BookOpen, Settings, AlertTriangle } from "lucide-react";
+import { Play, BookOpen, Settings } from "lucide-react";
 import logo from "@/assets/logo.svg";
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { playSound } from "@/utils/sounds";
 const Home = () => {
   const navigate = useNavigate();
-  const [showWarning, setShowWarning] = useState(false);
+  
   const handleStartGame = () => {
-    setShowWarning(true);
-  };
-  const confirmStart = () => {
     playSound('success', true);
-    setShowWarning(false);
     navigate("/setup");
   };
-  return <>
+  
+  return (
       <div className="min-h-screen flex flex-col items-center justify-center p-6 relative overflow-hidden">
         
         <div className="slide-up max-w-lg w-full space-y-8 text-center relative z-10">
@@ -51,31 +46,6 @@ const Home = () => {
           
         </div>
       </div>
-
-      {/* Age warning dialog */}
-      <AlertDialog open={showWarning} onOpenChange={setShowWarning}>
-        <AlertDialogContent className="bg-card border-primary/30 max-w-[calc(100%-3rem)] mx-auto">
-          <AlertDialogHeader>
-            <AlertDialogTitle className="flex items-center gap-3 text-2xl">
-              <AlertTriangle className="w-8 h-8 text-primary" />
-              Altersverifizierung
-            </AlertDialogTitle>
-            <AlertDialogDescription className="text-base text-foreground/80 pt-4">
-              Dieses Spiel ist ausschließlich für Personen ab 18 Jahren konzipiert und enthält Inhalte, die den Konsum von Alkohol zum Thema haben.
-              <br /><br />
-              Bestätige, dass du mindestens 18 Jahre alt bist und das Spiel verantwortungsvoll spielen wirst.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter className="gap-3">
-            <AlertDialogCancel className="border-destructive/50 hover:bg-destructive/10 hover:text-destructive">
-              Abbrechen
-            </AlertDialogCancel>
-            <AlertDialogAction onClick={confirmStart} className="bg-primary hover:shadow-[var(--shadow-button)]">
-              Ich bin 18+ und bestätige
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
-    </>;
+  );
 };
 export default Home;
