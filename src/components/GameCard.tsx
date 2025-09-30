@@ -53,7 +53,7 @@ export const GameCard = memo(({
 
   return (
     <div 
-      className={`card-flip w-full relative touch-none flex items-center justify-center ${!isExiting ? 'animate-enter' : ''}`}
+      className={`w-full relative touch-none flex items-center justify-center ${!isExiting ? 'card-enter' : ''}`}
       style={{
         transform: exitTransform,
         opacity: isExiting ? 0 : opacity,

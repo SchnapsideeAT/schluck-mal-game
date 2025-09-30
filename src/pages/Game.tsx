@@ -128,11 +128,13 @@ const Game = () => {
     setCardAccepted(false);
     
     // Load new card while old one is animating out
+    // Mobile: 300ms animation, Desktop: 400ms animation
+    const animationDelay = window.innerWidth < 768 ? 300 : 400;
     setTimeout(() => {
       setCurrentIndex(currentIndex + 1);
       setShowCard(true);
       playSound('cardDraw', soundEnabled);
-    }, 200);
+    }, animationDelay);
   }, [currentIndex, deck, soundEnabled]);
 
   const getCategoryColor = useCallback((category: string) => {
