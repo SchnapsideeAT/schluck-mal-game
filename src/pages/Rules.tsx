@@ -87,31 +87,6 @@ const Rules = () => {
             <h2 className="text-2xl font-bold text-primary">Kartenkategorien</h2>
             
             <div className="grid gap-4 md:grid-cols-2">
-              <div className="bg-card border border-category-wildcard/50 rounded-xl p-5 space-y-2 md:col-span-2">
-                <div className="flex items-center gap-3 mb-2">
-                  <CategoryIcon category="Wildcard" className="w-6 h-6" />
-                  <h3 className="text-xl font-semibold text-category-wildcard">Wild Cards</h3>
-                </div>
-                <p className="text-sm text-muted-foreground">
-                  Spezialkarten mit einzigartigen Effekten, die das Spiel beeinflussen können.
-                </p>
-              </div>
-
-              <div className="bg-card border border-category-truth/50 rounded-xl p-5 space-y-2 md:col-span-2">
-                <div className="flex items-center gap-3 mb-2">
-                  <CategoryIcon category="Wahrheit" className="w-6 h-6" />
-                  <h3 className="text-xl font-semibold text-category-truth">Wahrheit</h3>
-                </div>
-                <p className="text-sm text-muted-foreground">
-                  Der Spieler muss eine Frage ehrlich beantworten oder trinken.
-                </p>
-                <div className="text-sm text-muted-foreground ml-3 space-y-1">
-                  <p><strong className="text-foreground">Unterkategorie:</strong></p>
-                  <p>• „Ich habe noch nie": Wer die genannte Aktion bereits gemacht hat, muss trinken.</p>
-                  <p>• „Wählt den": Die Gruppe wählt eine Person, die trinken muss.</p>
-                </div>
-              </div>
-
               <div className="bg-card border border-category-task/50 rounded-xl p-5 space-y-2">
                 <div className="flex items-center gap-3 mb-2">
                   <CategoryIcon category="Aufgabe" className="w-6 h-6" />
@@ -140,6 +115,31 @@ const Rules = () => {
                 <p className="text-sm text-muted-foreground">
                   Der Spieler wählt einen Gegner für einen Wettkampf. Der Verlierer trinkt.
                 </p>
+              </div>
+
+              <div className="bg-card border border-category-wildcard/50 rounded-xl p-5 space-y-2">
+                <div className="flex items-center gap-3 mb-2">
+                  <CategoryIcon category="Wildcard" className="w-6 h-6" />
+                  <h3 className="text-xl font-semibold text-category-wildcard">Wild Cards</h3>
+                </div>
+                <p className="text-sm text-muted-foreground">
+                  Spezialkarten mit einzigartigen Effekten, die das Spiel beeinflussen können.
+                </p>
+              </div>
+
+              <div className="bg-card border border-category-truth/50 rounded-xl p-5 space-y-2 md:col-span-2">
+                <div className="flex items-center gap-3 mb-2">
+                  <CategoryIcon category="Wahrheit" className="w-6 h-6" />
+                  <h3 className="text-xl font-semibold text-category-truth">Wahrheit</h3>
+                </div>
+                <p className="text-sm text-muted-foreground">
+                  Der Spieler muss eine Frage ehrlich beantworten oder trinken.
+                </p>
+                <div className="text-sm text-muted-foreground ml-3 space-y-1">
+                  <p><strong className="text-foreground">Unterkategorie:</strong></p>
+                  <p>• „Ich habe noch nie": Wer die genannte Aktion bereits gemacht hat, muss trinken.</p>
+                  <p>• „Wählt den": Die Gruppe wählt eine Person, die trinken muss.</p>
+                </div>
               </div>
             </div>
           </section>
