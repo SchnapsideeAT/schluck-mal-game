@@ -57,26 +57,26 @@ export const GameCard = ({
       onTouchEnd={onTouchEnd}
     >
       
-      {/* Left Side Glow (Red - Drink) */}
+      {/* Left Side Glow (Red - Drink) - Full Border */}
       {swipeDirection === 'left' && !isExiting && (
         <div 
-          className="fixed left-0 top-0 bottom-0 w-8 pointer-events-none z-50"
+          className="fixed left-0 top-0 bottom-0 right-0 pointer-events-none z-50"
           style={{
-            background: 'linear-gradient(to right, rgba(239, 68, 68, 0.8), transparent)',
-            boxShadow: '0 0 40px 20px rgba(239, 68, 68, 0.6)',
-            animation: 'pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite'
+            border: '8px solid rgba(239, 68, 68, 0.8)',
+            boxShadow: 'inset 0 0 60px 20px rgba(239, 68, 68, 0.4)',
+            animation: 'pulse 0.8s cubic-bezier(0.4, 0, 0.6, 1) infinite'
           }}
         />
       )}
       
-      {/* Right Side Glow (Green - Complete) */}
+      {/* Right Side Glow (Green - Complete) - Full Border */}
       {swipeDirection === 'right' && !isExiting && (
         <div 
-          className="fixed right-0 top-0 bottom-0 w-8 pointer-events-none z-50"
+          className="fixed left-0 top-0 bottom-0 right-0 pointer-events-none z-50"
           style={{
-            background: 'linear-gradient(to left, rgba(34, 197, 94, 0.8), transparent)',
-            boxShadow: '0 0 40px 20px rgba(34, 197, 94, 0.6)',
-            animation: 'pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite'
+            border: '8px solid rgba(34, 197, 94, 0.8)',
+            boxShadow: 'inset 0 0 60px 20px rgba(34, 197, 94, 0.4)',
+            animation: 'pulse 0.8s cubic-bezier(0.4, 0, 0.6, 1) infinite'
           }}
         />
       )}
@@ -88,7 +88,7 @@ export const GameCard = ({
           <div 
             className="absolute inset-0 rounded-2xl"
             style={{
-              boxShadow: `0 0 30px 5px hsl(${categoryColor} / 0.25), 0 0 60px 12px hsl(${categoryColor} / 0.12)`,
+              boxShadow: `0 0 15px 2px hsl(${categoryColor} / 0.2), 0 0 30px 5px hsl(${categoryColor} / 0.1)`,
               animation: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
               zIndex: -1
             }}

@@ -23,7 +23,7 @@ export const useSwipe = (handlers: SwipeHandlers) => {
   const touchStartX = useRef<number>(0);
   const touchCurrentX = useRef<number>(0);
   const minSwipeDistance = 100; // Minimum distance for a swipe
-  const swipeThreshold = 50; // Distance to show visual feedback
+  const swipeThreshold = 30; // Distance to show visual feedback (schneller trigger)
 
   const triggerHaptic = (type: 'light' | 'medium' | 'heavy' = 'medium') => {
     if ('vibrate' in navigator) {
