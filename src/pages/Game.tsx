@@ -299,8 +299,7 @@ const Game = () => {
         <Button
           onClick={handleExitGame}
           variant="ghost"
-          size="icon"
-          className="group hover:bg-muted/50"
+          className="group hover:bg-muted/50 h-16 w-16 p-0"
         >
           <Home className="w-14 h-14 group-hover:text-primary transition-colors" />
         </Button>
@@ -308,8 +307,7 @@ const Game = () => {
         <Button
           onClick={navigateToSettings}
           variant="ghost"
-          size="icon"
-          className="group hover:bg-muted/50"
+          className="group hover:bg-muted/50 h-16 w-16 p-0"
         >
           <Settings className="w-14 h-14 group-hover:text-primary transition-colors" />
         </Button>
