@@ -294,57 +294,57 @@ const Game = () => {
         </div>
       </div>
 
-      {/* Card display area */}
-      <div className="flex-1 flex items-center justify-center py-16">
-        {currentIndex === -1 ? (
-          <div 
-            className="text-center space-y-6 slide-up cursor-pointer"
-            onClick={() => drawCard()}
-            onTouchStart={() => drawCard()}
-          >
-            <div className="inline-flex items-center justify-center w-24 h-24 rounded-full bg-primary/20 border border-primary/50 pulse-glow">
-              <Beer className="w-12 h-12 text-primary" />
+      {/* Main container with proper spacing */}
+      <div className="flex-1 flex flex-col"
+      >
+
+
+        {/* Card display area */}
+        <div className="flex-1 flex items-center justify-center py-8">
+          {currentIndex === -1 ? (
+            <div 
+              className="text-center space-y-6 slide-up cursor-pointer"
+              onClick={() => drawCard()}
+              onTouchStart={() => drawCard()}
+            >
+              <div className="inline-flex items-center justify-center w-24 h-24 rounded-full bg-primary/20 border border-primary/50 pulse-glow">
+                <Beer className="w-12 h-12 text-primary" />
+              </div>
+              <div>
+                <h2 className="text-3xl font-bold mb-2">Bereit?</h2>
+                <p className="text-muted-foreground">Ziehe die erste Karte!</p>
+              </div>
             </div>
-            <div>
-              <h2 className="text-3xl font-bold mb-2">Bereit?</h2>
-              <p className="text-muted-foreground">Ziehe die erste Karte!</p>
-            </div>
-          </div>
-        ) : showCard && currentCard ? (
-          <div className="w-full mx-auto relative">
-            {/* Next card (behind) */}
-            {currentIndex < deck.length - 1 && (
-              <div className="absolute inset-0 z-0">
+          ) : showCard && currentCard ? (
+            <div className="w-full mx-auto relative">
+              {/* Next card (behind) */}
+              {currentIndex < deck.length - 1 && (
+                <div className="absolute inset-0 z-0">
+                  <GameCard 
+                    card={deck[currentIndex + 1]}
+                    swipeDistance={0}
+                    swipeDirection={null}
+                    showGlow={false}
+                  />
+                </div>
+              )}
+              
+              {/* Current card (on top) */}
+              <div className="relative z-10">
                 <GameCard 
-                  card={deck[currentIndex + 1]}
-                  swipeDistance={0}
-                  swipeDirection={null}
-                  showGlow={false}
+                  card={currentCard}
+                  swipeDistance={cardSwipeState.swipeDistance}
+                  swipeDirection={cardSwipeState.swipeDirection}
+                  {...cardSwipeHandlers}
                 />
               </div>
-            )}
-            
-            {/* Current card (on top) */}
-            <div className="relative z-10">
-              <GameCard 
-                card={currentCard}
-                swipeDistance={cardSwipeState.swipeDistance}
-                swipeDirection={cardSwipeState.swipeDirection}
-                {...cardSwipeHandlers}
-              />
             </div>
-          </div>
-        ) : null}
-      </div>
+          ) : null}
+        </div>
 
-      {/* Bottom Swipe Area - Stats and Player Display */}
-      <div 
-        className="fixed bottom-0 left-0 right-0 h-[30vh] flex flex-col justify-end pb-12 px-6 pointer-events-auto"
-        {...bottomSwipeHandlers}
-      >
         {/* Current Player Display */}
         {players.length > 0 && currentIndex >= 0 && (
-          <div className="flex justify-center">
+          <div className="flex justify-center pb-6">
             <div className="inline-flex items-center gap-3 bg-gradient-to-r from-primary/20 to-primary/10 border-2 border-primary/40 rounded-md px-6 py-3">
               <span className="text-3xl">{players[currentPlayerIndex].avatar}</span>
               <span className="text-xl font-bold text-primary">{players[currentPlayerIndex].name}</span>
@@ -352,6 +352,12 @@ const Game = () => {
           </div>
         )}
       </div>
+
+      {/* Invisible Bottom Swipe Area for Statistics */}
+      <div 
+        className="fixed bottom-0 left-0 right-0 h-[25vh] pointer-events-auto z-0"
+        {...bottomSwipeHandlers}
+      />
 
       {/* Exit Confirmation Dialog */}
       <AlertDialog open={showExitDialog} onOpenChange={setShowExitDialog}>
