@@ -163,7 +163,7 @@ const Game = () => {
           size="icon"
           className="hover:bg-muted/50"
         >
-          <Home className="w-5 h-5" />
+          <Home className="w-7 h-7" />
         </Button>
         
         <div className="flex gap-2">
@@ -173,7 +173,7 @@ const Game = () => {
             size="icon"
             className="hover:bg-muted/50"
           >
-            <Trophy className="w-5 h-5" />
+            <Trophy className="w-7 h-7" />
           </Button>
           <Button
             onClick={handleRestart}
@@ -181,7 +181,7 @@ const Game = () => {
             size="icon"
             className="hover:bg-muted/50"
           >
-            <RotateCcw className="w-5 h-5" />
+            <RotateCcw className="w-7 h-7" />
           </Button>
         </div>
       </div>
