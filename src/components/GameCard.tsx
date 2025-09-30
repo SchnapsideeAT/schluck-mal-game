@@ -82,13 +82,13 @@ export const GameCard = ({
       )}
       
       {/* Card Container with Glow */}
-      <div className="relative inline-block">
+      <div className="relative inline-block" style={{ transform: 'scale(1.5)' }}>
         {/* Glow Effect Background */}
         {showGlow && (
           <div 
             className="absolute inset-0 rounded-2xl"
             style={{
-              boxShadow: `0 0 20px 3px hsl(${categoryColor} / 0.25), 0 0 40px 8px hsl(${categoryColor} / 0.12)`,
+              boxShadow: `0 0 30px 5px hsl(${categoryColor} / 0.25), 0 0 60px 12px hsl(${categoryColor} / 0.12)`,
               animation: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
               zIndex: -1
             }}
