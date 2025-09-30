@@ -260,7 +260,7 @@ const Game = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col px-6 pt-8 pb-12 relative">
+    <div className="min-h-screen flex flex-col px-6 pt-8 pb-32 relative">
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <Button
@@ -336,21 +336,18 @@ const Game = () => {
         </div>
       </div>
 
-      {/* Current Player Display - Separate Section */}
+      {/* Current Player Display - Fixed at Bottom */}
       {players.length > 0 && currentIndex >= 0 && currentCard && (
-        <div className={`${getCategoryColor(currentCard.category)} transition-colors duration-500 ease-in-out py-6 pb-[calc(1.5rem+env(safe-area-inset-bottom))] -mx-6 -mb-12 shadow-[0_-4px_20px_rgba(0,0,0,0.3)]`}>
+        <div 
+          className={`${getCategoryColor(currentCard.category)} transition-colors duration-200 ease-in-out fixed bottom-0 left-0 right-0 py-6 pb-[calc(1.5rem+env(safe-area-inset-bottom))] shadow-[0_-4px_20px_rgba(0,0,0,0.3)] z-20`}
+          {...bottomSwipeHandlers}
+        >
           <div className="flex items-center justify-center gap-4">
             <span className="text-4xl drop-shadow-lg">{players[currentPlayerIndex].avatar}</span>
             <span className="text-2xl font-bold text-white drop-shadow-lg">{players[currentPlayerIndex].name}</span>
           </div>
         </div>
       )}
-
-      {/* Invisible Bottom Swipe Area for Statistics */}
-      <div 
-        className="fixed bottom-0 left-0 right-0 h-[25vh] pointer-events-auto z-0"
-        {...bottomSwipeHandlers}
-      />
 
       {/* Exit Confirmation Dialog */}
       <AlertDialog open={showExitDialog} onOpenChange={setShowExitDialog}>
