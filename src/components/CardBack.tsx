@@ -8,7 +8,7 @@ interface CardBackProps {
 export const CardBack = memo(({ showGlow = false }: CardBackProps) => {
   return (
     <div 
-      className="card-flip w-full relative flex items-center justify-center"
+      className="w-full relative flex items-center justify-center"
     >
       <div 
         className="relative inline-block"
