@@ -30,14 +30,14 @@ const Rules = () => {
               
               <div className="space-y-3">
                 <div>
-                  <strong className="text-foreground">1. Karte ziehen</strong>
+                  <strong className="text-foreground">Karte ziehen</strong>
                   <ul className="ml-4 mt-1 space-y-1">
                     <li>• Der jüngste Spieler beginnt und zieht eine Karte vom Stapel.</li>
                   </ul>
                 </div>
 
                 <div>
-                  <strong className="text-foreground">2. Vorlesen</strong>
+                  <strong className="text-foreground">Vorlesen</strong>
                   <ul className="ml-4 mt-1 space-y-2">
                     <li>• Der Spieler liest die Karte laut vor und entscheidet sich für eine der folgenden Optionen:</li>
                     
@@ -66,14 +66,14 @@ const Rules = () => {
                 </div>
 
                 <div>
-                  <strong className="text-foreground">3. Weitergeben</strong>
+                  <strong className="text-foreground">Weitergeben</strong>
                   <ul className="ml-4 mt-1 space-y-1">
                     <li>• Nach Abschluss der Aufgabe oder des Trinkens zieht der nächste Spieler eine Karte.</li>
                   </ul>
                 </div>
 
                 <div>
-                  <strong className="text-foreground">4. Ende des Spiels</strong>
+                  <strong className="text-foreground">Ende des Spiels</strong>
                   <ul className="ml-4 mt-1 space-y-1">
                     <li>• Das Spiel endet, wenn alle Karten gespielt wurden oder die Gruppe keine Lust mehr hat.</li>
                   </ul>
