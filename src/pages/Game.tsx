@@ -168,10 +168,9 @@ const Game = () => {
         
         {/* Current Player Display */}
         {players.length > 0 && currentIndex >= 0 ? (
-          <div className="inline-flex items-center gap-2 bg-primary/10 border border-primary/30 rounded-full px-4 py-2">
-            <span className="text-2xl">{players[currentPlayerIndex].avatar}</span>
-            <span className="font-semibold text-primary">{players[currentPlayerIndex].name}</span>
-            <span className="text-sm text-muted-foreground">ist dran</span>
+          <div className="inline-flex items-center gap-3 bg-gradient-to-r from-primary/20 to-primary/10 border-2 border-primary/50 rounded-full px-5 py-2 shadow-lg shadow-primary/20 animate-pulse">
+            <span className="text-3xl animate-bounce">{players[currentPlayerIndex].avatar}</span>
+            <span className="font-bold text-xl text-primary">{players[currentPlayerIndex].name}</span>
           </div>
         ) : (
           <div className="text-center">
