@@ -331,24 +331,14 @@ const Game = () => {
               </div>
             </div>
           ) : showCard && currentCard ? (
-            <div className="w-full mx-auto relative">
-              {/* Card back (behind) - only show if there are more cards */}
-              {currentIndex < deck.length - 1 && (
-                <div className="absolute inset-0 z-0" style={{ transform: 'translate(8px, 8px)' }}>
-                  <CardBack />
-                </div>
-              )}
-              
-              {/* Current card (on top) */}
-              <div className="relative z-10">
-                <GameCard 
-                  key={currentIndex}
-                  card={currentCard}
-                  swipeDistance={cardSwipeState.swipeDistance}
-                  swipeDirection={cardSwipeState.swipeDirection}
-                  {...cardSwipeHandlers}
-                />
-              </div>
+            <div className="w-full mx-auto">
+              <GameCard 
+                key={currentIndex}
+                card={currentCard}
+                swipeDistance={cardSwipeState.swipeDistance}
+                swipeDirection={cardSwipeState.swipeDirection}
+                {...cardSwipeHandlers}
+              />
             </div>
           ) : null}
         </div>
