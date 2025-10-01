@@ -44,7 +44,8 @@ export const GameCard = memo(({
 
   // Calculate rotation and opacity based on swipe
   const rotation = swipeDistance * 0.1;
-  const opacity = Math.max(0.5, 1 - Math.abs(swipeDistance) / 300);
+  // Only set opacity when actively swiping, otherwise let CSS animation handle it
+  const opacity = swipeDistance !== 0 ? Math.max(0.5, 1 - Math.abs(swipeDistance) / 300) : undefined;
 
   // Exit animation transform
   const exitTransform = isExiting 
