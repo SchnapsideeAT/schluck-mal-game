@@ -46,6 +46,7 @@ const Game = () => {
   const [showExitDialog, setShowExitDialog] = useState(false);
   const [showPlayerTransition, setShowPlayerTransition] = useState(false);
   const [nextPlayerIndex, setNextPlayerIndex] = useState(0);
+  const [showCard, setShowCard] = useState(true);
 
   // Auto-save game state every 10 seconds
   useEffect(() => {
@@ -140,6 +141,9 @@ const Game = () => {
     // Sound effect
     playSound('swipeRight', soundEnabled);
     
+    // Hide card before showing transition
+    setShowCard(false);
+    
     // Show transition to next player
     const nextIndex = (currentPlayerIndex + 1) % players.length;
     setNextPlayerIndex(nextIndex);
@@ -159,6 +163,9 @@ const Game = () => {
     // Sound effects
     playSound('swipeLeft', soundEnabled);
     playSound('drink', soundEnabled);
+    
+    // Hide card before showing transition
+    setShowCard(false);
     
     // Show transition to next player
     const nextIndex = (currentPlayerIndex + 1) % players.length;
@@ -204,6 +211,7 @@ const Game = () => {
     setShowPlayerTransition(false);
     setCurrentPlayerIndex(nextPlayerIndex);
     drawCard();
+    setShowCard(true);
   }, [nextPlayerIndex, drawCard]);
 
   // Swipe gesture handlers for card (left/right only)
@@ -309,7 +317,7 @@ const Game = () => {
                 <p className="text-muted-foreground">Ziehe die erste Karte!</p>
               </div>
             </div>
-          ) : currentCard ? (
+          ) : currentCard && showCard ? (
             <GameCard 
               card={currentCard}
               swipeDistance={cardSwipeState.swipeDistance}
