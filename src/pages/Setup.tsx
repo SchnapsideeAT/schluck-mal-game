@@ -7,7 +7,7 @@ import { Tutorial } from "@/components/Tutorial";
 import { CategorySelector } from "@/components/CategorySelector";
 import { Player, CardCategory } from "@/types/card";
 import { playSound } from "@/utils/sounds";
-import { loadLastPlayers, loadLastCategories } from "@/utils/localStorage";
+import { loadLastPlayers, loadLastCategories, hasShownInteractiveTutorial } from "@/utils/localStorage";
 
 const Setup = () => {
   const navigate = useNavigate();
@@ -72,7 +72,10 @@ const Setup = () => {
               return;
             }
             playSound('success', true);
-            navigate("/game", { state: { players, selectedCategories } });
+            
+            // Navigate to tutorial if not shown, otherwise go directly to game
+            const targetRoute = hasShownInteractiveTutorial() ? "/game" : "/tutorial";
+            navigate(targetRoute, { state: { players, selectedCategories } });
           }}
           size="lg"
           className="w-full h-16 text-lg bg-primary hover:shadow-[var(--shadow-button)] transition-all duration-300 hover:scale-105"

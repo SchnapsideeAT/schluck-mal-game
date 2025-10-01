@@ -2,8 +2,8 @@ import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
-import { ArrowLeft, Volume2, VolumeX, Globe, RotateCcw, Smartphone } from "lucide-react";
-import { loadGameState, clearGameState } from "@/utils/localStorage";
+import { ArrowLeft, Volume2, VolumeX, Globe, RotateCcw, Smartphone, GraduationCap } from "lucide-react";
+import { loadGameState, clearGameState, resetInteractiveTutorial } from "@/utils/localStorage";
 import { shuffleDeck } from "@/utils/cardUtils";
 import { 
   AlertDialog, 
@@ -153,6 +153,27 @@ const Settings = () => {
                   onCheckedChange={handleHapticToggle}
                   className="data-[state=checked]:bg-primary"
                 />
+              </div>
+
+              <div className="flex items-center justify-between p-4 rounded-xl bg-muted/30 hover:bg-muted/50 transition-colors">
+                <div className="space-y-1">
+                  <p className="font-semibold text-foreground">Tutorial wiederholen</p>
+                  <p className="text-sm text-muted-foreground">
+                    Lerne die Swipe-Gesten erneut
+                  </p>
+                </div>
+                <Button
+                  onClick={() => {
+                    resetInteractiveTutorial();
+                    navigate("/tutorial");
+                  }}
+                  variant="outline"
+                  size="sm"
+                  className="gap-2"
+                >
+                  <GraduationCap className="w-4 h-4" />
+                  Starten
+                </Button>
               </div>
             </div>
           </section>

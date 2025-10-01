@@ -7,6 +7,7 @@ import { DevOverlay } from "./components/DevOverlay";
 
 // Lazy load pages
 const Setup = lazy(() => import("./pages/Setup"));
+const InteractiveTutorial = lazy(() => import("./pages/InteractiveTutorial"));
 const Game = lazy(() => import("./pages/Game"));
 const Rules = lazy(() => import("./pages/Rules"));
 const Settings = lazy(() => import("./pages/Settings"));
@@ -25,6 +26,7 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/setup" element={<Setup />} />
+            <Route path="/tutorial" element={<InteractiveTutorial />} />
             <Route path="/game" element={<Game />} />
             <Route path="/statistics" element={<Statistics />} />
             <Route path="/rules" element={<Rules />} />

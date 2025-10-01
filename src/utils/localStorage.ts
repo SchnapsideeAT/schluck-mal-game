@@ -13,6 +13,7 @@ const GAME_STATE_KEY = 'schluck-mal-game-state';
 const LAST_PLAYERS_KEY = 'schluck-mal-last-players';
 const LAST_CATEGORIES_KEY = 'schluck-mal-last-categories';
 const TUTORIAL_SHOWN_KEY = 'schluck-mal-tutorial-shown';
+const INTERACTIVE_TUTORIAL_SHOWN_KEY = 'schluck-mal-interactive-tutorial-shown';
 
 // Game State
 export const saveGameState = (state: GameState): void => {
@@ -115,5 +116,30 @@ export const resetTutorial = (): void => {
     localStorage.removeItem(TUTORIAL_SHOWN_KEY);
   } catch (error) {
     console.error('Failed to reset tutorial:', error);
+  }
+};
+
+// Interactive Tutorial
+export const hasShownInteractiveTutorial = (): boolean => {
+  try {
+    return localStorage.getItem(INTERACTIVE_TUTORIAL_SHOWN_KEY) === 'true';
+  } catch (error) {
+    return false;
+  }
+};
+
+export const markInteractiveTutorialAsShown = (): void => {
+  try {
+    localStorage.setItem(INTERACTIVE_TUTORIAL_SHOWN_KEY, 'true');
+  } catch (error) {
+    console.error('Failed to mark interactive tutorial as shown:', error);
+  }
+};
+
+export const resetInteractiveTutorial = (): void => {
+  try {
+    localStorage.removeItem(INTERACTIVE_TUTORIAL_SHOWN_KEY);
+  } catch (error) {
+    console.error('Failed to reset interactive tutorial:', error);
   }
 };

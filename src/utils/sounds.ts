@@ -288,6 +288,27 @@ class SoundManager {
       console.warn('Failed to play drink sound:', e);
     }
   }
+
+  // Tutorial sounds
+  async tutorialSuccess() {
+    if (!this.isReady()) {
+      await this.preload();
+    }
+    
+    // Happy ascending chime
+    await this.playTone(523.25, 0.15, 'sine', 0.3); // C5
+    setTimeout(() => this.playTone(659.25, 0.15, 'sine', 0.3), 100); // E5
+    setTimeout(() => this.playTone(783.99, 0.2, 'sine', 0.35), 200); // G5
+  }
+
+  async tutorialHint() {
+    if (!this.isReady()) {
+      await this.preload();
+    }
+    
+    // Gentle notification tone
+    await this.playTone(440, 0.1, 'sine', 0.2);
+  }
 }
 
 // Export singleton instance
@@ -302,7 +323,9 @@ export type SoundEffect =
   | 'success' 
   | 'error' 
   | 'playerChange'
-  | 'drink';
+  | 'drink'
+  | 'tutorialSuccess'
+  | 'tutorialHint';
 
 export const playSound = (effect: SoundEffect, enabled: boolean = true) => {
   if (!enabled) return;
@@ -331,6 +354,12 @@ export const playSound = (effect: SoundEffect, enabled: boolean = true) => {
       break;
     case 'drink':
       soundManager.drink();
+      break;
+    case 'tutorialSuccess':
+      soundManager.tutorialSuccess();
+      break;
+    case 'tutorialHint':
+      soundManager.tutorialHint();
       break;
   }
 };
