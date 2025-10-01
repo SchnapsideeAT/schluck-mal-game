@@ -11,27 +11,38 @@ const Home = () => {
   const navigate = useNavigate();
   const { settings } = useSettings();
   const [hasSavedGame, setHasSavedGame] = useState(false);
-  const [logoPhase, setLogoPhase] = useState<'center' | 'sliding' | 'final'>('center');
-  const [showButtons, setShowButtons] = useState(false);
+  const [logoPhase, setLogoPhase] = useState<'center' | 'sliding' | 'final'>('final');
+  const [showButtons, setShowButtons] = useState(true);
   
   useEffect(() => {
     const savedState = loadGameState();
     setHasSavedGame(savedState !== null);
 
-    // Animation sequence
-    const slideTimer = setTimeout(() => {
-      setLogoPhase('sliding');
-    }, 1000); // Logo stays in center for 1s
+    // Check if this is the first app load (not a navigation from another page)
+    const hasAnimated = sessionStorage.getItem('home-animation-played');
+    
+    if (!hasAnimated) {
+      // First time loading the app - play animation
+      setLogoPhase('center');
+      setShowButtons(false);
+      sessionStorage.setItem('home-animation-played', 'true');
 
-    const finalTimer = setTimeout(() => {
-      setLogoPhase('final');
-      setShowButtons(true);
-    }, 1600); // Logo slides up for 0.6s
+      // Animation sequence
+      const slideTimer = setTimeout(() => {
+        setLogoPhase('sliding');
+      }, 1000); // Logo stays in center for 1s
 
-    return () => {
-      clearTimeout(slideTimer);
-      clearTimeout(finalTimer);
-    };
+      const finalTimer = setTimeout(() => {
+        setLogoPhase('final');
+        setShowButtons(true);
+      }, 1600); // Logo slides up for 0.6s
+
+      return () => {
+        clearTimeout(slideTimer);
+        clearTimeout(finalTimer);
+      };
+    }
+    // If returning from another page, show everything immediately (already set in initial state)
   }, []);
 
   const handleStartGame = () => {
