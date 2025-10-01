@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { memo, useState, useEffect } from "react";
 import { Card, CardCategory } from "@/types/card";
 import { getCardImage } from "@/utils/cardImageMapper";
 
@@ -37,6 +37,18 @@ export const GameCard = memo(({
 }: GameCardProps) => {
   const cardImageSrc = getCardImage(card.category, card.id);
   const categoryColor = categoryColorMap[card.category];
+  
+  // Track if entrance animation has completed
+  const [hasAnimated, setHasAnimated] = useState(false);
+
+  // Reset animation state when card changes
+  useEffect(() => {
+    setHasAnimated(false);
+    const timer = setTimeout(() => {
+      setHasAnimated(true);
+    }, 600); // Match animation duration from CSS
+    return () => clearTimeout(timer);
+  }, [card.id]);
 
   // Check if card is exiting
   const isExiting = (card as any).exiting;
@@ -59,8 +71,8 @@ export const GameCard = memo(({
           ? exitTransform 
           : swipeDistance !== 0 
             ? `translateX(${swipeDistance}px) rotate(${rotation}deg)`
-            : undefined,
-        opacity: isExiting ? 0 : (swipeDistance !== 0 ? opacity : undefined),
+            : !hasAnimated ? 'scale(0.8)' : undefined,
+        opacity: isExiting ? 0 : (swipeDistance !== 0 ? opacity : !hasAnimated ? 0 : undefined),
         transition: isExiting ? 'transform 0.5s ease-in, opacity 0.5s ease-in' : 'none',
         cursor: 'grab',
         willChange: isExiting || swipeDistance !== 0 ? 'transform, opacity' : 'auto'
