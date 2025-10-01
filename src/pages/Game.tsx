@@ -37,7 +37,6 @@ const Game = () => {
   
   const [deck, setDeck] = useState<Card[]>(state?.deck || []);
   const [currentIndex, setCurrentIndex] = useState(state?.currentIndex ?? -1);
-  const [showCard, setShowCard] = useState(state?.showCard ?? false);
   const [cardAccepted, setCardAccepted] = useState(state?.cardAccepted ?? false);
   const [players, setPlayers] = useState<Player[]>(state?.players || []);
   const [selectedCategories, setSelectedCategories] = useState<CardCategory[]>(state?.selectedCategories || []);
@@ -57,7 +56,6 @@ const Game = () => {
           deck,
           currentIndex,
           currentPlayerIndex,
-          showCard,
           cardAccepted,
           timestamp: Date.now()
         });
@@ -65,7 +63,7 @@ const Game = () => {
     }, 10000); // Save every 10 seconds
 
     return () => clearInterval(interval);
-  }, [players, deck, currentIndex, currentPlayerIndex, showCard, cardAccepted]);
+  }, [players, deck, currentIndex, currentPlayerIndex, cardAccepted]);
 
   // Redirect if no players
   useEffect(() => {
@@ -83,7 +81,7 @@ const Game = () => {
 
   // Check if game is finished
   useEffect(() => {
-    if (currentIndex >= 0 && currentIndex >= deck.length - 1 && showCard) {
+    if (currentIndex >= 0 && currentIndex >= deck.length - 1) {
       // Game is finished, navigate to statistics
       const timer = setTimeout(() => {
         navigate("/statistics", { 
@@ -92,7 +90,6 @@ const Game = () => {
             deck,
             currentIndex,
             currentPlayerIndex,
-            showCard,
             cardAccepted,
             gameFinished: true,
             selectedCategories
@@ -101,7 +98,7 @@ const Game = () => {
       }, 1000); // Small delay to show the last card
       return () => clearTimeout(timer);
     }
-  }, [currentIndex, deck.length, showCard, navigate, players, currentPlayerIndex, cardAccepted, selectedCategories]);
+  }, [currentIndex, deck.length, navigate, players, currentPlayerIndex, cardAccepted, selectedCategories]);
 
   const drawCard = useCallback((exitDirection?: 'left' | 'right') => {
     if (currentIndex >= deck.length - 1) {
@@ -122,7 +119,6 @@ const Game = () => {
     // Load new card while old one is animating out
     setTimeout(() => {
       setCurrentIndex(currentIndex + 1);
-      setShowCard(true);
       playSound('cardDraw', soundEnabled);
     }, 200);
   }, [currentIndex, deck, soundEnabled]);
@@ -190,12 +186,11 @@ const Game = () => {
         deck,
         currentIndex,
         currentPlayerIndex,
-        showCard,
         cardAccepted,
         selectedCategories
       } 
     });
-  }, [navigate, players, deck, currentIndex, currentPlayerIndex, showCard, cardAccepted, selectedCategories]);
+  }, [navigate, players, deck, currentIndex, currentPlayerIndex, cardAccepted, selectedCategories]);
 
   const navigateToSettings = () => {
     // Save before navigating
@@ -204,7 +199,6 @@ const Game = () => {
       deck,
       currentIndex,
       currentPlayerIndex,
-      showCard,
       cardAccepted,
       timestamp: Date.now()
     });
@@ -214,7 +208,6 @@ const Game = () => {
         deck,
         currentIndex,
         currentPlayerIndex,
-        showCard,
         cardAccepted
       }
     });
@@ -275,7 +268,6 @@ const Game = () => {
       deck,
       currentIndex,
       currentPlayerIndex,
-      showCard,
       cardAccepted,
       timestamp: Date.now()
     });
@@ -330,16 +322,14 @@ const Game = () => {
                 <p className="text-muted-foreground">Ziehe die erste Karte!</p>
               </div>
             </div>
-          ) : showCard && currentCard ? (
-            <div className="w-full mx-auto">
-              <GameCard 
-                key={currentIndex}
-                card={currentCard}
-                swipeDistance={cardSwipeState.swipeDistance}
-                swipeDirection={cardSwipeState.swipeDirection}
-                {...cardSwipeHandlers}
-              />
-            </div>
+          ) : currentCard ? (
+            <GameCard 
+              key={currentIndex}
+              card={currentCard}
+              swipeDistance={cardSwipeState.swipeDistance}
+              swipeDirection={cardSwipeState.swipeDirection}
+              {...cardSwipeHandlers}
+            />
           ) : null}
         </div>
       </div>

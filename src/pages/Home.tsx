@@ -30,7 +30,6 @@ const Home = () => {
           deck: savedState.deck,
           currentIndex: savedState.currentIndex,
           currentPlayerIndex: savedState.currentPlayerIndex,
-          showCard: savedState.showCard,
           cardAccepted: savedState.cardAccepted
         }
       });

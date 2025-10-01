@@ -5,7 +5,6 @@ export interface GameState {
   deck: any[];
   currentIndex: number;
   currentPlayerIndex: number;
-  showCard: boolean;
   cardAccepted: boolean;
   timestamp: number;
 }

@@ -44,8 +44,7 @@ export const GameCard = memo(({
 
   // Calculate rotation and opacity based on swipe
   const rotation = swipeDistance * 0.1;
-  // Only set opacity when actively swiping, otherwise let CSS animation handle it
-  const opacity = swipeDistance !== 0 ? Math.max(0.5, 1 - Math.abs(swipeDistance) / 300) : undefined;
+  const opacity = swipeDistance !== 0 ? Math.max(0.5, 1 - Math.abs(swipeDistance) / 300) : 1;
 
   // Exit animation transform
   const exitTransform = isExiting 
@@ -56,8 +55,12 @@ export const GameCard = memo(({
     <div 
       className={`card-flip w-full relative touch-none flex items-center justify-center ${!isExiting ? 'animate-enter' : ''}`}
       style={{
-        transform: exitTransform,
-        opacity: isExiting ? 0 : opacity,
+        transform: isExiting 
+          ? exitTransform 
+          : swipeDistance !== 0 
+            ? `translateX(${swipeDistance}px) rotate(${rotation}deg)`
+            : 'scale(0.8)',
+        opacity: isExiting ? 0 : (swipeDistance !== 0 ? opacity : 0),
         transition: isExiting ? 'transform 0.5s ease-in, opacity 0.5s ease-in' : 'none',
         cursor: 'grab',
         willChange: isExiting || swipeDistance !== 0 ? 'transform, opacity' : 'auto'
