@@ -47,6 +47,7 @@ const Game = () => {
   const [showPlayerTransition, setShowPlayerTransition] = useState(false);
   const [nextPlayerIndex, setNextPlayerIndex] = useState(0);
   const [showCard, setShowCard] = useState(true);
+  const [showInitialTransition, setShowInitialTransition] = useState(false);
 
   // Auto-save game state every 10 seconds
   useEffect(() => {
@@ -77,6 +78,11 @@ const Game = () => {
     if (!state?.deck || state.deck.length === 0) {
       const shuffled = shuffleDeck(state?.selectedCategories);
       setDeck(shuffled);
+    }
+    
+    // Show initial transition when loading a saved game
+    if (state?.currentIndex !== undefined && state.currentIndex >= 0) {
+      setShowInitialTransition(true);
     }
   }, []);
 
@@ -214,6 +220,12 @@ const Game = () => {
     setShowCard(true);
   }, [nextPlayerIndex, drawCard]);
 
+  const handleInitialTransitionTap = useCallback(() => {
+    setShowInitialTransition(false);
+    drawCard();
+    setShowCard(true);
+  }, [drawCard]);
+
   // Swipe gesture handlers for card (left/right only)
   const { swipeState: cardSwipeState, swipeHandlers: cardSwipeHandlers } = useSwipe({
     onSwipeLeft: () => {
@@ -304,8 +316,8 @@ const Game = () => {
         {currentIndex === -1 ? (
           <div 
             className="text-center space-y-6 slide-up cursor-pointer"
-            onClick={() => drawCard()}
-            onTouchStart={() => drawCard()}
+            onClick={() => setShowInitialTransition(true)}
+            onTouchStart={() => setShowInitialTransition(true)}
           >
             <div className="inline-flex items-center justify-center w-24 h-24 rounded-full bg-primary/20 border border-primary/50 pulse-glow">
               <Beer className="w-12 h-12 text-primary" />
@@ -331,6 +343,16 @@ const Game = () => {
           player={players[nextPlayerIndex]}
           categoryColor={getCategoryColor(currentCard.category)}
           onTap={handlePlayerTransitionTap}
+          bottomSwipeHandlers={bottomSwipeHandlers}
+        />
+      )}
+
+      {/* Initial Player Transition Screen */}
+      {showInitialTransition && players.length > 0 && (
+        <PlayerTransition
+          player={players[currentPlayerIndex]}
+          categoryColor="bg-primary"
+          onTap={handleInitialTransitionTap}
           bottomSwipeHandlers={bottomSwipeHandlers}
         />
       )}
