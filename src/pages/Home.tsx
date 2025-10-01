@@ -45,32 +45,53 @@ const Home = () => {
           
           {/* Logo/Title */}
           <div className="space-y-6">
-            <div className="flex justify-center">
-              <img src={logo} alt="Schluck mal!" className="w-full max-w-md h-auto" />
+            <div className="flex justify-center px-4">
+              <img 
+                src={logo} 
+                alt="Schluck mal!" 
+                className="logo-animate w-full max-w-[280px] sm:max-w-md h-auto"
+              />
             </div>
-            
           </div>
 
           {/* Menu buttons */}
-          <div className="space-y-3 sm:space-y-4">
+          <div className="space-y-4 sm:space-y-4 mt-8">
             {hasSavedGame && (
-              <Button onClick={handleLoadGame} size="lg" className="w-full h-14 sm:h-16 text-base sm:text-lg bg-accent hover:shadow-[var(--shadow-button)] transition-all duration-300 hover:scale-105">
+              <Button 
+                onClick={handleLoadGame} 
+                size="lg" 
+                className="w-full min-h-[56px] sm:h-16 text-base sm:text-lg bg-accent hover:shadow-[var(--shadow-button)] transition-all duration-300 hover:scale-[1.02] active:scale-95 touch-manipulation"
+              >
                 <RotateCcw className="w-5 h-5 sm:w-6 sm:h-6 mr-2 sm:mr-3" />
                 Spiel laden
               </Button>
             )}
             
-            <Button onClick={handleStartGame} size="lg" className="w-full h-14 sm:h-16 text-base sm:text-lg bg-primary hover:shadow-[var(--shadow-button)] transition-all duration-300 hover:scale-105">
+            <Button 
+              onClick={handleStartGame} 
+              size="lg" 
+              className="w-full min-h-[56px] sm:h-16 text-base sm:text-lg bg-primary hover:shadow-[var(--shadow-button)] transition-all duration-300 hover:scale-[1.02] active:scale-95 touch-manipulation"
+            >
               <Play className="w-5 h-5 sm:w-6 sm:h-6 mr-2 sm:mr-3" />
               Spiel starten
             </Button>
 
-            <Button onClick={() => navigate("/rules")} variant="outline" size="lg" className="w-full h-12 sm:h-14 text-base sm:text-lg border-primary/50 hover:bg-primary/10 hover:border-primary hover:text-primary transition-all duration-300">
+            <Button 
+              onClick={() => navigate("/rules")} 
+              variant="outline" 
+              size="lg" 
+              className="w-full min-h-[52px] sm:h-14 text-base sm:text-lg border-2 border-primary/50 hover:bg-primary/10 hover:border-primary hover:text-primary transition-all duration-300 hover:scale-[1.02] active:scale-95 touch-manipulation"
+            >
               <BookOpen className="w-4 h-4 sm:w-5 sm:h-5 mr-2 sm:mr-3" />
               Regeln
             </Button>
 
-            <Button onClick={() => navigate("/settings")} variant="outline" size="lg" className="w-full h-12 sm:h-14 text-base sm:text-lg border-secondary/50 hover:bg-secondary/10 hover:border-secondary hover:text-primary transition-all duration-300">
+            <Button 
+              onClick={() => navigate("/settings")} 
+              variant="outline" 
+              size="lg" 
+              className="w-full min-h-[52px] sm:h-14 text-base sm:text-lg border-2 border-secondary/50 hover:bg-secondary/10 hover:border-secondary hover:text-foreground transition-all duration-300 hover:scale-[1.02] active:scale-95 touch-manipulation"
+            >
               <Settings className="w-4 h-4 sm:w-5 sm:h-5 mr-2 sm:mr-3" />
               Einstellungen
             </Button>
