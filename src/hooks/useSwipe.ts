@@ -2,13 +2,14 @@ import { useRef, useState, useEffect, useCallback } from "react";
 import { triggerHaptic, type HapticType } from "@/utils/haptics";
 
 /**
- * useSwipe Hook
+ * useSwipe Hook (v2 - Optimized)
  * 
- * Optimized swipe gesture handler with:
- * - RAF-based throttling for smooth 60fps performance
- * - Touch and mouse support
+ * Complete rewrite with:
+ * - Unified horizontal distance calculation for glow effects
+ * - Separate absolute distance for threshold checks
+ * - Better RAF cleanup and state reset
+ * - Touch and mouse support with unified logic
  * - Haptic feedback on swipe completion
- * - Configurable swipe thresholds
  * 
  * @param handlers - Callbacks for swipe events
  * @returns Swipe state and event handlers
@@ -25,14 +26,16 @@ interface SwipeHandlers {
 interface SwipeState {
   isSwiping: boolean;
   swipeDirection: 'left' | 'right' | 'up' | null;
-  swipeDistance: number;
+  horizontalDistance: number;    // Always X-axis for glow calculation
+  absoluteDistance: number;      // Absolute value for threshold checks
 }
 
 export const useSwipe = (handlers: SwipeHandlers) => {
   const [swipeState, setSwipeState] = useState<SwipeState>({
     isSwiping: false,
     swipeDirection: null,
-    swipeDistance: 0,
+    horizontalDistance: 0,
+    absoluteDistance: 0,
   });
 
   const touchStartX = useRef<number>(0);
@@ -55,7 +58,12 @@ export const useSwipe = (handlers: SwipeHandlers) => {
 
   // Reset swipe state function
   const resetSwipeState = useCallback(() => {
-    setSwipeState({ isSwiping: false, swipeDirection: null, swipeDistance: 0 });
+    setSwipeState({ 
+      isSwiping: false, 
+      swipeDirection: null, 
+      horizontalDistance: 0,
+      absoluteDistance: 0
+    });
   }, []);
 
 
@@ -64,7 +72,12 @@ export const useSwipe = (handlers: SwipeHandlers) => {
     touchCurrentX.current = e.touches[0].clientX;
     touchStartY.current = e.touches[0].clientY;
     touchCurrentY.current = e.touches[0].clientY;
-    setSwipeState({ isSwiping: true, swipeDirection: null, swipeDistance: 0 });
+    setSwipeState({ 
+      isSwiping: true, 
+      swipeDirection: null, 
+      horizontalDistance: 0,
+      absoluteDistance: 0
+    });
     handlers.onSwipeStart?.();
   }, [handlers]);
 
@@ -83,10 +96,12 @@ export const useSwipe = (handlers: SwipeHandlers) => {
     rafId.current = requestAnimationFrame(() => {
       const distanceX = touchCurrentX.current - touchStartX.current;
       const distanceY = touchCurrentY.current - touchStartY.current;
+      const absDistanceX = Math.abs(distanceX);
+      const absDistanceY = Math.abs(distanceY);
       
       // Determine primary direction
       let direction: 'left' | 'right' | 'up' | null = null;
-      if (Math.abs(distanceX) > Math.abs(distanceY)) {
+      if (absDistanceX > absDistanceY) {
         direction = distanceX > 0 ? 'right' : 'left';
       } else if (distanceY < 0) {
         direction = 'up';
@@ -94,8 +109,9 @@ export const useSwipe = (handlers: SwipeHandlers) => {
 
       setSwipeState({
         isSwiping: true,
-        swipeDirection: Math.max(Math.abs(distanceX), Math.abs(distanceY)) > swipeThreshold ? direction : null,
-        swipeDistance: Math.abs(distanceX) > Math.abs(distanceY) ? distanceX : distanceY,
+        swipeDirection: Math.max(absDistanceX, absDistanceY) > swipeThreshold ? direction : null,
+        horizontalDistance: distanceX, // Always horizontal for glow
+        absoluteDistance: absDistanceX > absDistanceY ? absDistanceX : absDistanceY,
       });
     });
   }, [swipeState.isSwiping]);
@@ -125,9 +141,9 @@ export const useSwipe = (handlers: SwipeHandlers) => {
     }
 
     // Reset state
-    setSwipeState({ isSwiping: false, swipeDirection: null, swipeDistance: 0 });
+    resetSwipeState();
     handlers.onSwipeEnd?.();
-  }, [handlers]);
+  }, [handlers, resetSwipeState]);
 
   const handleMouseDown = useCallback((e: React.MouseEvent) => {
     isMouseDown.current = true;
@@ -135,7 +151,12 @@ export const useSwipe = (handlers: SwipeHandlers) => {
     touchCurrentX.current = e.clientX;
     touchStartY.current = e.clientY;
     touchCurrentY.current = e.clientY;
-    setSwipeState({ isSwiping: true, swipeDirection: null, swipeDistance: 0 });
+    setSwipeState({ 
+      isSwiping: true, 
+      swipeDirection: null, 
+      horizontalDistance: 0,
+      absoluteDistance: 0
+    });
     handlers.onSwipeStart?.();
   }, [handlers]);
 
@@ -154,10 +175,12 @@ export const useSwipe = (handlers: SwipeHandlers) => {
     rafId.current = requestAnimationFrame(() => {
       const distanceX = touchCurrentX.current - touchStartX.current;
       const distanceY = touchCurrentY.current - touchStartY.current;
+      const absDistanceX = Math.abs(distanceX);
+      const absDistanceY = Math.abs(distanceY);
       
       // Determine primary direction
       let direction: 'left' | 'right' | 'up' | null = null;
-      if (Math.abs(distanceX) > Math.abs(distanceY)) {
+      if (absDistanceX > absDistanceY) {
         direction = distanceX > 0 ? 'right' : 'left';
       } else if (distanceY < 0) {
         direction = 'up';
@@ -165,8 +188,9 @@ export const useSwipe = (handlers: SwipeHandlers) => {
 
       setSwipeState({
         isSwiping: true,
-        swipeDirection: Math.max(Math.abs(distanceX), Math.abs(distanceY)) > swipeThreshold ? direction : null,
-        swipeDistance: Math.abs(distanceX) > Math.abs(distanceY) ? distanceX : distanceY,
+        swipeDirection: Math.max(absDistanceX, absDistanceY) > swipeThreshold ? direction : null,
+        horizontalDistance: distanceX, // Always horizontal for glow
+        absoluteDistance: absDistanceX > absDistanceY ? absDistanceX : absDistanceY,
       });
     });
   }, []);
@@ -198,9 +222,9 @@ export const useSwipe = (handlers: SwipeHandlers) => {
     }
 
     isMouseDown.current = false;
-    setSwipeState({ isSwiping: false, swipeDirection: null, swipeDistance: 0 });
+    resetSwipeState();
     handlers.onSwipeEnd?.();
-  }, [handlers]);
+  }, [handlers, resetSwipeState]);
 
   return {
     swipeState,

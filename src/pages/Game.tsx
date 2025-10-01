@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo, useCallback, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { GameCard } from "@/components/GameCard";
+import { SwipeOverlay } from "@/components/SwipeOverlay";
 import { CardBack } from "@/components/CardBack";
 import { PlayerTransition } from "@/components/PlayerTransition";
 import { shuffleDeck } from "@/utils/cardUtils";
@@ -394,12 +395,18 @@ const Game = () => {
             </div>
           </div>
         ) : currentCard && showCard ? (
-          <GameCard 
-            card={currentCard}
-            swipeDistance={cardSwipeState.swipeDistance}
-            swipeDirection={cardSwipeState.swipeDirection}
-            {...cardSwipeHandlers}
-          />
+          <>
+            <GameCard 
+              card={currentCard}
+              horizontalDistance={cardSwipeState.horizontalDistance}
+              {...cardSwipeHandlers}
+            />
+            <SwipeOverlay 
+              horizontalDistance={cardSwipeState.horizontalDistance}
+              swipeDirection={cardSwipeState.swipeDirection}
+              isSwiping={cardSwipeState.isSwiping}
+            />
+          </>
         ) : null}
       </div>
 

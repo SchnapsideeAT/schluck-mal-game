@@ -23,15 +23,13 @@ import { useFeatureFlags } from "@/utils/featureFlags";
 
 interface GameCardProps {
   card: Card;
-  swipeDistance?: number;
-  swipeDirection?: 'left' | 'right' | 'up' | null;
+  horizontalDistance?: number;
   onTouchStart?: (e: React.TouchEvent) => void;
   onTouchMove?: (e: React.TouchEvent) => void;
   onTouchEnd?: () => void;
   onMouseDown?: (e: React.MouseEvent) => void;
   onMouseMove?: (e: React.MouseEvent) => void;
   onMouseUp?: () => void;
-  showGlow?: boolean;
 }
 
 const categoryColorMap: Record<CardCategory, string> = {
@@ -44,33 +42,26 @@ const categoryColorMap: Record<CardCategory, string> = {
 
 export const GameCard = memo(({ 
   card, 
-  swipeDistance = 0, 
-  swipeDirection,
+  horizontalDistance = 0,
   onTouchStart,
   onTouchMove,
   onTouchEnd,
   onMouseDown,
   onMouseMove,
   onMouseUp,
-  showGlow = true
 }: GameCardProps) => {
   const cardImageSrc = getCardImage(card.category, card.id);
   const categoryColor = categoryColorMap[card.category];
   const { width } = useWindowSize();
   const { flags } = useFeatureFlags();
   
-  // Override showGlow based on feature flags
-  const shouldShowGlow = showGlow && flags.enableGlowEffects;
   const shouldAnimateComplex = flags.enableComplexAnimations;
   
   // Animation state: 'entering' | 'visible'
   const [animationState, setAnimationState] = useState<'entering' | 'visible'>('entering');
   
-  // Handle card changes with animation - depends on card.id AND parent's showCard prop
+  // Handle card changes with animation
   useEffect(() => {
-    // Only start animation when card should be visible
-    if (!showGlow) return; // Using showGlow as proxy for visibility
-    
     setAnimationState('entering');
     
     const timer = setTimeout(() => {
@@ -78,11 +69,11 @@ export const GameCard = memo(({
     }, 600); // Match CSS animation duration
     
     return () => clearTimeout(timer);
-  }, [card.id, showGlow]);
+  }, [card.id]);
 
-  // Calculate rotation and opacity based on swipe
-  const rotation = swipeDistance * 0.1;
-  const opacity = swipeDistance !== 0 ? Math.max(0.5, 1 - Math.abs(swipeDistance) / 300) : 1;
+  // Calculate rotation and opacity based on horizontal swipe
+  const rotation = horizontalDistance * 0.1;
+  const opacity = horizontalDistance !== 0 ? Math.max(0.5, 1 - Math.abs(horizontalDistance) / 300) : 1;
 
   return (
     <div 
@@ -90,13 +81,13 @@ export const GameCard = memo(({
         shouldAnimateComplex && animationState === 'entering' ? 'animate-enter' : ''
       }`}
       style={{
-        transform: swipeDistance !== 0 
-          ? `translateX(${swipeDistance}px) rotate(${rotation}deg)`
+        transform: horizontalDistance !== 0 
+          ? `translateX(${horizontalDistance}px) rotate(${rotation}deg)`
           : undefined,
-        opacity: swipeDistance !== 0 ? opacity : undefined,
+        opacity: horizontalDistance !== 0 ? opacity : undefined,
         transition: 'none',
         cursor: 'grab',
-        willChange: swipeDistance !== 0 ? 'transform, opacity' : 'auto'
+        willChange: horizontalDistance !== 0 ? 'transform, opacity' : 'auto'
       }}
       onTouchStart={onTouchStart}
       onTouchMove={onTouchMove}
@@ -105,37 +96,6 @@ export const GameCard = memo(({
       onMouseMove={onMouseMove}
       onMouseUp={onMouseUp}
     >
-      
-      {/* Left Screen Edge Glow (Red) - when swiping left - GPU optimized with blur */}
-      {shouldShowGlow && swipeDirection === 'left' && (
-        <div 
-          className="fixed left-0 pointer-events-none z-50 rounded-r-3xl overflow-hidden"
-          style={{
-            width: '70px',
-            height: width < 768 ? '400px' : '300px',
-            top: '50%',
-            transform: 'translateY(-50%) translateZ(0)',
-            background: 'linear-gradient(to right, rgba(239, 68, 68, 0.4), rgba(239, 68, 68, 0.2) 50%, transparent)',
-            filter: 'blur(6px)',
-          }}
-        />
-      )}
-      
-      {/* Right Screen Edge Glow (Green) - when swiping right - GPU optimized with blur */}
-      {shouldShowGlow && swipeDirection === 'right' && (
-        <div 
-          className="fixed right-0 pointer-events-none z-50 rounded-l-3xl overflow-hidden"
-          style={{
-            width: '70px',
-            height: width < 768 ? '400px' : '300px',
-            top: '50%',
-            transform: 'translateY(-50%) translateZ(0)',
-            background: 'linear-gradient(to left, rgba(34, 197, 94, 0.4), rgba(34, 197, 94, 0.2) 50%, transparent)',
-            filter: 'blur(6px)',
-          }}
-        />
-      )}
-      
       {/* Card Container with optimized scale */}
       <div 
         className="relative inline-block"
@@ -145,17 +105,15 @@ export const GameCard = memo(({
         }}
       >
         {/* Glow Effect Background - GPU optimized with opacity */}
-        {shouldShowGlow && (
-          <div 
-            className="absolute inset-0 rounded-2xl opacity-30"
-            style={{
-              background: `radial-gradient(circle at center, hsl(${categoryColor} / 0.4), transparent 70%)`,
-              animation: shouldAnimateComplex ? 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite' : 'none',
-              zIndex: -1,
-              transform: 'translateZ(0)',
-            }}
-          />
-        )}
+        <div 
+          className="absolute inset-0 rounded-2xl opacity-30"
+          style={{
+            background: `radial-gradient(circle at center, hsl(${categoryColor} / 0.4), transparent 70%)`,
+            animation: shouldAnimateComplex ? 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite' : 'none',
+            zIndex: -1,
+            transform: 'translateZ(0)',
+          }}
+        />
         
         {/* SVG Card Image */}
         <img 
