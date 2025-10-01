@@ -100,27 +100,14 @@ const Game = () => {
     }
   }, [currentIndex, deck.length, navigate, players, currentPlayerIndex, cardAccepted, selectedCategories]);
 
-  const drawCard = useCallback((exitDirection?: 'left' | 'right') => {
+  const drawCard = useCallback(() => {
     if (currentIndex >= deck.length - 1) {
       return;
     }
     
-    // Mark current card as exiting if direction provided
-    if (exitDirection && currentCard) {
-      setDeck(prev => {
-        const updated = [...prev];
-        updated[currentIndex] = { ...updated[currentIndex], exiting: exitDirection } as any;
-        return updated;
-      });
-    }
-    
     setCardAccepted(false);
-    
-    // Load new card while old one is animating out
-    setTimeout(() => {
-      setCurrentIndex(currentIndex + 1);
-      playSound('cardDraw', soundEnabled);
-    }, 200);
+    setCurrentIndex(currentIndex + 1);
+    playSound('cardDraw', soundEnabled);
   }, [currentIndex, deck, soundEnabled]);
 
   const getCategoryColor = useCallback((category: string) => {
@@ -324,7 +311,6 @@ const Game = () => {
             </div>
           ) : currentCard ? (
             <GameCard 
-              key={currentIndex}
               card={currentCard}
               swipeDistance={cardSwipeState.swipeDistance}
               swipeDirection={cardSwipeState.swipeDirection}

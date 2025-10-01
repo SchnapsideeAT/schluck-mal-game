@@ -95,11 +95,6 @@ All colors MUST be HSL.
 }
 
 @layer components {
-  .card-flip {
-    animation: cardFlip 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-    will-change: transform, opacity;
-  }
-
   .pulse-glow {
     animation: pulseGlow 2s ease-in-out infinite;
     will-change: filter;
@@ -111,12 +106,12 @@ All colors MUST be HSL.
   }
   
   .animate-enter {
-    animation: cardFlip 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    animation: cardEnter 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
     will-change: transform, opacity;
   }
 }
 
-@keyframes cardFlip {
+@keyframes cardEnter {
   0% {
     transform: rotateY(90deg) scale(0.8);
     opacity: 0;

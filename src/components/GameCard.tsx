@@ -1,4 +1,4 @@
-import { memo, useState } from "react";
+import { memo, useState, useEffect } from "react";
 import { Card, CardCategory } from "@/types/card";
 import { getCardImage } from "@/utils/cardImageMapper";
 
@@ -38,41 +38,45 @@ export const GameCard = memo(({
   const cardImageSrc = getCardImage(card.category, card.id);
   const categoryColor = categoryColorMap[card.category];
   
-  // Track if animation has started (use visibility to prevent flash)
+  // Animation state: 'entering' | 'visible' | 'exiting'
+  const [animationState, setAnimationState] = useState<'entering' | 'visible' | 'exiting'>('entering');
   const [isVisible, setIsVisible] = useState(false);
   
-  // Handle animation start event
+  // Handle card changes with animation
+  useEffect(() => {
+    setAnimationState('entering');
+    setIsVisible(false);
+    
+    const timer = setTimeout(() => {
+      setAnimationState('visible');
+    }, 600); // Match CSS animation duration
+    
+    return () => clearTimeout(timer);
+  }, [card.id]);
+
+  // Handle animation start event (fallback)
   const handleAnimationStart = () => {
     setIsVisible(true);
   };
-
-  // Check if card is exiting
-  const isExiting = (card as any).exiting;
-  const exitDirection = isExiting;
 
   // Calculate rotation and opacity based on swipe
   const rotation = swipeDistance * 0.1;
   const opacity = swipeDistance !== 0 ? Math.max(0.5, 1 - Math.abs(swipeDistance) / 300) : 1;
 
-  // Exit animation transform
-  const exitTransform = isExiting 
-    ? `translateX(${exitDirection === 'left' ? '-150vw' : '150vw'}) rotate(${exitDirection === 'left' ? '-30deg' : '30deg'})`
-    : `translateX(${swipeDistance}px) rotate(${rotation}deg)`;
-
   return (
     <div 
-      className={`card-flip w-full relative touch-none flex items-center justify-center ${!isExiting ? 'animate-enter' : ''}`}
+      className={`w-full relative touch-none flex items-center justify-center ${
+        animationState === 'entering' ? 'animate-enter' : ''
+      }`}
       style={{
-        transform: isExiting 
-          ? exitTransform 
-          : swipeDistance !== 0 
-            ? `translateX(${swipeDistance}px) rotate(${rotation}deg)`
-            : undefined,
-        opacity: isExiting ? 0 : (swipeDistance !== 0 ? opacity : undefined),
-        visibility: !isExiting && !isVisible ? 'hidden' : 'visible',
-        transition: isExiting ? 'transform 0.5s ease-in, opacity 0.5s ease-in' : 'none',
+        transform: swipeDistance !== 0 
+          ? `translateX(${swipeDistance}px) rotate(${rotation}deg)`
+          : undefined,
+        opacity: swipeDistance !== 0 ? opacity : undefined,
+        visibility: animationState === 'entering' && !isVisible ? 'hidden' : 'visible',
+        transition: 'none',
         cursor: 'grab',
-        willChange: isExiting || swipeDistance !== 0 ? 'transform, opacity' : 'auto'
+        willChange: swipeDistance !== 0 ? 'transform, opacity' : 'auto'
       }}
       onAnimationStart={handleAnimationStart}
       onTouchStart={onTouchStart}
@@ -84,7 +88,7 @@ export const GameCard = memo(({
     >
       
       {/* Left Screen Edge Glow (Red) - when swiping left */}
-      {swipeDirection === 'left' && !isExiting && (
+      {swipeDirection === 'left' && (
         <div 
           className="fixed left-0 top-0 bottom-0 w-1 pointer-events-none z-50"
           style={{
@@ -95,7 +99,7 @@ export const GameCard = memo(({
       )}
       
       {/* Right Screen Edge Glow (Green) - when swiping right */}
-      {swipeDirection === 'right' && !isExiting && (
+      {swipeDirection === 'right' && (
         <div 
           className="fixed right-0 top-0 bottom-0 w-1 pointer-events-none z-50"
           style={{
