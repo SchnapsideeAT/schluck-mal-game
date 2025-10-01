@@ -85,11 +85,7 @@ export const InteractiveTutorial = () => {
     if (!canProceed && currentStep > 0) return;
 
     if (isLastStep) {
-      // Show player transition before completing
-      setShowPlayerTransition(true);
-      setTimeout(() => {
-        completeTutorial();
-      }, 3000);
+      completeTutorial();
     } else {
       setCurrentStep(prev => prev + 1);
       setCanProceed(false);
@@ -98,45 +94,37 @@ export const InteractiveTutorial = () => {
 
   const completeTutorial = () => {
     markInteractiveTutorialAsShown();
-    const state = location.state as { players?: any[]; selectedCategories?: any[] };
-    navigate('/game', { state });
+    
+    // Check if coming from Settings
+    if (location.state?.fromSettings) {
+      navigate('/settings');
+    } else {
+      // Normal game flow: Setup -> Tutorial -> Game
+      const state = location.state as { players?: any[]; selectedCategories?: any[] };
+      navigate('/game', { state });
+    }
   };
 
   const handleSkip = () => {
-    markInteractiveTutorialAsShown();
-    const state = location.state as { players?: any[]; selectedCategories?: any[] };
-    navigate('/game', { state });
+    if (location.state?.fromSettings) {
+      navigate('/settings');
+    } else {
+      markInteractiveTutorialAsShown();
+      const state = location.state as { players?: any[]; selectedCategories?: any[] };
+      navigate('/game', { state });
+    }
   };
 
   // Auto-proceed after correct swipe
   useEffect(() => {
-    if (canProceed && currentStep > 0) {
+    if (canProceed && currentStep > 0 && currentStep < tutorialSteps.length) {
       const timer = setTimeout(() => {
         handleNext();
-      }, 1000);
+      }, 800);
       return () => clearTimeout(timer);
     }
   }, [canProceed, currentStep]);
 
-  // Show player transition at the end
-  if (showPlayerTransition) {
-    const demoPlayer = { 
-      id: '1', 
-      name: 'Du', 
-      avatar: '🎮',
-      totalDrinks: 0,
-      stats: { accepted: 0, drinks: 0, wildcards: 0 }
-    };
-    
-    return (
-      <PlayerTransition
-        player={demoPlayer}
-        categoryColor="bg-gradient-to-br from-primary/20 to-accent/20"
-        onTap={completeTutorial}
-        bottomSwipeHandlers={{}}
-      />
-    );
-  }
 
   return (
     <div className="min-h-screen bg-background flex flex-col items-center justify-center p-6 relative overflow-hidden">
@@ -179,43 +167,64 @@ export const InteractiveTutorial = () => {
 
         {/* Tutorial card for swipe steps */}
         {step.requiredSwipe && (
-          <div 
-            className="relative w-64 h-96 cursor-grab active:cursor-grabbing"
-            {...swipeHandlers}
-          >
-            <div className="w-full h-full bg-card rounded-2xl shadow-card flex items-center justify-center border-2 border-border">
-              <img 
-                src={cardBackSvg} 
-                alt="Tutorial Card" 
-                className="w-full h-full object-cover rounded-2xl"
-                draggable={false}
-              />
-            </div>
-            
-            {/* Swipe hint overlay */}
-            {!canProceed && (
-              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                <div className="bg-background/90 backdrop-blur-sm px-6 py-3 rounded-full border-2 border-primary animate-pulse">
-                  {step.requiredSwipe === 'right' && <ArrowRight className="w-8 h-8 text-green-500" />}
-                  {step.requiredSwipe === 'left' && <ArrowLeft className="w-8 h-8 text-red-500" />}
-                  {step.requiredSwipe === 'up' && <ArrowUp className="w-8 h-8 text-primary" />}
-                </div>
+          <div className="w-full max-w-sm">
+            <div 
+              className="relative touch-none select-none cursor-grab active:cursor-grabbing transition-transform"
+              style={{
+                transform: `translateX(${swipeState.horizontalDistance}px) rotate(${swipeState.horizontalDistance * 0.1}deg)`,
+                transition: swipeState.isSwiping ? 'none' : 'transform 0.3s ease-out',
+              }}
+              {...swipeHandlers}
+            >
+              <div className="relative">
+                <img 
+                  src={cardBackSvg} 
+                  alt="Tutorial Card" 
+                  className="w-full h-auto object-contain rounded-2xl"
+                  draggable={false}
+                />
+                
+                {/* Success checkmark */}
+                {canProceed && (
+                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                    <div className="bg-green-500 rounded-full p-4 animate-scale-in">
+                      <Check className="w-12 h-12 text-white" />
+                    </div>
+                  </div>
+                )}
               </div>
-            )}
+            </div>
 
-            {/* Success checkmark */}
-            {canProceed && (
-              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                <div className="bg-green-500/90 backdrop-blur-sm px-6 py-3 rounded-full animate-scale-in">
-                  <Check className="w-12 h-12 text-white" />
+            {/* Direction hint below card */}
+            {!canProceed && (
+              <div className="mt-6 flex justify-center">
+                <div className="inline-flex items-center gap-2 bg-background/80 backdrop-blur-sm rounded-full px-6 py-3 border border-border">
+                  {step.requiredSwipe === 'right' && (
+                    <>
+                      <ArrowRight className="w-6 h-6 text-green-500 animate-pulse" />
+                      <span className="text-sm font-medium">Wische nach rechts</span>
+                    </>
+                  )}
+                  {step.requiredSwipe === 'left' && (
+                    <>
+                      <ArrowLeft className="w-6 h-6 text-red-500 animate-pulse" />
+                      <span className="text-sm font-medium">Wische nach links</span>
+                    </>
+                  )}
+                  {step.requiredSwipe === 'up' && (
+                    <>
+                      <ArrowUp className="w-6 h-6 text-blue-500 animate-pulse" />
+                      <span className="text-sm font-medium">Wische nach oben</span>
+                    </>
+                  )}
                 </div>
               </div>
             )}
           </div>
         )}
 
-        {/* Swipe overlay for visual feedback */}
-        {step.requiredSwipe && (
+        {/* Swipe overlay for visual feedback - only during active swipe */}
+        {step.requiredSwipe && swipeState.isSwiping && Math.abs(swipeState.horizontalDistance) > 20 && (
           <SwipeOverlay
             horizontalDistance={swipeState.horizontalDistance}
             swipeDirection={swipeState.swipeDirection}

@@ -165,7 +165,7 @@ const Settings = () => {
                 <Button
                   onClick={() => {
                     resetInteractiveTutorial();
-                    navigate("/tutorial");
+                    navigate("/tutorial", { state: { fromSettings: true } });
                   }}
                   variant="outline"
                   size="sm"
