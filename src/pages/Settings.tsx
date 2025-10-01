@@ -84,8 +84,7 @@ const Settings = () => {
 
   return (
     <>
-      <ScrollableContainer>
-      <div className="content-container">
+      <ScrollableContainer className="max-w-2xl mx-auto">
           {/* Header */}
           <div className="flex items-center gap-4 mb-6 sm:mb-8">
             <Button
@@ -223,8 +222,7 @@ const Settings = () => {
             </div>
           </section>
         </div>
-      </div>
-    </ScrollableContainer>
+      </ScrollableContainer>
 
       {/* Restart Confirmation Dialog */}
       <AlertDialog open={showRestartDialog} onOpenChange={setShowRestartDialog}>

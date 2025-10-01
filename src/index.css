@@ -125,15 +125,14 @@ All colors MUST be HSL.
   /* Scrollable System - Smart Scrolling */
   .scrollable-container {
     height: 100vh;
-    height: 100svh; /* iOS Safari small viewport height */
-    height: -webkit-fill-available; /* Fallback for older iOS */
+    height: -webkit-fill-available; /* iOS Safari fix */
     width: 100%;
     overflow-y: hidden;
     -webkit-overflow-scrolling: touch;
     display: flex;
     flex-direction: column;
     padding: 16px;
-    padding-bottom: env(safe-area-inset-bottom, 20px); /* iOS Safe Area */
+    padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px)); /* iOS Safe Area */
     box-sizing: border-box;
     position: relative;
   }
