@@ -109,6 +109,11 @@ All colors MUST be HSL.
     animation: cardEnter 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
     will-change: transform, opacity;
   }
+
+  .animate-fade-out {
+    animation: fadeOut 0.3s ease-out forwards;
+    will-change: opacity;
+  }
 }
 
 @keyframes cardEnter {
@@ -159,5 +164,14 @@ All colors MUST be HSL.
   to {
     transform: translateY(0);
     opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
   }
 }
