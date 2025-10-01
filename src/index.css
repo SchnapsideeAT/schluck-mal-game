@@ -130,8 +130,8 @@ All colors MUST be HSL.
     -webkit-overflow-scrolling: touch;
     display: flex;
     flex-direction: column;
-    padding: 0;
-    padding-bottom: env(safe-area-inset-bottom, 0px);
+    padding: 12px;
+    padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px));
     box-sizing: border-box;
     position: relative;
   }
