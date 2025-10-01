@@ -90,9 +90,22 @@ const Game = () => {
     });
   }, []);
 
-  // Redirect if no players
+  // Load saved game state on mount (after navigation back)
   useEffect(() => {
+    // If no state from navigation, try to load from localStorage
     if (!state?.players || state.players.length === 0) {
+      const savedState = loadGameState();
+      if (savedState) {
+        setPlayers(savedState.players);
+        setDeck(savedState.deck);
+        setCurrentIndex(savedState.currentIndex);
+        setCurrentPlayerIndex(savedState.currentPlayerIndex);
+        setCardAccepted(savedState.cardAccepted);
+        setShowInitialTransition(true);
+        return;
+      }
+      
+      // No saved state, redirect to setup
       navigate("/setup");
       return;
     }
@@ -236,21 +249,8 @@ const Game = () => {
     });
   };
 
-  const handlePlayerTransitionTap = useCallback(() => {
-    setShowPlayerTransition(false);
-    setCurrentPlayerIndex(nextPlayerIndex);
-    drawCard();
-    setShowCard(true);
-  }, [nextPlayerIndex, drawCard]);
-
-  const handleInitialTransitionTap = useCallback(() => {
-    setShowInitialTransition(false);
-    drawCard();
-    setShowCard(true);
-  }, [drawCard]);
-
   // Swipe gesture handlers for card (left/right only)
-  const { swipeState: cardSwipeState, swipeHandlers: cardSwipeHandlers } = useSwipe({
+  const { swipeState: cardSwipeState, swipeHandlers: cardSwipeHandlers, resetSwipeState } = useSwipe({
     onSwipeLeft: () => {
       // Swipe left = drink (skip task)
       if (currentIndex >= 0) {
@@ -272,6 +272,21 @@ const Game = () => {
       showStatistics();
     },
   });
+
+  const handlePlayerTransitionTap = useCallback(() => {
+    setShowPlayerTransition(false);
+    setCurrentPlayerIndex(nextPlayerIndex);
+    resetSwipeState(); // Reset swipe state BEFORE drawing card
+    setShowCard(true);
+    drawCard();
+  }, [nextPlayerIndex, drawCard, resetSwipeState]);
+
+  const handleInitialTransitionTap = useCallback(() => {
+    setShowInitialTransition(false);
+    resetSwipeState(); // Reset swipe state BEFORE drawing card
+    setShowCard(true);
+    drawCard();
+  }, [drawCard, resetSwipeState]);
 
   const currentCard = useMemo(() => deck[currentIndex], [deck, currentIndex]);
   const cardsRemaining = useMemo(() => deck.length - currentIndex - 1, [deck.length, currentIndex]);

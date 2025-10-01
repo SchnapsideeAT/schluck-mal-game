@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect, useCallback } from "react";
 import { triggerHaptic, type HapticType } from "@/utils/haptics";
 
 /**
@@ -44,17 +44,31 @@ export const useSwipe = (handlers: SwipeHandlers) => {
   const minSwipeDistance = 100; // Minimum distance for a swipe
   const swipeThreshold = 30; // Distance to show visual feedback (schneller trigger)
 
+  // Cleanup RAF on unmount to prevent memory leaks
+  useEffect(() => {
+    return () => {
+      if (rafId.current !== null) {
+        cancelAnimationFrame(rafId.current);
+      }
+    };
+  }, []);
 
-  const handleTouchStart = (e: React.TouchEvent) => {
+  // Reset swipe state function
+  const resetSwipeState = useCallback(() => {
+    setSwipeState({ isSwiping: false, swipeDirection: null, swipeDistance: 0 });
+  }, []);
+
+
+  const handleTouchStart = useCallback((e: React.TouchEvent) => {
     touchStartX.current = e.touches[0].clientX;
     touchCurrentX.current = e.touches[0].clientX;
     touchStartY.current = e.touches[0].clientY;
     touchCurrentY.current = e.touches[0].clientY;
     setSwipeState({ isSwiping: true, swipeDirection: null, swipeDistance: 0 });
     handlers.onSwipeStart?.();
-  };
+  }, [handlers]);
 
-  const handleTouchMove = (e: React.TouchEvent) => {
+  const handleTouchMove = useCallback((e: React.TouchEvent) => {
     if (!swipeState.isSwiping) return;
 
     // Cancel previous RAF if still pending
@@ -84,9 +98,9 @@ export const useSwipe = (handlers: SwipeHandlers) => {
         swipeDistance: Math.abs(distanceX) > Math.abs(distanceY) ? distanceX : distanceY,
       });
     });
-  };
+  }, [swipeState.isSwiping]);
 
-  const handleTouchEnd = () => {
+  const handleTouchEnd = useCallback(() => {
     const distanceX = touchCurrentX.current - touchStartX.current;
     const distanceY = touchCurrentY.current - touchStartY.current;
     
@@ -113,9 +127,9 @@ export const useSwipe = (handlers: SwipeHandlers) => {
     // Reset state
     setSwipeState({ isSwiping: false, swipeDirection: null, swipeDistance: 0 });
     handlers.onSwipeEnd?.();
-  };
+  }, [handlers]);
 
-  const handleMouseDown = (e: React.MouseEvent) => {
+  const handleMouseDown = useCallback((e: React.MouseEvent) => {
     isMouseDown.current = true;
     touchStartX.current = e.clientX;
     touchCurrentX.current = e.clientX;
@@ -123,9 +137,9 @@ export const useSwipe = (handlers: SwipeHandlers) => {
     touchCurrentY.current = e.clientY;
     setSwipeState({ isSwiping: true, swipeDirection: null, swipeDistance: 0 });
     handlers.onSwipeStart?.();
-  };
+  }, [handlers]);
 
-  const handleMouseMove = (e: React.MouseEvent) => {
+  const handleMouseMove = useCallback((e: React.MouseEvent) => {
     if (!isMouseDown.current) return;
 
     // Cancel previous RAF if still pending
@@ -155,9 +169,9 @@ export const useSwipe = (handlers: SwipeHandlers) => {
         swipeDistance: Math.abs(distanceX) > Math.abs(distanceY) ? distanceX : distanceY,
       });
     });
-  };
+  }, []);
 
-  const handleMouseUp = () => {
+  const handleMouseUp = useCallback(() => {
     if (!isMouseDown.current) return;
     
     const distanceX = touchCurrentX.current - touchStartX.current;
@@ -186,7 +200,7 @@ export const useSwipe = (handlers: SwipeHandlers) => {
     isMouseDown.current = false;
     setSwipeState({ isSwiping: false, swipeDirection: null, swipeDistance: 0 });
     handlers.onSwipeEnd?.();
-  };
+  }, [handlers]);
 
   return {
     swipeState,
@@ -198,6 +212,7 @@ export const useSwipe = (handlers: SwipeHandlers) => {
       onMouseMove: handleMouseMove,
       onMouseUp: handleMouseUp,
     },
+    resetSwipeState,
     triggerHaptic,
   };
 };

@@ -63,26 +63,22 @@ export const GameCard = memo(({
   const shouldShowGlow = showGlow && flags.enableGlowEffects;
   const shouldAnimateComplex = flags.enableComplexAnimations;
   
-  // Animation state: 'entering' | 'visible' | 'exiting'
-  const [animationState, setAnimationState] = useState<'entering' | 'visible' | 'exiting'>('entering');
-  const [isVisible, setIsVisible] = useState(false);
+  // Animation state: 'entering' | 'visible'
+  const [animationState, setAnimationState] = useState<'entering' | 'visible'>('entering');
   
-  // Handle card changes with animation
+  // Handle card changes with animation - depends on card.id AND parent's showCard prop
   useEffect(() => {
+    // Only start animation when card should be visible
+    if (!showGlow) return; // Using showGlow as proxy for visibility
+    
     setAnimationState('entering');
-    setIsVisible(false);
     
     const timer = setTimeout(() => {
       setAnimationState('visible');
     }, 600); // Match CSS animation duration
     
     return () => clearTimeout(timer);
-  }, [card.id]);
-
-  // Handle animation start event (fallback)
-  const handleAnimationStart = () => {
-    setIsVisible(true);
-  };
+  }, [card.id, showGlow]);
 
   // Calculate rotation and opacity based on swipe
   const rotation = swipeDistance * 0.1;
@@ -98,12 +94,10 @@ export const GameCard = memo(({
           ? `translateX(${swipeDistance}px) rotate(${rotation}deg)`
           : undefined,
         opacity: swipeDistance !== 0 ? opacity : undefined,
-        visibility: animationState === 'entering' && !isVisible ? 'hidden' : 'visible',
         transition: 'none',
         cursor: 'grab',
         willChange: swipeDistance !== 0 ? 'transform, opacity' : 'auto'
       }}
-      onAnimationStart={handleAnimationStart}
       onTouchStart={onTouchStart}
       onTouchMove={onTouchMove}
       onTouchEnd={onTouchEnd}
@@ -112,25 +106,27 @@ export const GameCard = memo(({
       onMouseUp={onMouseUp}
     >
       
-      {/* Left Screen Edge Glow (Red) - when swiping left - GPU optimized */}
+      {/* Left Screen Edge Glow (Red) - when swiping left - GPU optimized with blur */}
       {shouldShowGlow && swipeDirection === 'left' && (
         <div 
-          className="fixed left-0 top-0 bottom-0 pointer-events-none z-50"
+          className="fixed left-0 top-0 bottom-0 pointer-events-none z-50 rounded-r-3xl overflow-hidden"
           style={{
-            width: '80px',
+            width: '120px',
             background: 'linear-gradient(to right, rgba(239, 68, 68, 0.6), transparent)',
+            filter: 'blur(8px)',
             transform: 'translateZ(0)',
           }}
         />
       )}
       
-      {/* Right Screen Edge Glow (Green) - when swiping right - GPU optimized */}
+      {/* Right Screen Edge Glow (Green) - when swiping right - GPU optimized with blur */}
       {shouldShowGlow && swipeDirection === 'right' && (
         <div 
-          className="fixed right-0 top-0 bottom-0 pointer-events-none z-50"
+          className="fixed right-0 top-0 bottom-0 pointer-events-none z-50 rounded-l-3xl overflow-hidden"
           style={{
-            width: '80px',
+            width: '120px',
             background: 'linear-gradient(to left, rgba(34, 197, 94, 0.6), transparent)',
+            filter: 'blur(8px)',
             transform: 'translateZ(0)',
           }}
         />
