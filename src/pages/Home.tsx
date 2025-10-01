@@ -25,16 +25,12 @@ const Home = () => {
 
     const finalTimer = setTimeout(() => {
       setLogoPhase('final');
-    }, 1600); // Logo slides up for 0.6s
-
-    const buttonsTimer = setTimeout(() => {
       setShowButtons(true);
-    }, 1700); // Buttons appear slightly after logo settles
+    }, 1600); // Logo slides up for 0.6s
 
     return () => {
       clearTimeout(slideTimer);
       clearTimeout(finalTimer);
-      clearTimeout(buttonsTimer);
     };
   }, []);
 
