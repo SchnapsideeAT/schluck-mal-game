@@ -281,7 +281,7 @@ const Game = () => {
   return (
     <div className="min-h-screen h-screen flex flex-col px-6 pt-8 pb-32 relative overflow-hidden">
       {/* Header */}
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex items-center justify-between mb-6">
         <Button
           onClick={handleExitGame}
           variant="ghost"
@@ -299,33 +299,30 @@ const Game = () => {
         </Button>
       </div>
 
-      {/* Main container with proper spacing */}
-      <div className="flex-1 flex flex-col">
-        {/* Card display area */}
-        <div className="flex-1 flex items-center justify-center pt-2 pb-6">
-          {currentIndex === -1 ? (
-            <div 
-              className="text-center space-y-6 slide-up cursor-pointer"
-              onClick={() => drawCard()}
-              onTouchStart={() => drawCard()}
-            >
-              <div className="inline-flex items-center justify-center w-24 h-24 rounded-full bg-primary/20 border border-primary/50 pulse-glow">
-                <Beer className="w-12 h-12 text-primary" />
-              </div>
-              <div>
-                <h2 className="text-3xl font-bold mb-2">Bereit?</h2>
-                <p className="text-muted-foreground">Ziehe die erste Karte!</p>
-              </div>
+      {/* Card display area */}
+      <div className="flex-1 flex items-center justify-center py-6">
+        {currentIndex === -1 ? (
+          <div 
+            className="text-center space-y-6 slide-up cursor-pointer"
+            onClick={() => drawCard()}
+            onTouchStart={() => drawCard()}
+          >
+            <div className="inline-flex items-center justify-center w-24 h-24 rounded-full bg-primary/20 border border-primary/50 pulse-glow">
+              <Beer className="w-12 h-12 text-primary" />
             </div>
-          ) : currentCard && showCard ? (
-            <GameCard 
-              card={currentCard}
-              swipeDistance={cardSwipeState.swipeDistance}
-              swipeDirection={cardSwipeState.swipeDirection}
-              {...cardSwipeHandlers}
-            />
-          ) : null}
-        </div>
+            <div>
+              <h2 className="text-3xl font-bold mb-2">Bereit?</h2>
+              <p className="text-muted-foreground">Ziehe die erste Karte!</p>
+            </div>
+          </div>
+        ) : currentCard && showCard ? (
+          <GameCard 
+            card={currentCard}
+            swipeDistance={cardSwipeState.swipeDistance}
+            swipeDirection={cardSwipeState.swipeDirection}
+            {...cardSwipeHandlers}
+          />
+        ) : null}
       </div>
 
       {/* Player Transition Screen */}
