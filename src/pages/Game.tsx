@@ -45,17 +45,6 @@ const Game = () => {
   const [hapticEnabled, setHapticEnabled] = useState(true);
   const [showExitDialog, setShowExitDialog] = useState(false);
 
-  // Disable scrolling on mobile
-  useEffect(() => {
-    document.body.style.overflow = 'hidden';
-    document.documentElement.style.overflow = 'hidden';
-    
-    return () => {
-      document.body.style.overflow = '';
-      document.documentElement.style.overflow = '';
-    };
-  }, []);
-
   // Auto-save game state every 10 seconds
   useEffect(() => {
     const interval = setInterval(() => {
