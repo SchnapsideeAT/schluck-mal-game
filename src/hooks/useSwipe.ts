@@ -1,6 +1,19 @@
 import { useRef, useState } from "react";
 import { triggerHaptic, type HapticType } from "@/utils/haptics";
 
+/**
+ * useSwipe Hook
+ * 
+ * Optimized swipe gesture handler with:
+ * - RAF-based throttling for smooth 60fps performance
+ * - Touch and mouse support
+ * - Haptic feedback on swipe completion
+ * - Configurable swipe thresholds
+ * 
+ * @param handlers - Callbacks for swipe events
+ * @returns Swipe state and event handlers
+ */
+
 interface SwipeHandlers {
   onSwipeLeft?: () => void;
   onSwipeRight?: () => void;

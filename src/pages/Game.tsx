@@ -10,7 +10,7 @@ import { ArrowRight, Beer, Check, Home, Settings } from "lucide-react";
 import { useSwipe } from "@/hooks/useSwipe";
 import { saveGameState, loadGameState, clearGameState } from "@/utils/localStorage";
 import { triggerHaptic } from "@/utils/haptics";
-import { playSound } from "@/utils/sounds";
+import { playSound, soundManager } from "@/utils/sounds";
 import { 
   AlertDialog, 
   AlertDialogAction, 
@@ -82,6 +82,13 @@ const Game = () => {
 
     return () => clearInterval(interval);
   }, []); // No dependencies - uses refs instead
+
+  // Preload audio system on mount
+  useEffect(() => {
+    soundManager.preload().catch(err => {
+      console.warn('Failed to preload audio:', err);
+    });
+  }, []);
 
   // Redirect if no players
   useEffect(() => {
@@ -281,6 +288,10 @@ const Game = () => {
   }, [currentIndex, deck]);
 
   const handleExitGame = () => {
+    if (hapticEnabled) {
+      triggerHaptic('light');
+    }
+    playSound('buttonClick', soundEnabled);
     setShowExitDialog(true);
   };
 
@@ -313,15 +324,19 @@ const Game = () => {
         <Button
           onClick={handleExitGame}
           variant="ghost"
-          className="group hover:bg-muted/50 h-16 w-16 p-0"
+          className="group hover:bg-muted/50 h-16 w-16 p-0 transition-transform active:scale-95"
         >
           <Home className="!w-5 !h-5 group-hover:text-primary transition-colors" />
         </Button>
         
         <Button
-          onClick={navigateToSettings}
+          onClick={() => {
+            if (hapticEnabled) triggerHaptic('light');
+            playSound('buttonClick', soundEnabled);
+            navigateToSettings();
+          }}
           variant="ghost"
-          className="group hover:bg-muted/50 h-16 w-16 p-0"
+          className="group hover:bg-muted/50 h-16 w-16 p-0 transition-transform active:scale-95"
         >
           <Settings className="!w-5 !h-5 group-hover:text-primary transition-colors" />
         </Button>

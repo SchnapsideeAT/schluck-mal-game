@@ -1,4 +1,16 @@
 import { Player } from "@/types/card";
+import { triggerHaptic } from "@/utils/haptics";
+
+/**
+ * PlayerTransition Component
+ * 
+ * Displays a fullscreen transition when switching between players.
+ * Features:
+ * - Smooth fade-in animation
+ * - Player avatar and name display
+ * - Tap or swipe to continue
+ * - Haptic feedback on interaction
+ */
 
 interface PlayerTransitionProps {
   player: Player;
@@ -13,11 +25,16 @@ export const PlayerTransition = ({
   onTap,
   bottomSwipeHandlers 
 }: PlayerTransitionProps) => {
+  const handleInteraction = () => {
+    triggerHaptic('medium');
+    onTap();
+  };
+
   return (
     <div 
       className={`fixed inset-0 ${categoryColor} z-50 flex items-center justify-center cursor-pointer animate-fade-in`}
-      onClick={onTap}
-      onTouchEnd={onTap}
+      onClick={handleInteraction}
+      onTouchEnd={handleInteraction}
       {...bottomSwipeHandlers}
     >
       <div className="text-center space-y-8 px-8">

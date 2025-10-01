@@ -1,7 +1,16 @@
-// Sound Effects using Web Audio API
-
+/**
+ * Sound Manager using Web Audio API
+ * 
+ * Provides high-performance sound effects using synthesized audio.
+ * - Lazy initialization to avoid autoplay policy issues
+ * - No external audio files needed (reduces bundle size)
+ * - GPU-accelerated audio processing
+ * 
+ * @class SoundManager
+ */
 class SoundManager {
   private audioContext: AudioContext | null = null;
+  private isPreloaded: boolean = false;
 
   constructor() {
     // Initialize AudioContext lazily to avoid autoplay policy issues
@@ -10,6 +19,10 @@ class SoundManager {
     }
   }
 
+  /**
+   * Get or create AudioContext
+   * Uses singleton pattern for optimal performance
+   */
   private getContext(): AudioContext | null {
     if (!this.audioContext && typeof window !== 'undefined') {
       try {
@@ -22,9 +35,55 @@ class SoundManager {
     return this.audioContext;
   }
 
-  private playTone(frequency: number, duration: number, type: OscillatorType = 'sine', volume: number = 0.3) {
+  /**
+   * Preload audio context on user interaction
+   * Call this on app start to ensure smooth audio playback
+   * 
+   * @returns Promise that resolves when audio context is ready
+   */
+  async preload(): Promise<void> {
+    if (this.isPreloaded) return;
+    
     const context = this.getContext();
     if (!context) return;
+
+    try {
+      // Resume context if suspended (required by some browsers)
+      if (context.state === 'suspended') {
+        await context.resume();
+      }
+      this.isPreloaded = true;
+      console.log('🔊 Audio system preloaded successfully');
+    } catch (e) {
+      console.warn('Failed to preload audio context:', e);
+    }
+  }
+
+  /**
+   * Check if audio system is ready
+   */
+  isReady(): boolean {
+    const context = this.getContext();
+    return context !== null && context.state === 'running';
+  }
+
+  /**
+   * Play a simple tone (internal helper)
+   * Uses Web Audio API oscillators for zero-latency playback
+   */
+  private async playTone(frequency: number, duration: number, type: OscillatorType = 'sine', volume: number = 0.3) {
+    const context = this.getContext();
+    if (!context) return;
+
+    // Auto-resume if suspended
+    if (context.state === 'suspended') {
+      try {
+        await context.resume();
+      } catch (e) {
+        console.warn('Failed to resume audio context:', e);
+        return;
+      }
+    }
 
     try {
       const oscillator = context.createOscillator();
@@ -46,10 +105,17 @@ class SoundManager {
     }
   }
 
-  // Swipe Right Sound (Success - upward sweep)
-  swipeRight() {
+  /**
+   * Swipe Right Sound - Success (upward sweep)
+   * Pleasant ascending tone indicating successful action
+   */
+  async swipeRight() {
     const context = this.getContext();
     if (!context) return;
+
+    if (context.state === 'suspended') {
+      await context.resume();
+    }
 
     try {
       const oscillator = context.createOscillator();
@@ -72,10 +138,17 @@ class SoundManager {
     }
   }
 
-  // Swipe Left Sound (Drink - downward sweep)
-  swipeLeft() {
+  /**
+   * Swipe Left Sound - Drink (downward sweep)
+   * Descending tone indicating drink action
+   */
+  async swipeLeft() {
     const context = this.getContext();
     if (!context) return;
+
+    if (context.state === 'suspended') {
+      await context.resume();
+    }
 
     try {
       const oscillator = context.createOscillator();

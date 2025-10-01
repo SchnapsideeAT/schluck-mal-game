@@ -4,6 +4,23 @@ import { getCardImage } from "@/utils/cardImageMapper";
 import { useWindowSize } from "@/hooks/useWindowSize";
 import { useFeatureFlags } from "@/utils/featureFlags";
 
+/**
+ * GameCard Component
+ * 
+ * Optimized card display with:
+ * - GPU-accelerated animations (transform, opacity)
+ * - Feature flag support for low-end devices
+ * - Lazy-loaded card images
+ * - Swipe gesture feedback
+ * - Responsive scaling
+ * 
+ * Performance optimizations:
+ * - Uses `memo` to prevent unnecessary re-renders
+ * - `will-change` for GPU acceleration
+ * - RAF-throttled swipe updates via parent
+ * - Cached window size via custom hook
+ */
+
 interface GameCardProps {
   card: Card;
   swipeDistance?: number;
