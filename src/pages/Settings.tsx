@@ -99,7 +99,7 @@ const Settings = () => {
             <h1 className="text-3xl sm:text-4xl font-bold">Einstellungen</h1>
           </div>
 
-          <div className="space-y-4 sm:space-y-6 slide-up pb-6">
+          <div className="space-y-4 sm:space-y-6 slide-up">
           {/* Game Control */}
           {hasActiveGame && (
             <section className="bg-card border border-border/50 rounded-2xl p-6 space-y-6">

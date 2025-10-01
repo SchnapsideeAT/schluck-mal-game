@@ -9,7 +9,7 @@ const Rules = () => {
 
   return (
     <ScrollableContainer className="min-h-screen">
-      <div className="page-container pb-20">
+      <div className="page-container">
         <div className="content-container">
           {/* Header */}
           <div className="flex items-center gap-4 mb-6 sm:mb-8">
