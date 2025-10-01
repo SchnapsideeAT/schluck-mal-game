@@ -1,7 +1,7 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'app.lovable.2392f61b31ac4f8fa72fc2fb0001c4a7',
+  appId: 'com.schnapsidee.schluckmal',
   appName: 'Schluck mal!',
   webDir: 'dist',
   server: {
