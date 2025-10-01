@@ -59,8 +59,8 @@ export const GameCard = memo(({
           ? exitTransform 
           : swipeDistance !== 0 
             ? `translateX(${swipeDistance}px) rotate(${rotation}deg)`
-            : 'scale(0.8)',
-        opacity: isExiting ? 0 : (swipeDistance !== 0 ? opacity : 0),
+            : undefined,
+        opacity: isExiting ? 0 : (swipeDistance !== 0 ? opacity : undefined),
         transition: isExiting ? 'transform 0.5s ease-in, opacity 0.5s ease-in' : 'none',
         cursor: 'grab',
         willChange: isExiting || swipeDistance !== 0 ? 'transform, opacity' : 'auto'
