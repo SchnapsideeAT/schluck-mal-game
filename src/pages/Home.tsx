@@ -5,9 +5,11 @@ import logo from "@/assets/logo.svg";
 import { playSound } from "@/utils/sounds";
 import { loadGameState } from "@/utils/localStorage";
 import { useState, useEffect } from "react";
+import { useSettings } from "@/hooks/useSettings";
 
 const Home = () => {
   const navigate = useNavigate();
+  const { settings } = useSettings();
   const [hasSavedGame, setHasSavedGame] = useState(false);
   
   useEffect(() => {
@@ -16,14 +18,14 @@ const Home = () => {
   }, []);
 
   const handleStartGame = () => {
-    playSound('success', true);
+    playSound('success', settings.soundEnabled);
     navigate("/setup");
   };
 
   const handleLoadGame = () => {
     const savedState = loadGameState();
     if (savedState) {
-      playSound('success', true);
+      playSound('success', settings.soundEnabled);
       navigate("/game", { 
         state: {
           players: savedState.players,

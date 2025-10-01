@@ -1,5 +1,6 @@
 import { Player } from "@/types/card";
 import { triggerHaptic } from "@/utils/haptics";
+import { useSettings } from "@/hooks/useSettings";
 
 /**
  * PlayerTransition Component
@@ -25,8 +26,10 @@ export const PlayerTransition = ({
   onTap,
   bottomSwipeHandlers 
 }: PlayerTransitionProps) => {
+  const { settings } = useSettings();
+  
   const handleInteraction = () => {
-    triggerHaptic('medium');
+    triggerHaptic('medium', settings.hapticEnabled);
     onTap();
   };
 

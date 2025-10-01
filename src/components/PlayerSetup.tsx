@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Plus } from "lucide-react";
 import { playSound } from "@/utils/sounds";
+import { useSettings } from "@/hooks/useSettings";
 
 interface PlayerSetupProps {
   players: Player[];
@@ -16,6 +17,7 @@ export const PlayerSetup = ({
   players,
   onPlayersChange
 }: PlayerSetupProps) => {
+  const { settings } = useSettings();
   const [newPlayerName, setNewPlayerName] = useState("");
   const [selectedAvatar, setSelectedAvatar] = useState(AVATAR_OPTIONS[0]);
 
@@ -38,7 +40,7 @@ export const PlayerSetup = ({
     setNewPlayerName("");
     setSelectedAvatar(AVATAR_OPTIONS[Math.floor(Math.random() * AVATAR_OPTIONS.length)]);
     
-    playSound('success', true);
+    playSound('success', settings.soundEnabled);
   };
 
   const removePlayer = (playerId: string) => {

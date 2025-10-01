@@ -2,7 +2,9 @@ import { Haptics, ImpactStyle } from '@capacitor/haptics';
 
 export type HapticType = 'light' | 'medium' | 'heavy';
 
-export const triggerHaptic = async (type: HapticType = 'medium') => {
+export const triggerHaptic = async (type: HapticType = 'medium', enabled: boolean = true) => {
+  if (!enabled) return;
+  
   try {
     // Try native Capacitor Haptics first
     const impactStyle = {

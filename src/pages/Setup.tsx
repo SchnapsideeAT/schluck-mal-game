@@ -8,9 +8,11 @@ import { CategorySelector } from "@/components/CategorySelector";
 import { Player, CardCategory } from "@/types/card";
 import { playSound } from "@/utils/sounds";
 import { loadLastPlayers, loadLastCategories, hasShownInteractiveTutorial } from "@/utils/localStorage";
+import { useSettings } from "@/hooks/useSettings";
 
 const Setup = () => {
   const navigate = useNavigate();
+  const { settings } = useSettings();
   const [players, setPlayers] = useState<Player[]>([]);
   const [selectedCategories, setSelectedCategories] = useState<CardCategory[]>([
     "Wahrheit",
@@ -64,14 +66,14 @@ const Setup = () => {
         <Button
           onClick={() => {
             if (players.length < 2) {
-              playSound('error', true);
+              playSound('error', settings.soundEnabled);
               return;
             }
             if (selectedCategories.length === 0) {
-              playSound('error', true);
+              playSound('error', settings.soundEnabled);
               return;
             }
-            playSound('success', true);
+            playSound('success', settings.soundEnabled);
             
             // Navigate to tutorial if not shown, otherwise go directly to game
             const targetRoute = hasShownInteractiveTutorial() ? "/game" : "/tutorial";

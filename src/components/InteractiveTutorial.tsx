@@ -8,6 +8,7 @@ import { PlayerTransition } from "@/components/PlayerTransition";
 import { triggerHaptic } from "@/utils/haptics";
 import { playSound } from "@/utils/sounds";
 import { markInteractiveTutorialAsShown } from "@/utils/localStorage";
+import { useSettings } from "@/hooks/useSettings";
 import cardBackSvg from "@/assets/card-back.svg";
 
 interface TutorialStep {
@@ -46,6 +47,7 @@ const tutorialSteps: TutorialStep[] = [
 export const InteractiveTutorial = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { settings } = useSettings();
   const [currentStep, setCurrentStep] = useState(0);
   const [showPlayerTransition, setShowPlayerTransition] = useState(false);
   const [canProceed, setCanProceed] = useState(false);
@@ -57,21 +59,21 @@ export const InteractiveTutorial = () => {
   const handleSwipe = (direction: 'left' | 'right' | 'up') => {
     if (currentStep === 0) {
       // First step: accept any swipe to proceed
-      triggerHaptic('light');
-      playSound('success');
+      triggerHaptic('light', settings.hapticEnabled);
+      playSound('success', settings.soundEnabled);
       setCanProceed(true);
       return;
     }
 
     if (step.requiredSwipe === direction) {
       // Correct swipe
-      triggerHaptic('medium');
-      playSound('success');
+      triggerHaptic('medium', settings.hapticEnabled);
+      playSound('success', settings.soundEnabled);
       setCanProceed(true);
     } else if (step.requiredSwipe) {
       // Wrong swipe
-      triggerHaptic('light');
-      playSound('buttonClick');
+      triggerHaptic('light', settings.hapticEnabled);
+      playSound('buttonClick', settings.soundEnabled);
     }
   };
 

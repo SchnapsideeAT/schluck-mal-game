@@ -12,6 +12,7 @@ import { useSwipe } from "@/hooks/useSwipe";
 import { saveGameState, loadGameState, clearGameState } from "@/utils/localStorage";
 import { triggerHaptic } from "@/utils/haptics";
 import { playSound, soundManager } from "@/utils/sounds";
+import { useSettings } from "@/hooks/useSettings";
 import { 
   AlertDialog, 
   AlertDialogAction, 
@@ -36,14 +37,16 @@ const Game = () => {
     cardAccepted?: boolean;
   } | null;
   
+  const { settings } = useSettings();
+  const soundEnabled = settings.soundEnabled;
+  const hapticEnabled = settings.hapticEnabled;
+  
   const [deck, setDeck] = useState<Card[]>(state?.deck || []);
   const [currentIndex, setCurrentIndex] = useState(state?.currentIndex ?? -1);
   const [cardAccepted, setCardAccepted] = useState(state?.cardAccepted ?? false);
   const [players, setPlayers] = useState<Player[]>(state?.players || []);
   const [selectedCategories, setSelectedCategories] = useState<CardCategory[]>(state?.selectedCategories || []);
   const [currentPlayerIndex, setCurrentPlayerIndex] = useState(state?.currentPlayerIndex ?? 0);
-  const [soundEnabled, setSoundEnabled] = useState(true);
-  const [hapticEnabled, setHapticEnabled] = useState(true);
   const [showExitDialog, setShowExitDialog] = useState(false);
   const [showPlayerTransition, setShowPlayerTransition] = useState(false);
   const [nextPlayerIndex, setNextPlayerIndex] = useState(0);
@@ -181,9 +184,7 @@ const Game = () => {
   const handleAccept = useCallback(() => {
     setCardAccepted(true);
     // Haptic feedback
-    if (hapticEnabled) {
-      triggerHaptic('light');
-    }
+    triggerHaptic('light', hapticEnabled);
   }, [hapticEnabled]);
 
   const handleComplete = useCallback(() => {
@@ -324,9 +325,7 @@ const Game = () => {
   }, [currentIndex, deck]);
 
   const handleExitGame = () => {
-    if (hapticEnabled) {
-      triggerHaptic('light');
-    }
+    triggerHaptic('light', hapticEnabled);
     playSound('buttonClick', soundEnabled);
     setShowExitDialog(true);
   };
@@ -367,7 +366,7 @@ const Game = () => {
         
         <Button
           onClick={() => {
-            if (hapticEnabled) triggerHaptic('light');
+            triggerHaptic('light', hapticEnabled);
             playSound('buttonClick', soundEnabled);
             navigateToSettings();
           }}
