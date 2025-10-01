@@ -3,8 +3,10 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { ArrowLeft, Volume2, VolumeX, Globe, RotateCcw, Smartphone, GraduationCap } from "lucide-react";
-import { loadGameState, clearGameState, resetInteractiveTutorial } from "@/utils/localStorage";
+import { loadGameState, clearGameState } from "@/utils/localStorage";
 import { shuffleDeck } from "@/utils/cardUtils";
+import { useSettings } from "@/hooks/useSettings";
+import { ScrollableContainer } from "@/components/ScrollableContainer";
 import { 
   AlertDialog, 
   AlertDialogAction, 
@@ -19,10 +21,15 @@ import {
 const Settings = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [soundEnabled, setSoundEnabled] = useState(true);
-  const [hapticEnabled, setHapticEnabled] = useState(true);
   const [showRestartDialog, setShowRestartDialog] = useState(false);
   const [hasActiveGame, setHasActiveGame] = useState(false);
+  
+  const { 
+    settings, 
+    setSoundEnabled, 
+    setHapticEnabled, 
+    resetTutorials 
+  } = useSettings();
 
   useEffect(() => {
     const gameState = loadGameState();
@@ -31,12 +38,10 @@ const Settings = () => {
 
   const handleSoundToggle = (checked: boolean) => {
     setSoundEnabled(checked);
-    localStorage.setItem('soundEnabled', JSON.stringify(checked));
   };
 
   const handleHapticToggle = (checked: boolean) => {
     setHapticEnabled(checked);
-    localStorage.setItem('hapticEnabled', JSON.stringify(checked));
   };
 
   const handleRestart = () => {
@@ -78,22 +83,23 @@ const Settings = () => {
   };
 
   return (
-    <div className="min-h-screen p-6">
-      <div className="max-w-2xl mx-auto">
-        {/* Header */}
-        <div className="flex items-center gap-4 mb-8">
-          <Button
-            onClick={goBack}
-            variant="ghost"
-            size="icon"
-            className="hover:bg-muted/50"
-          >
-            <ArrowLeft className="w-5 h-5" />
-          </Button>
-          <h1 className="text-4xl font-bold">Einstellungen</h1>
-        </div>
+    <ScrollableContainer className="min-h-screen">
+      <div className="page-container">
+        <div className="content-container">
+          {/* Header */}
+          <div className="flex items-center gap-4 mb-6 sm:mb-8">
+            <Button
+              onClick={goBack}
+              variant="ghost"
+              size="icon"
+              className="hover:bg-muted/50"
+            >
+              <ArrowLeft className="w-5 h-5" />
+            </Button>
+            <h1 className="text-3xl sm:text-4xl font-bold">Einstellungen</h1>
+          </div>
 
-        <div className="space-y-6 slide-up">
+          <div className="space-y-4 sm:space-y-6 slide-up pb-6">
           {/* Game Control */}
           {hasActiveGame && (
             <section className="bg-card border border-border/50 rounded-2xl p-6 space-y-6">
@@ -135,7 +141,7 @@ const Settings = () => {
                   </p>
                 </div>
                 <Switch
-                  checked={soundEnabled}
+                  checked={settings.soundEnabled}
                   onCheckedChange={handleSoundToggle}
                   className="data-[state=checked]:bg-primary"
                 />
@@ -149,7 +155,7 @@ const Settings = () => {
                   </p>
                 </div>
                 <Switch
-                  checked={hapticEnabled}
+                  checked={settings.hapticEnabled}
                   onCheckedChange={handleHapticToggle}
                   className="data-[state=checked]:bg-primary"
                 />
@@ -164,7 +170,7 @@ const Settings = () => {
                 </div>
                 <Button
                   onClick={() => {
-                    resetInteractiveTutorial();
+                    resetTutorials();
                     navigate("/tutorial", { state: { fromSettings: true } });
                   }}
                   variant="outline"
@@ -218,6 +224,7 @@ const Settings = () => {
           </section>
         </div>
       </div>
+      </div>
 
       {/* Restart Confirmation Dialog */}
       <AlertDialog open={showRestartDialog} onOpenChange={setShowRestartDialog}>
@@ -236,7 +243,7 @@ const Settings = () => {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-    </div>
+    </ScrollableContainer>
   );
 };
 

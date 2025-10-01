@@ -2,27 +2,29 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import { CategoryIcon } from "@/components/CategoryIcon";
+import { ScrollableContainer } from "@/components/ScrollableContainer";
 
 const Rules = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen p-6 pb-24">
-      <div className="max-w-3xl mx-auto">
-        {/* Header */}
-        <div className="flex items-center gap-4 mb-8">
-          <Button
-            onClick={() => navigate("/")}
-            variant="ghost"
-            size="icon"
-            className="hover:bg-muted/50"
-          >
-            <ArrowLeft className="w-5 h-5" />
-          </Button>
-          <h1 className="text-4xl font-bold">Spielregeln</h1>
-        </div>
+    <ScrollableContainer className="min-h-screen">
+      <div className="page-container pb-20">
+        <div className="content-container">
+          {/* Header */}
+          <div className="flex items-center gap-4 mb-6 sm:mb-8">
+            <Button
+              onClick={() => navigate("/")}
+              variant="ghost"
+              size="icon"
+              className="hover:bg-muted/50"
+            >
+              <ArrowLeft className="w-5 h-5" />
+            </Button>
+            <h1 className="text-3xl sm:text-4xl font-bold">Spielregeln</h1>
+          </div>
 
-        <div className="space-y-8 slide-up">
+          <div className="space-y-6 sm:space-y-8 slide-up">
           {/* Basic rules */}
           <section className="bg-card border border-border/50 rounded-2xl p-6 space-y-4">
             <h2 className="text-2xl font-bold text-primary">Grundregeln</h2>
@@ -170,7 +172,8 @@ const Rules = () => {
           </section>
         </div>
       </div>
-    </div>
+      </div>
+    </ScrollableContainer>
   );
 };
 

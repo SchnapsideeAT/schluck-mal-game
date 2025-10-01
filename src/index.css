@@ -95,6 +95,45 @@ All colors MUST be HSL.
 }
 
 @layer components {
+  /* Container System - Einheitliches Padding */
+  .page-container {
+    @apply px-4 py-6 min-h-screen;
+  }
+
+  .content-container {
+    @apply max-w-2xl mx-auto;
+  }
+
+  .dialog-container {
+    @apply px-4;
+  }
+
+  .responsive-container {
+    @apply w-full max-w-md mx-auto px-4;
+  }
+
+  .responsive-section {
+    @apply w-full max-w-2xl mx-auto;
+  }
+
+  /* Scrollable System - Smart Scrolling */
+  .scrollable-container {
+    @apply h-full w-full;
+    overflow-y: visible;
+  }
+
+  .scrollable-enabled {
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .scrollable-enabled::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Animations */
   .pulse-glow {
     animation: pulseGlow 2s ease-in-out infinite;
     will-change: transform, opacity;
