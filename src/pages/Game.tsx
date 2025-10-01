@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { GameCard } from "@/components/GameCard";
 import { CardBack } from "@/components/CardBack";
+import { PlayerTransition } from "@/components/PlayerTransition";
 import { shuffleDeck } from "@/utils/cardUtils";
 import { Card, Player, CardCategory } from "@/types/card";
 import { ArrowRight, Beer, Check, Home, Settings } from "lucide-react";
@@ -44,6 +45,8 @@ const Game = () => {
   const [soundEnabled, setSoundEnabled] = useState(true);
   const [hapticEnabled, setHapticEnabled] = useState(true);
   const [showExitDialog, setShowExitDialog] = useState(false);
+  const [showPlayerTransition, setShowPlayerTransition] = useState(false);
+  const [nextPlayerIndex, setNextPlayerIndex] = useState(0);
 
   // Auto-save game state every 10 seconds
   useEffect(() => {
@@ -154,11 +157,12 @@ const Game = () => {
     // Sound effect
     playSound('swipeRight', soundEnabled);
     
-    // Move to next player
-    setCurrentPlayerIndex((currentPlayerIndex + 1) % players.length);
+    // Show transition to next player
+    const nextIndex = (currentPlayerIndex + 1) % players.length;
+    setNextPlayerIndex(nextIndex);
+    setShowPlayerTransition(true);
     playSound('playerChange', soundEnabled);
-    drawCard('right');
-  }, [currentPlayerIndex, players, drawCard, soundEnabled]);
+  }, [currentPlayerIndex, players, soundEnabled]);
 
   const handleDrink = useCallback(() => {
     const drinks = deck[currentIndex]?.drinks || 0;
@@ -173,11 +177,11 @@ const Game = () => {
     playSound('swipeLeft', soundEnabled);
     playSound('drink', soundEnabled);
     
-    // Move to next player
-    setCurrentPlayerIndex((currentPlayerIndex + 1) % players.length);
-    playSound('playerChange', soundEnabled);
-    drawCard('left');
-  }, [currentIndex, deck, currentPlayerIndex, players, drawCard, soundEnabled]);
+    // Show transition to next player
+    const nextIndex = (currentPlayerIndex + 1) % players.length;
+    setNextPlayerIndex(nextIndex);
+    setShowPlayerTransition(true);
+  }, [currentIndex, deck, currentPlayerIndex, players, soundEnabled]);
 
   const showStatistics = useCallback(() => {
     navigate("/statistics", { 
@@ -215,6 +219,12 @@ const Game = () => {
       }
     });
   };
+
+  const handlePlayerTransitionTap = useCallback(() => {
+    setShowPlayerTransition(false);
+    setCurrentPlayerIndex(nextPlayerIndex);
+    drawCard();
+  }, [nextPlayerIndex, drawCard]);
 
   // Swipe gesture handlers for card (left/right only)
   const { swipeState: cardSwipeState, swipeHandlers: cardSwipeHandlers } = useSwipe({
@@ -344,17 +354,14 @@ const Game = () => {
         </div>
       </div>
 
-      {/* Current Player Display - Fixed at Bottom */}
-      {players.length > 0 && currentIndex >= 0 && currentCard && (
-        <div 
-          className={`${getCategoryColor(currentCard.category)} transition-colors duration-200 ease-in-out fixed bottom-0 left-0 right-0 py-6 pb-[calc(1.5rem+env(safe-area-inset-bottom))] shadow-[0_-4px_20px_rgba(0,0,0,0.3)] z-20`}
-          {...bottomSwipeHandlers}
-        >
-          <div className="flex items-center justify-center gap-4">
-            <span className="text-4xl drop-shadow-lg">{players[currentPlayerIndex].avatar}</span>
-            <span className="text-2xl font-bold text-white drop-shadow-lg">{players[currentPlayerIndex].name}</span>
-          </div>
-        </div>
+      {/* Player Transition Screen */}
+      {showPlayerTransition && players.length > 0 && currentCard && (
+        <PlayerTransition
+          player={players[nextPlayerIndex]}
+          categoryColor={getCategoryColor(currentCard.category)}
+          onTap={handlePlayerTransitionTap}
+          bottomSwipeHandlers={bottomSwipeHandlers}
+        />
       )}
 
       {/* Exit Confirmation Dialog */}
