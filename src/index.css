@@ -124,14 +124,16 @@ All colors MUST be HSL.
 
   /* Scrollable System - Smart Scrolling */
   .scrollable-container {
-    min-height: 100vh;
-    min-height: -webkit-fill-available;
+    height: 100vh;
+    height: 100svh; /* iOS Safari small viewport height */
+    height: -webkit-fill-available; /* Fallback for older iOS */
     width: 100%;
     overflow-y: hidden;
     -webkit-overflow-scrolling: touch;
     display: flex;
     flex-direction: column;
     padding: 16px;
+    padding-bottom: env(safe-area-inset-bottom, 20px); /* iOS Safe Area */
     box-sizing: border-box;
     position: relative;
   }
@@ -141,6 +143,7 @@ All colors MUST be HSL.
     overflow-x: hidden;
     scrollbar-width: none;
     -ms-overflow-style: none;
+    overscroll-behavior: contain; /* Prevent iOS bounce on boundaries */
   }
 
   .scrollable-enabled::-webkit-scrollbar {
