@@ -1,39 +1,23 @@
-import { useState } from "react";
 import { Player } from "@/types/card";
 
 interface PlayerTransitionProps {
   player: Player;
   categoryColor: string;
-  onFadeOutComplete: () => void;
+  onTap: () => void;
   bottomSwipeHandlers: any;
 }
 
 export const PlayerTransition = ({ 
   player, 
   categoryColor, 
-  onFadeOutComplete,
+  onTap,
   bottomSwipeHandlers 
 }: PlayerTransitionProps) => {
-  const [fadeOut, setFadeOut] = useState(false);
-
-  const handleTap = () => {
-    setFadeOut(true);
-  };
-
-  const handleAnimationEnd = () => {
-    if (fadeOut) {
-      onFadeOutComplete();
-    }
-  };
-
   return (
     <div 
-      className={`fixed inset-0 ${categoryColor} z-50 flex items-center justify-center cursor-pointer ${
-        fadeOut ? 'animate-fade-out' : 'animate-fade-in'
-      }`}
-      onClick={handleTap}
-      onTouchEnd={handleTap}
-      onAnimationEnd={handleAnimationEnd}
+      className={`fixed inset-0 ${categoryColor} z-50 flex items-center justify-center cursor-pointer animate-fade-in`}
+      onClick={onTap}
+      onTouchEnd={onTap}
       {...bottomSwipeHandlers}
     >
       <div className="text-center space-y-8 px-8">

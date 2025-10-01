@@ -200,7 +200,7 @@ const Game = () => {
     });
   };
 
-  const handlePlayerTransitionComplete = useCallback(() => {
+  const handlePlayerTransitionTap = useCallback(() => {
     setShowPlayerTransition(false);
     setCurrentPlayerIndex(nextPlayerIndex);
     drawCard();
@@ -325,7 +325,7 @@ const Game = () => {
         <PlayerTransition
           player={players[nextPlayerIndex]}
           categoryColor={getCategoryColor(currentCard.category)}
-          onFadeOutComplete={handlePlayerTransitionComplete}
+          onTap={handlePlayerTransitionTap}
           bottomSwipeHandlers={bottomSwipeHandlers}
         />
       )}

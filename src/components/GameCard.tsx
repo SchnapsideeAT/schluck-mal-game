@@ -38,30 +38,20 @@ export const GameCard = memo(({
   const cardImageSrc = getCardImage(card.category, card.id);
   const categoryColor = categoryColorMap[card.category];
   
-  // Animation state: 'hidden' | 'entering' | 'visible'
-  const [animationState, setAnimationState] = useState<'hidden' | 'entering' | 'visible'>('hidden');
+  // Animation state: 'entering' | 'visible' | 'exiting'
+  const [animationState, setAnimationState] = useState<'entering' | 'visible' | 'exiting'>('entering');
   const [isVisible, setIsVisible] = useState(false);
   
   // Handle card changes with animation
   useEffect(() => {
-    // Start hidden
-    setAnimationState('hidden');
+    setAnimationState('entering');
     setIsVisible(false);
     
-    // Wait for PlayerTransition fade-out (300ms), then start entering
-    const delayTimer = setTimeout(() => {
-      setAnimationState('entering');
-    }, 300);
-    
-    // After entering animation (600ms), set to visible
-    const visibleTimer = setTimeout(() => {
+    const timer = setTimeout(() => {
       setAnimationState('visible');
-    }, 900); // 300ms delay + 600ms animation
+    }, 600); // Match CSS animation duration
     
-    return () => {
-      clearTimeout(delayTimer);
-      clearTimeout(visibleTimer);
-    };
+    return () => clearTimeout(timer);
   }, [card.id]);
 
   // Handle animation start event (fallback)
@@ -83,7 +73,7 @@ export const GameCard = memo(({
           ? `translateX(${swipeDistance}px) rotate(${rotation}deg)`
           : undefined,
         opacity: swipeDistance !== 0 ? opacity : undefined,
-        visibility: animationState === 'hidden' || (animationState === 'entering' && !isVisible) ? 'hidden' : 'visible',
+        visibility: animationState === 'entering' && !isVisible ? 'hidden' : 'visible',
         transition: 'none',
         cursor: 'grab',
         willChange: swipeDistance !== 0 ? 'transform, opacity' : 'auto'
