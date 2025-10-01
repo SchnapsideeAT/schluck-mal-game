@@ -15,10 +15,9 @@ export const PlayerTransition = ({
 }: PlayerTransitionProps) => {
   return (
     <div 
-      className={`fixed inset-0 ${categoryColor} z-50 flex items-center justify-center cursor-pointer animate-fade-in min-h-dvh h-dvh w-full`}
+      className={`fixed inset-0 ${categoryColor} z-50 flex items-center justify-center cursor-pointer animate-fade-in`}
       onClick={onTap}
       onTouchEnd={onTap}
-      style={{ touchAction: 'none' }}
       {...bottomSwipeHandlers}
     >
       <div className="text-center space-y-8 px-8">
