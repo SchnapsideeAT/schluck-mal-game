@@ -157,8 +157,14 @@ const Game = () => {
   // Show current card without incrementing (for restore)
   const showCurrentCard = useCallback(() => {
     setCardAccepted(false);
+    // Force animation by updating currentCard reference
+    const card = deck[currentIndex];
+    if (card) {
+      // Create new reference to trigger useEffect in GameCard
+      setDeck([...deck]);
+    }
     playSound('cardDraw', soundEnabled);
-  }, [soundEnabled]);
+  }, [currentIndex, deck, soundEnabled]);
 
   const getCategoryColor = useCallback((category: string) => {
     const colors: Record<string, string> = {

@@ -109,14 +109,14 @@ export const GameCard = memo(({
       {/* Left Screen Edge Glow (Red) - when swiping left - GPU optimized with blur */}
       {shouldShowGlow && swipeDirection === 'left' && (
         <div 
-          className="fixed left-0 top-0 bottom-0 pointer-events-none z-50 rounded-r-3xl overflow-hidden"
+          className="fixed left-0 pointer-events-none z-50 rounded-r-3xl overflow-hidden"
           style={{
-            width: '140px',
-            height: '100vh',
-            background: 'linear-gradient(to right, rgba(239, 68, 68, 0.9), rgba(239, 68, 68, 0.4) 50%, transparent)',
-            filter: 'blur(12px)',
-            transform: 'translateZ(0)',
-            boxShadow: '0 0 60px 30px rgba(239, 68, 68, 0.4)',
+            width: '70px',
+            height: width < 768 ? '400px' : '300px',
+            top: '50%',
+            transform: 'translateY(-50%) translateZ(0)',
+            background: 'linear-gradient(to right, rgba(239, 68, 68, 0.4), rgba(239, 68, 68, 0.2) 50%, transparent)',
+            filter: 'blur(6px)',
           }}
         />
       )}
@@ -124,14 +124,14 @@ export const GameCard = memo(({
       {/* Right Screen Edge Glow (Green) - when swiping right - GPU optimized with blur */}
       {shouldShowGlow && swipeDirection === 'right' && (
         <div 
-          className="fixed right-0 top-0 bottom-0 pointer-events-none z-50 rounded-l-3xl overflow-hidden"
+          className="fixed right-0 pointer-events-none z-50 rounded-l-3xl overflow-hidden"
           style={{
-            width: '140px',
-            height: '100vh',
-            background: 'linear-gradient(to left, rgba(34, 197, 94, 0.9), rgba(34, 197, 94, 0.4) 50%, transparent)',
-            filter: 'blur(12px)',
-            transform: 'translateZ(0)',
-            boxShadow: '0 0 60px 30px rgba(34, 197, 94, 0.4)',
+            width: '70px',
+            height: width < 768 ? '400px' : '300px',
+            top: '50%',
+            transform: 'translateY(-50%) translateZ(0)',
+            background: 'linear-gradient(to left, rgba(34, 197, 94, 0.4), rgba(34, 197, 94, 0.2) 50%, transparent)',
+            filter: 'blur(6px)',
           }}
         />
       )}
