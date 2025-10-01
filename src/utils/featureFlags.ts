@@ -49,11 +49,18 @@ class FeatureFlagManager {
   }
 
   private detectLowEndDevice(): boolean {
+    // Check if mobile device
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    
     // Check hardware concurrency (CPU cores)
     const cores = navigator.hardwareConcurrency || 4;
     
     // Check device memory (if available)
     const deviceMemory = (navigator as any).deviceMemory || 4;
+
+    // Check screen resolution (high-res screens = modern devices)
+    const highResScreen = window.screen.width * window.devicePixelRatio >= 1080;
+    const isModernMobile = isMobile && highResScreen && cores >= 4;
 
     // Check connection type
     const connection = (navigator as any).connection;
@@ -63,11 +70,16 @@ class FeatureFlagManager {
       connection.saveData === true
     );
 
+    // Modern mobile devices (iPhone 11+, Android 2020+) are NOT low-end
+    if (isModernMobile) {
+      return false;
+    }
+
     // Consider low-end if:
-    // - Less than 4 cores
-    // - Less than 4GB RAM
-    // - Slow connection
-    return cores < 4 || deviceMemory < 4 || slowConnection;
+    // - Less than 2 cores (very old devices)
+    // - Less than 2GB RAM
+    // - Slow connection AND low specs
+    return cores < 2 || deviceMemory < 2 || (slowConnection && cores < 4);
   }
 
   private detectWebGL(): boolean {

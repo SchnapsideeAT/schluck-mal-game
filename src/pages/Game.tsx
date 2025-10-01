@@ -143,6 +143,7 @@ const Game = () => {
     }
   }, [currentIndex, deck.length, navigate, players, currentPlayerIndex, cardAccepted, selectedCategories]);
 
+  // Draw next card (increments index)
   const drawCard = useCallback(() => {
     if (currentIndex >= deck.length - 1) {
       return;
@@ -152,6 +153,12 @@ const Game = () => {
     setCurrentIndex(currentIndex + 1);
     playSound('cardDraw', soundEnabled);
   }, [currentIndex, deck, soundEnabled]);
+
+  // Show current card without incrementing (for restore)
+  const showCurrentCard = useCallback(() => {
+    setCardAccepted(false);
+    playSound('cardDraw', soundEnabled);
+  }, [soundEnabled]);
 
   const getCategoryColor = useCallback((category: string) => {
     const colors: Record<string, string> = {
@@ -283,10 +290,17 @@ const Game = () => {
 
   const handleInitialTransitionTap = useCallback(() => {
     setShowInitialTransition(false);
-    resetSwipeState(); // Reset swipe state BEFORE drawing card
+    resetSwipeState(); // Reset swipe state BEFORE showing card
     setShowCard(true);
-    drawCard();
-  }, [drawCard, resetSwipeState]);
+    
+    // If we're loading a saved game (currentIndex >= 0), show current card
+    // Otherwise, draw the first card
+    if (currentIndex >= 0) {
+      showCurrentCard();
+    } else {
+      drawCard();
+    }
+  }, [currentIndex, drawCard, showCurrentCard, resetSwipeState]);
 
   const currentCard = useMemo(() => deck[currentIndex], [deck, currentIndex]);
   const cardsRemaining = useMemo(() => deck.length - currentIndex - 1, [deck.length, currentIndex]);
