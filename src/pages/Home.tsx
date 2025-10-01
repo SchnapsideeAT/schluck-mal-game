@@ -39,7 +39,7 @@ const Home = () => {
   };
   
   return (
-      <div className="min-h-screen flex flex-col items-center justify-center page-container relative overflow-hidden">
+      <div className="no-scroll min-h-screen flex flex-col items-center justify-center page-container relative">
         
         <div className="slide-up responsive-container space-y-6 sm:space-y-8 text-center relative z-10">
           

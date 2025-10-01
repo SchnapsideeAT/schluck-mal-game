@@ -14,19 +14,38 @@ export const useScrollDetection = ({ containerRef, enabled = true }: UseScrollDe
     const checkScrollNeeded = () => {
       if (containerRef.current) {
         const { scrollHeight, clientHeight } = containerRef.current;
-        setNeedsScroll(scrollHeight > clientHeight);
+        const viewportHeight = window.innerHeight;
+        
+        // iOS-specific: Compare with both clientHeight and viewport height
+        const needsScrolling = scrollHeight > clientHeight || scrollHeight > viewportHeight;
+        
+        // Use setTimeout for iOS compatibility
+        setTimeout(() => {
+          setNeedsScroll(needsScrolling);
+        }, 50);
       }
     };
 
-    // Check initially
-    checkScrollNeeded();
+    // Check initially with delay for iOS
+    setTimeout(checkScrollNeeded, 100);
 
     // Check on resize
-    const resizeObserver = new ResizeObserver(checkScrollNeeded);
-    resizeObserver.observe(containerRef.current);
+    const resizeObserver = new ResizeObserver(() => {
+      setTimeout(checkScrollNeeded, 50);
+    });
+    
+    if (containerRef.current) {
+      resizeObserver.observe(containerRef.current);
+    }
+
+    // Also listen to window resize for iOS orientation changes
+    window.addEventListener('resize', checkScrollNeeded);
+    window.addEventListener('orientationchange', checkScrollNeeded);
 
     return () => {
       resizeObserver.disconnect();
+      window.removeEventListener('resize', checkScrollNeeded);
+      window.removeEventListener('orientationchange', checkScrollNeeded);
     };
   }, [containerRef, enabled]);
 
