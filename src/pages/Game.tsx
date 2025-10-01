@@ -291,7 +291,7 @@ const Game = () => {
   };
 
   return (
-    <div className="min-h-screen h-screen flex flex-col px-6 pt-8 pb-32 relative overflow-hidden">
+    <div className="min-h-dvh h-dvh flex flex-col px-6 pt-8 pb-32 relative overflow-hidden">
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <Button
