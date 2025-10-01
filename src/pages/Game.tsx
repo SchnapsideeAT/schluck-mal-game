@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useCallback } from "react";
+import { useState, useEffect, useMemo, useCallback, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { GameCard } from "@/components/GameCard";
@@ -49,23 +49,39 @@ const Game = () => {
   const [showCard, setShowCard] = useState(true);
   const [showInitialTransition, setShowInitialTransition] = useState(false);
 
-  // Auto-save game state every 10 seconds
+  // Use refs to avoid unnecessary re-renders in auto-save
+  const playersRef = useRef(players);
+  const deckRef = useRef(deck);
+  const currentIndexRef = useRef(currentIndex);
+  const currentPlayerIndexRef = useRef(currentPlayerIndex);
+  const cardAcceptedRef = useRef(cardAccepted);
+
+  // Update refs when values change
+  useEffect(() => {
+    playersRef.current = players;
+    deckRef.current = deck;
+    currentIndexRef.current = currentIndex;
+    currentPlayerIndexRef.current = currentPlayerIndex;
+    cardAcceptedRef.current = cardAccepted;
+  }, [players, deck, currentIndex, currentPlayerIndex, cardAccepted]);
+
+  // Auto-save game state every 10 seconds - optimized with refs
   useEffect(() => {
     const interval = setInterval(() => {
-      if (players.length > 0 && deck.length > 0 && currentIndex >= 0) {
+      if (playersRef.current.length > 0 && deckRef.current.length > 0 && currentIndexRef.current >= 0) {
         saveGameState({
-          players,
-          deck,
-          currentIndex,
-          currentPlayerIndex,
-          cardAccepted,
+          players: playersRef.current,
+          deck: deckRef.current,
+          currentIndex: currentIndexRef.current,
+          currentPlayerIndex: currentPlayerIndexRef.current,
+          cardAccepted: cardAcceptedRef.current,
           timestamp: Date.now()
         });
       }
     }, 10000); // Save every 10 seconds
 
     return () => clearInterval(interval);
-  }, [players, deck, currentIndex, currentPlayerIndex, cardAccepted]);
+  }, []); // No dependencies - uses refs instead
 
   // Redirect if no players
   useEffect(() => {

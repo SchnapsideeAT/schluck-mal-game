@@ -1,6 +1,7 @@
 import { memo, useState, useEffect } from "react";
 import { Card, CardCategory } from "@/types/card";
 import { getCardImage } from "@/utils/cardImageMapper";
+import { useWindowSize } from "@/hooks/useWindowSize";
 
 interface GameCardProps {
   card: Card;
@@ -37,6 +38,7 @@ export const GameCard = memo(({
 }: GameCardProps) => {
   const cardImageSrc = getCardImage(card.category, card.id);
   const categoryColor = categoryColorMap[card.category];
+  const { width } = useWindowSize();
   
   // Animation state: 'entering' | 'visible' | 'exiting'
   const [animationState, setAnimationState] = useState<'entering' | 'visible' | 'exiting'>('entering');
@@ -87,43 +89,47 @@ export const GameCard = memo(({
       onMouseUp={onMouseUp}
     >
       
-      {/* Left Screen Edge Glow (Red) - when swiping left */}
+      {/* Left Screen Edge Glow (Red) - when swiping left - GPU optimized */}
       {swipeDirection === 'left' && (
         <div 
-          className="fixed left-0 top-0 bottom-0 w-1 pointer-events-none z-50"
+          className="fixed left-0 top-0 bottom-0 pointer-events-none z-50"
           style={{
-            backgroundColor: 'rgb(239, 68, 68)',
-            boxShadow: '0 0 80px 40px rgba(239, 68, 68, 0.8), 0 0 120px 60px rgba(239, 68, 68, 0.5)',
+            width: '80px',
+            background: 'linear-gradient(to right, rgba(239, 68, 68, 0.6), transparent)',
+            transform: 'translateZ(0)',
           }}
         />
       )}
       
-      {/* Right Screen Edge Glow (Green) - when swiping right */}
+      {/* Right Screen Edge Glow (Green) - when swiping right - GPU optimized */}
       {swipeDirection === 'right' && (
         <div 
-          className="fixed right-0 top-0 bottom-0 w-1 pointer-events-none z-50"
+          className="fixed right-0 top-0 bottom-0 pointer-events-none z-50"
           style={{
-            backgroundColor: 'rgb(34, 197, 94)',
-            boxShadow: '0 0 80px 40px rgba(34, 197, 94, 0.8), 0 0 120px 60px rgba(34, 197, 94, 0.5)',
+            width: '80px',
+            background: 'linear-gradient(to left, rgba(34, 197, 94, 0.6), transparent)',
+            transform: 'translateZ(0)',
           }}
         />
       )}
       
-      {/* Card Container with Glow */}
+      {/* Card Container with optimized scale */}
       <div 
         className="relative inline-block"
         style={{ 
-          transform: window.innerWidth < 768 ? 'scale(1.6)' : 'scale(1)' 
+          transform: width < 768 ? 'scale(1.6) translateZ(0)' : 'scale(1) translateZ(0)',
+          backfaceVisibility: 'hidden',
         }}
       >
-        {/* Glow Effect Background */}
+        {/* Glow Effect Background - GPU optimized with opacity */}
         {showGlow && (
           <div 
-            className="absolute inset-0 rounded-2xl"
+            className="absolute inset-0 rounded-2xl opacity-30"
             style={{
-              boxShadow: `0 0 15px 2px hsl(${categoryColor} / 0.2), 0 0 30px 5px hsl(${categoryColor} / 0.1)`,
+              background: `radial-gradient(circle at center, hsl(${categoryColor} / 0.4), transparent 70%)`,
               animation: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-              zIndex: -1
+              zIndex: -1,
+              transform: 'translateZ(0)',
             }}
           />
         )}

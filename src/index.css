@@ -97,7 +97,7 @@ All colors MUST be HSL.
 @layer components {
   .pulse-glow {
     animation: pulseGlow 2s ease-in-out infinite;
-    will-change: filter;
+    will-change: transform, opacity;
   }
 
   .slide-up {
@@ -124,30 +124,12 @@ All colors MUST be HSL.
 
 @keyframes pulseGlow {
   0%, 100% {
-    filter: drop-shadow(0 0 25px currentColor) drop-shadow(0 0 50px currentColor);
-  }
-  50% {
-    filter: drop-shadow(0 0 35px currentColor) drop-shadow(0 0 70px currentColor);
-  }
-}
-
-@keyframes pulseGlowCard {
-  0%, 100% {
-    filter: drop-shadow(0 0 15px) drop-shadow(0 0 30px);
-  }
-  50% {
-    filter: drop-shadow(0 0 20px) drop-shadow(0 0 40px);
-  }
-}
-
-@keyframes pulseGlowBg {
-  0%, 100% {
-    opacity: 0.15;
     transform: scale(1);
+    opacity: 0.9;
   }
   50% {
-    opacity: 0.35;
-    transform: scale(1.1);
+    transform: scale(1.05);
+    opacity: 1;
   }
 }
 

@@ -27,6 +27,7 @@ export const useSwipe = (handlers: SwipeHandlers) => {
   const touchStartY = useRef<number>(0);
   const touchCurrentY = useRef<number>(0);
   const isMouseDown = useRef<boolean>(false);
+  const rafId = useRef<number | null>(null);
   const minSwipeDistance = 100; // Minimum distance for a swipe
   const swipeThreshold = 30; // Distance to show visual feedback (schneller trigger)
 
@@ -43,23 +44,32 @@ export const useSwipe = (handlers: SwipeHandlers) => {
   const handleTouchMove = (e: React.TouchEvent) => {
     if (!swipeState.isSwiping) return;
 
-    touchCurrentX.current = e.touches[0].clientX;
-    touchCurrentY.current = e.touches[0].clientY;
-    const distanceX = touchCurrentX.current - touchStartX.current;
-    const distanceY = touchCurrentY.current - touchStartY.current;
-    
-    // Determine primary direction
-    let direction: 'left' | 'right' | 'up' | null = null;
-    if (Math.abs(distanceX) > Math.abs(distanceY)) {
-      direction = distanceX > 0 ? 'right' : 'left';
-    } else if (distanceY < 0) {
-      direction = 'up';
+    // Cancel previous RAF if still pending
+    if (rafId.current) {
+      cancelAnimationFrame(rafId.current);
     }
 
-    setSwipeState({
-      isSwiping: true,
-      swipeDirection: Math.max(Math.abs(distanceX), Math.abs(distanceY)) > swipeThreshold ? direction : null,
-      swipeDistance: Math.abs(distanceX) > Math.abs(distanceY) ? distanceX : distanceY,
+    touchCurrentX.current = e.touches[0].clientX;
+    touchCurrentY.current = e.touches[0].clientY;
+
+    // Use RAF to throttle state updates for smoother performance
+    rafId.current = requestAnimationFrame(() => {
+      const distanceX = touchCurrentX.current - touchStartX.current;
+      const distanceY = touchCurrentY.current - touchStartY.current;
+      
+      // Determine primary direction
+      let direction: 'left' | 'right' | 'up' | null = null;
+      if (Math.abs(distanceX) > Math.abs(distanceY)) {
+        direction = distanceX > 0 ? 'right' : 'left';
+      } else if (distanceY < 0) {
+        direction = 'up';
+      }
+
+      setSwipeState({
+        isSwiping: true,
+        swipeDirection: Math.max(Math.abs(distanceX), Math.abs(distanceY)) > swipeThreshold ? direction : null,
+        swipeDistance: Math.abs(distanceX) > Math.abs(distanceY) ? distanceX : distanceY,
+      });
     });
   };
 
@@ -105,23 +115,32 @@ export const useSwipe = (handlers: SwipeHandlers) => {
   const handleMouseMove = (e: React.MouseEvent) => {
     if (!isMouseDown.current) return;
 
-    touchCurrentX.current = e.clientX;
-    touchCurrentY.current = e.clientY;
-    const distanceX = touchCurrentX.current - touchStartX.current;
-    const distanceY = touchCurrentY.current - touchStartY.current;
-    
-    // Determine primary direction
-    let direction: 'left' | 'right' | 'up' | null = null;
-    if (Math.abs(distanceX) > Math.abs(distanceY)) {
-      direction = distanceX > 0 ? 'right' : 'left';
-    } else if (distanceY < 0) {
-      direction = 'up';
+    // Cancel previous RAF if still pending
+    if (rafId.current) {
+      cancelAnimationFrame(rafId.current);
     }
 
-    setSwipeState({
-      isSwiping: true,
-      swipeDirection: Math.max(Math.abs(distanceX), Math.abs(distanceY)) > swipeThreshold ? direction : null,
-      swipeDistance: Math.abs(distanceX) > Math.abs(distanceY) ? distanceX : distanceY,
+    touchCurrentX.current = e.clientX;
+    touchCurrentY.current = e.clientY;
+
+    // Use RAF to throttle state updates for smoother performance
+    rafId.current = requestAnimationFrame(() => {
+      const distanceX = touchCurrentX.current - touchStartX.current;
+      const distanceY = touchCurrentY.current - touchStartY.current;
+      
+      // Determine primary direction
+      let direction: 'left' | 'right' | 'up' | null = null;
+      if (Math.abs(distanceX) > Math.abs(distanceY)) {
+        direction = distanceX > 0 ? 'right' : 'left';
+      } else if (distanceY < 0) {
+        direction = 'up';
+      }
+
+      setSwipeState({
+        isSwiping: true,
+        swipeDirection: Math.max(Math.abs(distanceX), Math.abs(distanceY)) > swipeThreshold ? direction : null,
+        swipeDistance: Math.abs(distanceX) > Math.abs(distanceY) ? distanceX : distanceY,
+      });
     });
   };
 
