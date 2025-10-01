@@ -1,4 +1,4 @@
-import { memo, useState, useEffect } from "react";
+import { memo, useState } from "react";
 import { Card, CardCategory } from "@/types/card";
 import { getCardImage } from "@/utils/cardImageMapper";
 
@@ -38,17 +38,13 @@ export const GameCard = memo(({
   const cardImageSrc = getCardImage(card.category, card.id);
   const categoryColor = categoryColorMap[card.category];
   
-  // Track if entrance animation has completed
-  const [hasAnimated, setHasAnimated] = useState(false);
-
-  // Reset animation state when card changes
-  useEffect(() => {
-    setHasAnimated(false);
-    const timer = setTimeout(() => {
-      setHasAnimated(true);
-    }, 600); // Match animation duration from CSS
-    return () => clearTimeout(timer);
-  }, [card.id]);
+  // Track if animation has started (use visibility to prevent flash)
+  const [isVisible, setIsVisible] = useState(false);
+  
+  // Handle animation start event
+  const handleAnimationStart = () => {
+    setIsVisible(true);
+  };
 
   // Check if card is exiting
   const isExiting = (card as any).exiting;
@@ -71,12 +67,14 @@ export const GameCard = memo(({
           ? exitTransform 
           : swipeDistance !== 0 
             ? `translateX(${swipeDistance}px) rotate(${rotation}deg)`
-            : !hasAnimated ? 'scale(0.8)' : undefined,
-        opacity: isExiting ? 0 : (swipeDistance !== 0 ? opacity : !hasAnimated ? 0 : undefined),
+            : undefined,
+        opacity: isExiting ? 0 : (swipeDistance !== 0 ? opacity : undefined),
+        visibility: !isExiting && !isVisible ? 'hidden' : 'visible',
         transition: isExiting ? 'transform 0.5s ease-in, opacity 0.5s ease-in' : 'none',
         cursor: 'grab',
         willChange: isExiting || swipeDistance !== 0 ? 'transform, opacity' : 'auto'
       }}
+      onAnimationStart={handleAnimationStart}
       onTouchStart={onTouchStart}
       onTouchMove={onTouchMove}
       onTouchEnd={onTouchEnd}
