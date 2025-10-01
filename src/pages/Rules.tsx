@@ -8,8 +8,8 @@ const Rules = () => {
   const navigate = useNavigate();
 
   return (
-    <ScrollableContainer className="min-h-screen">
-      <div className="page-container">
+    <ScrollableContainer>
+      <div>
         <div className="content-container">
           {/* Header */}
           <div className="flex items-center gap-4 mb-6 sm:mb-8">
@@ -170,8 +170,8 @@ const Rules = () => {
               </li>
             </ul>
           </section>
+          </div>
         </div>
-      </div>
       </div>
     </ScrollableContainer>
   );
