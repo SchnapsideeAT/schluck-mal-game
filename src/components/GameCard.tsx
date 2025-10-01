@@ -2,6 +2,7 @@ import { memo, useState, useEffect } from "react";
 import { Card, CardCategory } from "@/types/card";
 import { getCardImage } from "@/utils/cardImageMapper";
 import { useWindowSize } from "@/hooks/useWindowSize";
+import { useFeatureFlags } from "@/utils/featureFlags";
 
 interface GameCardProps {
   card: Card;
@@ -39,6 +40,11 @@ export const GameCard = memo(({
   const cardImageSrc = getCardImage(card.category, card.id);
   const categoryColor = categoryColorMap[card.category];
   const { width } = useWindowSize();
+  const { flags } = useFeatureFlags();
+  
+  // Override showGlow based on feature flags
+  const shouldShowGlow = showGlow && flags.enableGlowEffects;
+  const shouldAnimateComplex = flags.enableComplexAnimations;
   
   // Animation state: 'entering' | 'visible' | 'exiting'
   const [animationState, setAnimationState] = useState<'entering' | 'visible' | 'exiting'>('entering');
@@ -68,7 +74,7 @@ export const GameCard = memo(({
   return (
     <div 
       className={`w-full relative touch-none flex items-center justify-center ${
-        animationState === 'entering' ? 'animate-enter' : ''
+        shouldAnimateComplex && animationState === 'entering' ? 'animate-enter' : ''
       }`}
       style={{
         transform: swipeDistance !== 0 
@@ -90,7 +96,7 @@ export const GameCard = memo(({
     >
       
       {/* Left Screen Edge Glow (Red) - when swiping left - GPU optimized */}
-      {swipeDirection === 'left' && (
+      {shouldShowGlow && swipeDirection === 'left' && (
         <div 
           className="fixed left-0 top-0 bottom-0 pointer-events-none z-50"
           style={{
@@ -102,7 +108,7 @@ export const GameCard = memo(({
       )}
       
       {/* Right Screen Edge Glow (Green) - when swiping right - GPU optimized */}
-      {swipeDirection === 'right' && (
+      {shouldShowGlow && swipeDirection === 'right' && (
         <div 
           className="fixed right-0 top-0 bottom-0 pointer-events-none z-50"
           style={{
@@ -122,12 +128,12 @@ export const GameCard = memo(({
         }}
       >
         {/* Glow Effect Background - GPU optimized with opacity */}
-        {showGlow && (
+        {shouldShowGlow && (
           <div 
             className="absolute inset-0 rounded-2xl opacity-30"
             style={{
               background: `radial-gradient(circle at center, hsl(${categoryColor} / 0.4), transparent 70%)`,
-              animation: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+              animation: shouldAnimateComplex ? 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite' : 'none',
               zIndex: -1,
               transform: 'translateZ(0)',
             }}
