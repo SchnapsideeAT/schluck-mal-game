@@ -73,8 +73,9 @@ All colors MUST be HSL.
   html {
     height: 100%;
     background: hsl(0 0% 10%);
-    overflow-y: hidden;
-    overflow-x: hidden;
+    overflow: hidden;
+    position: fixed;
+    width: 100%;
   }
 
   body {
@@ -82,22 +83,22 @@ All colors MUST be HSL.
     font-family: 'Quicksand', system-ui, sans-serif;
     font-weight: 700;
     background: hsl(0 0% 10%);
-    min-height: 100vh;
-    min-height: -webkit-fill-available;
+    height: 100vh;
+    height: -webkit-fill-available;
     padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
     margin: 0;
-    overflow-x: hidden;
-    overflow-y: hidden;
+    overflow: hidden;
     touch-action: pan-x pinch-zoom;
-    position: fixed;
     width: 100%;
   }
 
   #root {
-    min-height: 100vh;
-    min-height: -webkit-fill-available;
+    height: 100vh;
+    height: -webkit-fill-available;
     background: hsl(0 0% 10%);
+    overflow: hidden;
   }
+
 }
 
 @layer components {
@@ -124,12 +125,16 @@ All colors MUST be HSL.
 
   /* Scrollable System - Smart Scrolling */
   .scrollable-container {
-    @apply h-full w-full;
+    height: 100vh;
+    height: -webkit-fill-available;
+    width: 100%;
     overflow-y: visible;
+    position: relative;
   }
 
   .scrollable-enabled {
     overflow-y: auto !important;
+    overflow-x: hidden !important;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: thin;
     scrollbar-color: transparent transparent;
@@ -155,6 +160,7 @@ All colors MUST be HSL.
   .no-scroll {
     overflow: hidden !important;
     height: 100vh !important;
+    height: -webkit-fill-available !important;
     max-height: 100vh !important;
     touch-action: pan-x pinch-zoom;
   }
